@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { templateConfig } from '../template.config';
 
@@ -14,10 +14,23 @@ import { templateConfig } from '../template.config';
         <h1>{{ config.title }}</h1>
         <p class="summary">{{ config.summary }}</p>
       </div>
-      <a class="primary" routerLink="/alerts">
-        <span class="material-symbols-outlined">policy</span>
-        {{ config.action }}
-      </a>
+      <div class="head-actions">
+        <div class="chips">
+          @for (item of periods; track item) {
+            <button type="button" class="chip" [class.active]="period() === item" (click)="period.set(item)">{{ item }}</button>
+          }
+        </div>
+        <a class="primary" routerLink="/alerts">
+          <span class="material-symbols-outlined">policy</span>
+          {{ config.action }}
+        </a>
+      </div>
+    </section>
+
+    <section class="oncall">
+      <span class="pulse"></span>
+      <strong>On call</strong>
+      <span>{{ config.onCall.primary }} · backup {{ config.onCall.backup }} · until {{ config.onCall.until }}</span>
     </section>
 
     <section class="metrics">
@@ -33,7 +46,7 @@ import { templateConfig } from '../template.config';
           </div>
           <p>{{ metric.label }}</p>
           <div class="value">{{ metric.value }}</div>
-          <small class="trend">{{ metric.trend }} this week</small>
+          <small class="trend">{{ metric.trend }} · {{ period() }}</small>
         </a>
       }
     </section>
@@ -77,6 +90,14 @@ import { templateConfig } from '../template.config';
           <div><span>Blocked this week</span><strong>186</strong></div>
           <div><span>False positives</span><strong>2.9%</strong></div>
         </div>
+        <div class="mix compact">
+          @for (item of config.channels; track item.label) {
+            <div>
+              <div class="mix-label"><strong>{{ item.label }}</strong><span>{{ item.value }}%</span></div>
+              <div class="mix-track"><span [style.width.%]="item.value"></span></div>
+            </div>
+          }
+        </div>
       </article>
     </section>
 
@@ -105,6 +126,28 @@ import { templateConfig } from '../template.config';
       <article class="panel">
         <div class="panel-header">
           <div>
+            <p class="eyebrow">Watchlist</p>
+            <h2>Entities to block</h2>
+          </div>
+        </div>
+        <div class="rows">
+          @for (item of config.watchlist; track item.label) {
+            <div class="row">
+              <div class="copy">
+                <strong>{{ item.label }}</strong>
+                <small>{{ item.detail }}</small>
+              </div>
+              <span class="status" [class]="item.risk === 'High' ? 'rose' : 'warn'">{{ item.risk }}</span>
+            </div>
+          }
+        </div>
+      </article>
+    </section>
+
+    <section class="dashboard-grid">
+      <article class="panel">
+        <div class="panel-header">
+          <div>
             <p class="eyebrow">Open</p>
             <h2>Priority cases</h2>
           </div>
@@ -115,11 +158,31 @@ import { templateConfig } from '../template.config';
             <a class="row" routerLink="/cases">
               <div class="copy">
                 <strong>{{ item.id }} · {{ item.subject }}</strong>
-                <small>{{ item.type }} · {{ item.owner }}</small>
+                <small>{{ item.type }} · {{ item.owner }} · aging {{ item.aging }}</small>
               </div>
               <span>{{ item.amount }}</span>
               <span class="status" [class]="item.tone">{{ item.status }}</span>
             </a>
+          }
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Audit</p>
+            <h2>Latest actions</h2>
+          </div>
+        </div>
+        <div class="rows">
+          @for (item of config.audit; track item.time) {
+            <div class="row">
+              <span class="agenda-time">{{ item.time }}</span>
+              <div class="copy">
+                <strong>{{ item.actor }}</strong>
+                <small>{{ item.action }}</small>
+              </div>
+            </div>
           }
         </div>
       </article>
@@ -129,7 +192,7 @@ import { templateConfig } from '../template.config';
       <div>
         <p class="eyebrow">Needs attention</p>
         <h2>Leila Poluru is testing cards</h2>
-        <p>11 attempts in four minutes. Aisha Poluru can auto-block the BIN from the alert queue.</p>
+        <p>11 attempts in four minutes. Aisha Poluru can auto-block BIN 414720 from the alert queue.</p>
       </div>
       <a class="secondary" routerLink="/alerts">
         <span class="material-symbols-outlined">visibility</span>
@@ -140,6 +203,8 @@ import { templateConfig } from '../template.config';
 })
 export class DashboardComponent {
   protected readonly config = templateConfig;
+  protected readonly periods = ['Today', '7d', '30d'] as const;
+  protected readonly period = signal<(typeof this.periods)[number]>('7d');
 
   protected initials(name: string): string {
     return name
