@@ -1,4 +1,81 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs';
 import { templateConfig } from '../template.config';
-@Component({selector:'app-root',standalone:true,changeDetection:ChangeDetectionStrategy.OnPush,styles:[`:host{font-family:'DM Sans',sans-serif;color:#15262c}.shell{min-height:100vh;background:#f6f8f7;padding:32px;max-width:1300px;margin:auto}.bar,.heading,.card-head{display:flex;justify-content:space-between;align-items:center}.bar{padding-bottom:24px;border-bottom:1px solid #dfe7e6;color:#08766c;font-weight:700}.eyebrow{margin:0;color:#08766c;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}h1{margin:7px 0;font-size:30px}.summary{color:#66777d;max-width:650px}.primary{border:0;border-radius:6px;padding:11px 15px;background:#08766c;color:#fff;font-weight:700}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:28px 0}.card{padding:19px;border:1px solid #dfe7e6;border-radius:7px;background:#fff}.icon{color:#08766c}.label,.detail{color:#66777d;font-size:12px}.value{margin:5px 0;font-size:25px;font-weight:700}.trend{color:#178043;font-size:12px}.activity{margin-top:16px}.row{display:flex;gap:12px;align-items:center;padding:14px 0;border-top:1px solid #edf1f0}.dot{width:8px;height:8px;border-radius:50%;background:#55d9c7}.copy{flex:1}.status{color:#407f40;font-size:12px;font-weight:700}@media(max-width:700px){.shell{padding:18px}.heading{align-items:start;flex-direction:column}.metrics{grid-template-columns:repeat(2,1fr)}}`],template:`<main class="shell"><header class="bar"><span>Poluru Labs</span><span class="material-symbols-outlined">notifications</span></header><section class="heading"><div><p class="eyebrow">{{config.eyebrow}}</p><h1>{{config.title}}</h1><p class="summary">{{config.summary}}</p></div><button class="primary">{{config.action}}</button></section><section class="metrics">@for(metric of config.metrics;track metric.label){<article class="card"><span class="material-symbols-outlined icon">{{metric.icon}}</span><p class="label">{{metric.label}}</p><div class="value">{{metric.value}}</div><small class="trend">{{metric.trend}} this week</small></article>}</section><article class="card activity"><div class="card-head"><div><p class="eyebrow">Live overview</p><h2>{{config.activityTitle}}</h2></div><span class="material-symbols-outlined">arrow_forward</span></div>@for(entry of config.activity;track entry.title){<div class="row"><span class="dot"></span><div class="copy"><strong>{{entry.title}}</strong><small class="detail">{{entry.detail}}</small></div><span class="status">{{entry.status}}</span></div>}</article></main>`})
-export class AppComponent { protected readonly config = templateConfig; }
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterLink, RouterLinkActive, RouterOutlet],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  template: `
+    <div class="shell" [class.nav-open]="navOpen()">
+      <aside class="sidebar">
+        <a class="brand" routerLink="/">
+          <span class="brand-mark">{{ config.brand.mark }}</span>
+          <span>{{ config.brand.name }} <b>{{ config.brand.accent }}</b></span>
+        </a>
+        <nav class="nav">
+          @for (item of config.nav; track item.path) {
+            <a
+              [routerLink]="item.path"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: item.exact === true }"
+            >
+              <span class="material-symbols-outlined">{{ item.icon }}</span>
+              {{ item.label }}
+            </a>
+          }
+        </nav>
+        <div class="profile">
+          <span>{{ config.user.initials }}</span>
+          <div>
+            <strong>{{ config.user.name }}</strong>
+            <small>{{ config.user.role }}</small>
+          </div>
+        </div>
+      </aside>
+
+      <button class="backdrop" type="button" aria-label="Close navigation" (click)="closeNav()"></button>
+
+      <div class="main">
+        <header>
+          <button class="icon-button menu-button" type="button" aria-label="Open navigation" (click)="toggleNav()">
+            <span class="material-symbols-outlined">menu</span>
+          </button>
+          <p class="workspace">{{ config.workspace }}</p>
+          <div class="top-actions">
+            <a class="icon-button" routerLink="/alerts" aria-label="Alerts">
+              <span class="material-symbols-outlined">notifications</span>
+            </a>
+            <a class="primary" routerLink="/alerts">{{ config.action }}</a>
+          </div>
+        </header>
+        <main>
+          <router-outlet />
+        </main>
+      </div>
+    </div>
+  `
+})
+export class AppComponent {
+  private readonly router = inject(Router);
+  protected readonly config = templateConfig;
+  protected readonly navOpen = signal(false);
+
+  constructor() {
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      takeUntilDestroyed()
+    ).subscribe(() => this.closeNav());
+  }
+
+  protected toggleNav(): void {
+    this.navOpen.update((open) => !open);
+  }
+
+  protected closeNav(): void {
+    this.navOpen.set(false);
+  }
+}
