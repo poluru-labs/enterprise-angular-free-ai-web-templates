@@ -11,7 +11,7 @@ export const templateConfig = {
   summary: 'Surface suspicious activity early, prioritize investigation queues, and watch model coverage in one place.',
   action: 'Review alerts',
   brand: { mark: 'R', name: 'Risk', accent: 'Watch' },
-  workspace: 'Poluru Labs',
+  workspace: 'Risk Watch',
   user: { initials: 'AP', name: 'Aisha Poluru', role: 'Risk lead' },
   nav: [
     { path: '/', label: 'Monitor', icon: 'shield', exact: true },

@@ -10,7 +10,7 @@ import { templateConfig } from '../template.config';
       <div>
         <p class="eyebrow">Workspace</p>
         <h1>Settings</h1>
-        <p class="summary">Thresholds, team, and detection controls for Poluru Labs risk operations.</p>
+        <p class="summary">Thresholds, team, and detection controls for risk operations.</p>
       </div>
       <button type="button" class="primary" (click)="saved.set(true)">Save changes</button>
     </section>
