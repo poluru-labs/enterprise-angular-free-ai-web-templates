@@ -11,7 +11,7 @@ A curated collection of free enterprise Angular templates for building AI dashbo
 - `ai-support-copilot-dashboard`
 - `ai-sales-assistant-panel`
 - `ai-content-studio`
-- `ai-fraud-risk-monitoring-ui`
+- `ai-fraud-risk-monitoring-ui` — Risk Watch fraud monitor (sticky sidebar, brand `#FF6600`)
 - `ai-human-review-console`
 
 Each folder is a self-contained Angular application with its own `package.json`, `angular.json`, TypeScript configuration, and `src/app` source. Templates use Angular, Bootstrap, Material Symbols, and `@poluru-labs/enterprise-design-system-angular`.

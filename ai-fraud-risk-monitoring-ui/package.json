@@ -2,6 +2,7 @@
   "name": "ai-fraud-risk-monitoring-ui",
   "version": "1.0.0",
   "private": true,
+  "description": "Risk Watch — AI fraud and risk monitoring UI. Sticky sidebar, alerts, cases, and rules. Light theme, brand #FF6600.",
   "scripts": {
     "start": "ng serve",
     "dev": "ng serve",
