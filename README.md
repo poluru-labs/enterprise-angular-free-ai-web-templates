@@ -7,7 +7,7 @@ A curated collection of free enterprise Angular templates for building AI dashbo
 - `ai-prompt-management-panel`
 - `ai-rag-knowledge-admin`
 - `ai-model-evaluation-board`
-- `ai-agent-ops-console`
+- `ai-agent-ops-console` — AgentOps Kit operations console (sidebar, brand `#08766C`)
 - `ai-support-copilot-dashboard`
 - `ai-sales-assistant-panel`
 - `ai-content-studio`

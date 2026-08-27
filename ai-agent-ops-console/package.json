@@ -2,6 +2,7 @@
   "name": "ai-agent-ops-console",
   "version": "1.0.0",
   "private": true,
+  "description": "AgentOps Kit — AI agent operations console. Sidebar, agents, runs, tools, and handoffs. Light theme, brand #08766C.",
   "scripts": { "start": "ng serve", "dev": "ng serve", "build": "ng build" },
   "dependencies": {
     "@angular/common": "^21.2.21",
