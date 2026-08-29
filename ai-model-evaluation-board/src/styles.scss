@@ -1,0 +1,17 @@
+/* Global clean-theme overrides for enterprise design system components */
+
+eds-card .card {
+  border: 0 !important;
+  box-shadow: 0 12px 26px rgba(20, 40, 20, 0.08) !important;
+}
+
+eds-card .card .header,
+eds-card .card .footer {
+  border: 0 !important;
+}
+
+eds-stat .eds-stat,
+eds-data-table .eds-data-table__wrapper,
+eds-modal .dialog {
+  border: 0 !important;
+}
