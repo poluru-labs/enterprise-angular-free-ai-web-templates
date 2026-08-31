@@ -8,7 +8,7 @@ A curated collection of free enterprise Angular templates for building AI dashbo
 - `ai-rag-knowledge-admin`
 - `ai-model-evaluation-board`
 - `ai-agent-ops-console` — AgentOps Kit operations console (sidebar, brand `#08766C`)
-- `ai-support-copilot-dashboard`
+- `ai-support-copilot-dashboard` — Harbor Desk support copilot (simple sidebar, brand `#434E78`)
 - `ai-sales-assistant-panel`
 - `ai-content-studio`
 - `ai-fraud-risk-monitoring-ui` — Risk Watch fraud monitor (sticky sidebar, brand `#FF6600`)

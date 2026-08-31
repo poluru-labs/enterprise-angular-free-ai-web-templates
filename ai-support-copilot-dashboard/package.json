@@ -1,1 +1,29 @@
-{"name":"ai-support-copilot-dashboard","version":"1.0.0","private":true,"scripts":{"start":"ng serve","build":"ng build"},"dependencies":{"@angular/common":"^21.2.21","@angular/compiler":"^21.2.21","@angular/core":"^21.2.21","@angular/platform-browser":"^21.2.21","@poluru-labs/enterprise-design-system-angular":"^1.0.0","bootstrap":"^5.3.8","rxjs":"~7.8.2","tslib":"^2.8.1","zone.js":"~0.15.1"},"devDependencies":{"@angular-devkit/build-angular":"^21.2.21","@angular/cli":"^21.2.21","@angular/compiler-cli":"^21.2.21","typescript":"~5.9.3"}}
+{
+  "name": "ai-support-copilot-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Harbor Desk — AI support copilot admin. Full-width sticky header, simple sidebar, brand #434E78.",
+  "scripts": {
+    "start": "ng serve",
+    "dev": "ng serve",
+    "build": "ng build"
+  },
+  "dependencies": {
+    "@angular/common": "^21.2.21",
+    "@angular/compiler": "^21.2.21",
+    "@angular/core": "^21.2.21",
+    "@angular/platform-browser": "^21.2.21",
+    "@angular/router": "^21.2.21",
+    "@poluru-labs/enterprise-design-system-angular": "^1.0.0",
+    "bootstrap": "^5.3.8",
+    "rxjs": "~7.8.2",
+    "tslib": "^2.8.1",
+    "zone.js": "~0.15.1"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^21.2.21",
+    "@angular/cli": "^21.2.21",
+    "@angular/compiler-cli": "^21.2.21",
+    "typescript": "~5.9.3"
+  }
+}
