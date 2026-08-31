@@ -1,1 +1,39 @@
-{"$schema":"./node_modules/@angular/cli/lib/config/schema.json","version":1,"projects":{"ai-llm-usage-dashboard":{"projectType":"application","root":".","sourceRoot":"src","architect":{"build":{"builder":"@angular-devkit/build-angular:application","options":{"browser":"src/main.ts","tsConfig":"tsconfig.app.json","index":"src/index.html","styles":["@poluru-labs/enterprise-design-system-angular/tokens.css","@poluru-labs/enterprise-design-system-angular/styles.css","node_modules/bootstrap/dist/css/bootstrap.min.css","src/styles.scss"]}},"serve":{"builder":"@angular-devkit/build-angular:dev-server","configurations":{"development":{"buildTarget":"ai-llm-usage-dashboard:build"}},"defaultConfiguration":"development"}}}}}
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "projects": {
+    "ai-llm-usage-dashboard": {
+      "projectType": "application",
+      "root": ".",
+      "sourceRoot": "src",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "browser": "src/main.ts",
+            "tsConfig": "tsconfig.app.json",
+            "index": "src/index.html",
+            "styles": [
+              "@poluru-labs/enterprise-design-system-angular/tokens.css",
+              "@poluru-labs/enterprise-design-system-angular/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/styles.scss"
+            ]
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "development": {
+              "buildTarget": "ai-llm-usage-dashboard:build"
+            }
+          },
+          "defaultConfiguration": "development",
+          "options": {
+            "port": 4215
+          }
+        }
+      }
+    }
+  }
+}

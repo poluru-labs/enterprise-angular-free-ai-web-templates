@@ -1,11 +1,8 @@
-# LLM Usage Dashboard
+# Lilac Meter — LLM usage dashboard
 
-Platform analytics for LLM consumption: token usage, spend, model latency,
-and budgets across workspaces. Light theme with brand **`#08766C`**.
-
-A **simple sidebar** and a **sticky, full-width header** stay in place while
-the main canvas scrolls. Navigation: Overview, Usage, Models, Budgets, and
-Settings.
+Platform analytics for token consumption, spend, and latency. Light canvas
+with a **full-width sticky header** in brand **`#8D77AB`**, plus a **simple
+sidebar**.
 
 ## Run
 
@@ -17,15 +14,15 @@ npm install
 npm start
 ```
 
-Default dev server: http://localhost:4200
+Default dev server: http://localhost:4215
 
 | Route | Page |
 | --- | --- |
-| `/` | Overview — KPIs, must-have features, recent usage activity |
-| `/usage` | Usage — per-model token, cost, and latency table |
-| `/models` | Model directory — owners and access status |
-| `/budgets` | Budget timeline — weekly checks and reviews |
-| `/settings` | Budget alerts, latency notifications, and cost gate toggles |
+| `/` | Overview — KPIs, token volume, spend health, workspace table |
+| `/usage` | Usage — filters, catalog table, pagination |
+| `/models` | Model directory — providers, access, owners |
+| `/budgets` | Budget cycle, workspace caps, weekly checks |
+| `/settings` | Alerts, cost gate, caps, and retention |
 
 ```bash
 npm run build
@@ -36,8 +33,9 @@ Production output: `dist/ai-llm-usage-dashboard`.
 ## Stack
 
 Angular 21 (standalone components, router), Bootstrap 5, Material Symbols,
-DM Sans, `@poluru-labs/enterprise-design-system-angular`. Demo owners include
-**Alex Poluru**, Priya Poluru, Maya Poluru, and Sam Poluru.
+DM Sans, `@poluru-labs/enterprise-design-system-angular`. Demo people include
+**Lakshmi Poluru**, Priya Poluru, Venkata Poluru, Meera Poluru, Hana Poluru,
+Nikhil Poluru, Sravani Poluru, Ramesh Poluru, and Arjun Poluru.
 
-Copy and tokens live in `src/template.config.ts`. Layout and brand color live
-in `src/app/app.component.ts` and `src/styles.scss`.
+Copy and mock data live in `src/template.config.ts`. Layout and brand color
+live in `src/app/app.component.ts` and `src/styles.scss`.

@@ -1,186 +1,295 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import {
+  EdsAccordionComponent,
+  EdsAlertComponent,
   EdsBadgeComponent,
+  EdsBreadcrumbComponent,
+  EdsButtonComponent,
+  EdsButtonGroupComponent,
   EdsCardComponent,
+  EdsCircularProgressComponent,
+  EdsDataTableColumn,
+  EdsDataTableComponent,
+  EdsDescriptionListComponent,
+  EdsDividerComponent,
+  EdsListComponent,
+  EdsMeterComponent,
+  EdsProgressBarComponent,
+  EdsRatingComponent,
+  EdsSegmentedControlComponent,
   EdsStatComponent,
-  EdsStatusComponent
+  EdsStatusComponent,
+  EdsTabsComponent,
+  EdsTagComponent,
+  EdsTimelineComponent,
+  type EdsAccordionItem,
+  type EdsBreadcrumbItem,
+  type EdsDescriptionListItem,
+  type EdsListItem,
+  type EdsSegmentOption,
+  type EdsTabItem,
+  type EdsTimelineItem
 } from '@poluru-labs/enterprise-design-system-angular';
 import { templateConfig } from '../template.config';
 
 @Component({
   selector: 'app-overview-page',
   standalone: true,
-  imports: [EdsStatComponent, EdsCardComponent, EdsBadgeComponent, EdsStatusComponent],
+  imports: [
+    EdsAccordionComponent,
+    EdsAlertComponent,
+    EdsBadgeComponent,
+    EdsBreadcrumbComponent,
+    EdsButtonComponent,
+    EdsButtonGroupComponent,
+    EdsCardComponent,
+    EdsCircularProgressComponent,
+    EdsDataTableComponent,
+    EdsDescriptionListComponent,
+    EdsDividerComponent,
+    EdsListComponent,
+    EdsMeterComponent,
+    EdsProgressBarComponent,
+    EdsRatingComponent,
+    EdsSegmentedControlComponent,
+    EdsStatComponent,
+    EdsStatusComponent,
+    EdsTabsComponent,
+    EdsTagComponent,
+    EdsTimelineComponent
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [`
-    :host {
-      --brand: #08766c;
-      --line: #dfe7e6;
-      --muted: #66777d;
-      display: block;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-
-    .page-head {
-      margin-bottom: 16px;
-    }
-
-    .eyebrow {
-      margin: 0;
-      color: var(--brand);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .page-head h1 {
-      margin: 6px 0;
-      font-size: 26px;
-      color: #15262c;
-    }
-
-    .page-head p {
-      margin: 0;
-      color: var(--muted);
-      max-width: 640px;
-    }
-
-    .card {
-      border-radius: 14px;
-    }
-
-    .meta {
-      color: var(--muted);
-      font-size: 12px;
-      margin: 0;
-    }
-
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-
-    .section-title {
-      margin: 0;
-      font-size: 18px;
-      color: #15262c;
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-
-    .feature-title {
-      margin: 0;
-      font-size: 15px;
-      color: #15262c;
-    }
-
-    .feature-detail {
-      color: var(--muted);
-      margin: 6px 0 10px;
-      font-size: 13px;
-    }
-
-    .activity-row {
-      padding: 10px;
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: center;
-      background: #f4f9f8;
-      border-radius: 10px;
-      margin-bottom: 8px;
-    }
-
-    .activity-row strong {
-      display: block;
-    }
-
-    @media (max-width: 1180px) {
-      .grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 780px) {
-      .grid,
-      .features {
-        grid-template-columns: 1fr;
-      }
-    }
-  `],
   template: `
     <section class="page-head">
-      <p class="eyebrow">{{ config.eyebrow }}</p>
-      <h1>{{ config.title }}</h1>
-      <p>{{ config.summary }}</p>
+      <div>
+        <eds-breadcrumb [items]="crumbs"></eds-breadcrumb>
+        <p class="eyebrow">{{ config.eyebrow }}</p>
+        <h1>{{ config.title }}</h1>
+        <p class="summary">{{ config.summary }}</p>
+      </div>
+      <div class="head-actions">
+        <eds-segmented-control
+          size="sm"
+          [options]="periods"
+          [value]="period()"
+          (valueChange)="period.set($event)"
+        ></eds-segmented-control>
+        <eds-button-group size="sm">
+          <eds-button variant="secondary" icon="refresh">Refresh</eds-button>
+          <eds-button variant="primary" icon="download" (clicked)="openExport()">Export report</eds-button>
+        </eds-button-group>
+      </div>
     </section>
 
-    <section class="grid">
+    <eds-alert
+      variant="warning"
+      title="Production is at 88% of budget"
+      message="Lakshmi Poluru’s 80% alert fired. gpt-4.1 will hit the cap in about 4 days at the current rate."
+      [dismissible]="true"
+    ></eds-alert>
+
+    <section class="grid-4" style="margin-top: 1rem">
       @for (metric of config.metrics; track metric.label) {
-        <eds-card class="card" [elevated]="false">
+        <eds-card class="card-pad" [elevated]="false">
           <eds-stat
             [label]="metric.label"
             [value]="metric.value"
-            trend="up"
+            [trend]="metric.trendDir"
             [trendValue]="metric.trend"
-            hint="this week"
+            [hint]="metric.hint + ' · ' + period()"
           ></eds-stat>
         </eds-card>
       }
     </section>
 
-    <eds-card class="card" [elevated]="false">
-      <div class="section-head">
-        <h2 class="section-title">Must-have features</h2>
-        <eds-badge label="Core stack" variant="brand" [pill]="true" [soft]="true"></eds-badge>
-      </div>
-      <div class="features">
-        @for (feature of config.mustHaveFeatures; track feature.title) {
-          <eds-card class="card" [elevated]="false">
-            <h3 class="feature-title">{{ feature.title }}</h3>
-            <p class="feature-detail">{{ feature.detail }}</p>
-            <eds-status class="status" [label]="feature.status" variant="success"></eds-status>
-          </eds-card>
-        }
-      </div>
-    </eds-card>
-
-    <eds-card class="card" [elevated]="false">
-      <div class="section-head">
-        <h2 class="section-title">Recent usage activity</h2>
-      </div>
-      @for (entry of config.activity; track entry.title) {
-        <div class="activity-row">
+    <section class="split" style="margin-top: 0.9rem">
+      <eds-card class="card-pad" [elevated]="false">
+        <div class="section-head">
           <div>
-            <strong>{{ entry.title }}</strong>
-            <p class="meta">{{ entry.detail }}</p>
+            <p class="eyebrow">Volume</p>
+            <h2>Token throughput</h2>
           </div>
-          <eds-status class="status" [label]="entry.status" [variant]="statusVariant(entry.status)"></eds-status>
+          <eds-badge label="Today" variant="brand" [soft]="true" [pill]="true"></eds-badge>
         </div>
-      }
-    </eds-card>
+        <div class="hours">
+          @for (item of config.hourly; track item.hour) {
+            <div class="hour">
+              <div class="hour-bar"><i [style.height.%]="item.value"></i></div>
+              <small>{{ item.hour }}</small>
+            </div>
+          }
+        </div>
+        <eds-divider spacing="md"></eds-divider>
+        <div class="meter-row">
+          <span><span>Weekly token target 90M</span><strong>93%</strong></span>
+          <eds-progress-bar [value]="93" [max]="100" label="Weekly tokens" [showValue]="true"></eds-progress-bar>
+        </div>
+        <div class="meter-row">
+          <span><span>Budget remaining</span><strong>74 of 100</strong></span>
+          <eds-meter [value]="74" [max]="100" label="Budget remaining" [showValue]="true"></eds-meter>
+        </div>
+      </eds-card>
+
+      <eds-card class="card-pad" [elevated]="false">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Coach</p>
+            <h2>Spend health</h2>
+          </div>
+          <eds-circular-progress [value]="74" [max]="100" [size]="64" [showValue]="true"></eds-circular-progress>
+        </div>
+        <eds-tabs [tabs]="coachTabs" [selectedIndex]="coachTab()" (selectedIndexChange)="coachTab.set($event)"></eds-tabs>
+        @if (coachTab() === 0) {
+          <eds-accordion [items]="alertItems" [single]="true"></eds-accordion>
+        } @else if (coachTab() === 1) {
+          <eds-timeline [items]="motionItems"></eds-timeline>
+        } @else {
+          <eds-list [items]="inboxList" [divided]="true"></eds-list>
+        }
+      </eds-card>
+    </section>
+
+    <section class="split" style="margin-top: 0.9rem">
+      <eds-card class="card-pad" [elevated]="false">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Metering</p>
+            <h2>Top workspaces</h2>
+          </div>
+          <eds-tag label="8 rows" variant="brand"></eds-tag>
+        </div>
+        <div class="table-wrap">
+          <eds-data-table [columns]="usageColumns" [rows]="usageRows" [striped]="true" [compact]="true"></eds-data-table>
+        </div>
+      </eds-card>
+
+      <eds-card class="card-pad" [elevated]="false">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Quality</p>
+            <h2>Latency rating</h2>
+          </div>
+          <eds-status label="Stable" variant="success" [pulse]="true"></eds-status>
+        </div>
+        <eds-rating [value]="4" [readonly]="true" size="lg"></eds-rating>
+        <p class="meta">Scored on Lakshmi Poluru’s production eval set.</p>
+        <eds-divider spacing="md" label="Workspace"></eds-divider>
+        <eds-description-list [items]="facts" [columns]="1" [compact]="true"></eds-description-list>
+      </eds-card>
+    </section>
+
+    <section class="grid-3" style="margin-top: 0.9rem">
+      <eds-card class="card-pad" [elevated]="false">
+        <p class="eyebrow">Owners</p>
+        <h2>Workspace load</h2>
+        @for (person of config.owners; track person.name) {
+          <div class="owner-row">
+            <span><span>{{ person.name }}</span><strong>{{ person.load }}%</strong></span>
+            <eds-progress-bar [value]="person.load" [max]="100" [label]="person.focus"></eds-progress-bar>
+          </div>
+        }
+      </eds-card>
+
+      <eds-card class="card-pad" [elevated]="false">
+        <p class="eyebrow">SLA</p>
+        <h2>Platform freshness</h2>
+        @for (item of config.sla; track item.label) {
+          <div class="meter-row">
+            <span><span>{{ item.label }}</span><strong>{{ item.value }}</strong></span>
+            <eds-meter [value]="item.value" [max]="100" [label]="item.label" [showValue]="true"></eds-meter>
+          </div>
+        }
+      </eds-card>
+
+      <eds-card class="card-pad" [elevated]="false">
+        <p class="eyebrow">Live</p>
+        <h2>Usage activity</h2>
+        @for (entry of config.activity; track entry.title) {
+          <div class="query-hit">
+            <div>
+              <strong>{{ entry.title }}</strong>
+              <p class="meta">{{ entry.detail }}</p>
+            </div>
+            <eds-status [label]="entry.status" [variant]="statusVariant(entry.status)"></eds-status>
+          </div>
+        }
+      </eds-card>
+    </section>
   `
 })
 export class OverviewPageComponent {
   protected readonly config = templateConfig;
+  protected readonly period = signal('week');
+  protected readonly coachTab = signal(0);
+
+  protected readonly crumbs: EdsBreadcrumbItem[] = [
+    { label: 'Lilac Meter', href: '/' },
+    { label: 'Overview' }
+  ];
+
+  protected readonly periods: EdsSegmentOption[] = [
+    { label: 'Day', value: 'day' },
+    { label: 'Week', value: 'week' },
+    { label: 'Month', value: 'month' }
+  ];
+
+  protected readonly coachTabs: EdsTabItem[] = [
+    { label: 'Alerts', content: 'Budget and latency holds.' },
+    { label: 'Motion', content: 'Recent spend and routing events.' },
+    { label: 'Inbox', content: 'Mentions for Lakshmi Poluru.' }
+  ];
+
+  protected readonly alertItems: EdsAccordionItem[] = this.config.alerts.map((item, index) => ({
+    heading: item.heading,
+    content: item.content,
+    open: index === 0
+  }));
+
+  protected readonly motionItems: EdsTimelineItem[] = this.config.activity.map((entry, index) => ({
+    title: entry.title,
+    description: entry.detail,
+    timestamp: entry.time,
+    status: index === 0 ? 'current' : index < 3 ? 'complete' : 'upcoming'
+  }));
+
+  protected readonly inboxList: EdsListItem[] = this.config.activity.map((entry) => ({
+    label: entry.title,
+    description: entry.detail
+  }));
+
+  protected readonly usageColumns: EdsDataTableColumn[] = [
+    { key: 'model', label: 'Model', sortable: true },
+    { key: 'workspace', label: 'Workspace', sortable: true },
+    { key: 'tokens', label: 'Tokens', sortable: true },
+    { key: 'cost', label: 'Cost', sortable: true },
+    { key: 'status', label: 'Status', sortable: true }
+  ];
+
+  protected readonly usageRows = this.config.usage.slice(0, 5).map((entry) => ({
+    model: entry.model,
+    workspace: entry.workspace,
+    tokens: entry.tokens,
+    cost: entry.cost,
+    status: entry.status
+  }));
+
+  protected readonly facts: EdsDescriptionListItem[] = [
+    { term: 'Workspace', description: this.config.workspace },
+    { term: 'Platform lead', description: this.config.user.name },
+    { term: 'Cost gate', description: 'Off for sandbox' },
+    { term: 'Primary model', description: 'gpt-4.1' }
+  ];
+
+  protected openExport(): void {
+    window.dispatchEvent(new CustomEvent('meter:export'));
+  }
 
   protected statusVariant(status: string): 'success' | 'warning' | 'danger' | 'info' | 'neutral' {
-    if (status === 'Active' || status === 'Ready') {
+    if (status === 'Active' || status === 'Ready' || status === 'Healthy') {
       return 'success';
+    }
+    if (status === 'Watch' || status === 'Restricted') {
+      return 'warning';
     }
     if (status === 'Updated') {
       return 'info';
