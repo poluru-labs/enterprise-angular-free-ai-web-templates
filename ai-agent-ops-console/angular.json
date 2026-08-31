@@ -9,7 +9,17 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
-          "options": { "browser": "src/main.ts", "tsConfig": "tsconfig.app.json", "index": "src/index.html", "styles": ["node_modules/bootstrap/dist/css/bootstrap.min.css", "src/styles.scss"] }
+          "options": {
+            "browser": "src/main.ts",
+            "tsConfig": "tsconfig.app.json",
+            "index": "src/index.html",
+            "styles": [
+              "@poluru-labs/enterprise-design-system-angular/tokens.css",
+              "@poluru-labs/enterprise-design-system-angular/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/styles.scss"
+            ]
+          }
         },
         "serve": { "builder": "@angular-devkit/build-angular:dev-server", "configurations": { "development": { "buildTarget": "ai-agent-ops-console:build" } }, "defaultConfiguration": "development" }
       }

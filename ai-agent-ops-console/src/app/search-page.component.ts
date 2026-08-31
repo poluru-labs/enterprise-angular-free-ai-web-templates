@@ -1,46 +1,55 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import {
+  EdsButtonComponent,
+  EdsCardComponent,
+  EdsEmptyStateComponent,
+  EdsSearchComponent,
+  EdsStatusComponent
+} from '@poluru-labs/enterprise-design-system-angular';
 import { templateConfig } from '../template.config';
 
 @Component({
   selector: 'app-search-page',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, EdsButtonComponent, EdsCardComponent, EdsEmptyStateComponent, EdsSearchComponent, EdsStatusComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="page-head">
       <div>
         <p class="eyebrow">Workspace search</p>
         <h1>Search</h1>
-        <p class="summary">Find agents, runs, tools, and handoffs across the operations console.</p>
+        <p class="summary">Find agents, runs, tools, and handoffs across the operations console. Try ⌘K from any page.</p>
       </div>
     </section>
 
-    <label class="search-field">
-      <span class="material-symbols-outlined">search</span>
-      <input type="search" placeholder="Search agents, runs, tools..." [value]="query()" (input)="query.set($any($event.target).value)" />
-    </label>
+    <eds-search
+      size="lg"
+      placeholder="Search agents, runs, tools..."
+      [clearable]="true"
+      [value]="query()"
+      (valueChange)="query.set($event)"
+    ></eds-search>
 
-    <section class="panel list-panel">
+    <eds-card class="card-pad" [elevated]="false" style="margin-top: 0.9rem">
       @if (results().length === 0) {
-        <div class="empty-copy">
-          <h2>No matches</h2>
-          <p>Try an agent name, run ID, or tool such as “web search”.</p>
-        </div>
+        <eds-empty-state heading="No matches" description="Try an agent name, run ID, or tool such as “web search”." [icon]="true">
+          <div actions>
+            <eds-button variant="primary" size="sm" (clicked)="query.set('')">Clear search</eds-button>
+          </div>
+        </eds-empty-state>
       } @else {
         @for (result of results(); track result.title + result.path) {
-          <a class="list-row alert-row" [routerLink]="result.path">
-            <span class="status-icon material-symbols-outlined">{{ result.icon }}</span>
-            <div class="copy">
+          <a class="query-hit" [routerLink]="result.path">
+            <div>
               <strong>{{ result.title }}</strong>
-              <small>{{ result.detail }}</small>
+              <p class="meta">{{ result.detail }}</p>
             </div>
-            <span class="status ok">{{ result.kind }}</span>
-            <span class="icon-button" aria-hidden="true"><span class="material-symbols-outlined">chevron_right</span></span>
+            <eds-status [label]="result.kind" variant="info"></eds-status>
           </a>
         }
       }
-    </section>
+    </eds-card>
   `
 })
 export class SearchPageComponent {
@@ -48,11 +57,12 @@ export class SearchPageComponent {
   protected readonly results = computed(() => {
     const term = this.query().trim().toLowerCase();
     const catalog = [
-      ...templateConfig.agents.map((item) => ({ title: item.name, detail: `${item.owner} · ${item.status}`, path: '/agents', kind: 'Agent', icon: 'smart_toy' })),
-      ...templateConfig.runs.map((item) => ({ title: item.id, detail: `${item.agent} · ${item.detail}`, path: '/runs', kind: 'Run', icon: 'timeline' })),
-      ...templateConfig.tools.map((item) => ({ title: item.name, detail: `${item.type} · ${item.status}`, path: '/tools', kind: 'Tool', icon: 'construction' })),
-      ...templateConfig.handoffs.map((item) => ({ title: item.id, detail: `${item.agent} · ${item.reason}`, path: '/handoffs', kind: 'Handoff', icon: 'handshake' }))
+      ...templateConfig.agents.map((item) => ({ title: item.name, detail: `${item.owner} · ${item.team} · ${item.status}`, path: '/agents', kind: 'Agent' })),
+      ...templateConfig.runs.map((item) => ({ title: item.id, detail: `${item.agent} · ${item.detail}`, path: '/runs', kind: 'Run' })),
+      ...templateConfig.tools.map((item) => ({ title: item.name, detail: `${item.type} · ${item.status}`, path: '/tools', kind: 'Tool' })),
+      ...templateConfig.handoffs.map((item) => ({ title: item.id, detail: `${item.agent} · ${item.reason}`, path: '/handoffs', kind: 'Handoff' })),
+      ...templateConfig.alerts.map((item) => ({ title: item.title, detail: `${item.owner} · ${item.detail}`, path: item.path, kind: 'Alert' }))
     ];
-    return term ? catalog.filter((item) => `${item.title} ${item.detail}`.toLowerCase().includes(term)) : catalog.slice(0, 8);
+    return term ? catalog.filter((item) => `${item.title} ${item.detail}`.toLowerCase().includes(term)) : catalog.slice(0, 10);
   });
 }
