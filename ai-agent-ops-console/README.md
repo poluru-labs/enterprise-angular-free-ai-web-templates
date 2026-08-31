@@ -1,11 +1,29 @@
-# AgentOps Kit
+# AgentOps Kit — agent operations console
 
-AI agent operations console: fleet health, runs, tools, human handoffs, and
-deploys. Light theme with brand **`#08766C`**.
+Fleet health, runs, tools, human handoffs, and deploys for AI agents. AgentOps Kit uses a **full-height sidebar** grouped into Operations and Oversight.
 
-A **full-height sidebar** stays on the left while the main canvas scrolls.
-Navigation is grouped: Operations (Operations, Agents, Runs, Tools) and
-Oversight (Handoffs, Alerts), plus Settings.
+**Brand:** `#08766C`  
+**Folder:** `ai-agent-ops-console`
+
+## Demo
+
+| | |
+| --- | --- |
+| Local demo | [http://localhost:4200](http://localhost:4200) |
+| Source | [github.com/poluru-labs/…/ai-agent-ops-console](https://github.com/poluru-labs/enterprise-angular-free-ai-web-templates/tree/main/ai-agent-ops-console) |
+
+After `npm start`, open Agents and Runs, then walk a handoff on Handoffs and a publish on Deploy.
+
+If another template is already on port 4200, start with `npx ng serve --port 4211`.
+
+## What you get
+
+- Operations KPIs, run activity, and coverage
+- Agent directory with status filters
+- Run ledger with traces and outcomes
+- Tool catalog and approval state
+- Human handoff approve / reject / reassign
+- Deploy flow for model, tools, and publish
 
 ## Run
 
@@ -16,8 +34,6 @@ cd ai-agent-ops-console
 npm install
 npm start
 ```
-
-Default dev server: http://localhost:4200
 
 | Route | Page |
 | --- | --- |
@@ -39,9 +55,10 @@ Production output: `dist/ai-agent-ops-console`.
 
 ## Stack
 
-Angular 21 (standalone components, router), Bootstrap 5, Material Symbols,
-DM Sans, `@poluru-labs/enterprise-design-system-angular`. Demo operators
-include **Alex Poluru**, Maya Subbu, Priya Subbu, and Sam Poluru.
+Angular 21 (standalone components, router), Bootstrap 5, Material Symbols, DM Sans, [`@poluru-labs/enterprise-design-system-angular`](https://www.npmjs.com/package/@poluru-labs/enterprise-design-system-angular). Demo operators include **Alex Poluru**, Maya Subbu, Priya Subbu, and Sam Poluru.
 
-Copy and tokens live in `src/template.config.ts`. Layout and brand color live
-in `src/styles.scss`.
+Copy lives in `src/template.config.ts`. Layout and brand color live in `src/styles.scss`.
+
+## License
+
+[MIT](../LICENSE) © 2026 [Subrahmanyam Poluru](https://polurus.com) / Poluru Labs
