@@ -13,7 +13,7 @@ import {
   EdsStatusComponent,
   EdsTagComponent
 } from '@poluru-labs/enterprise-design-system-angular';
-import { templateConfig } from '../../core/config/template.config';
+import { templateConfig, type ForecastRow } from '../../core/config/template.config';
 import { spendStatus, statusVariant } from '../../shared/utils/status-variant';
 import { applyForecastGrowth } from '../../shared/utils/usage';
 
@@ -47,18 +47,22 @@ import { applyForecastGrowth } from '../../shared/utils/usage';
     <section class="grid-4">
       <eds-card class="card-pad" [elevated]="false">
         <eds-stat label="Workspaces over 80%" [value]="watchLabel()" trend="up" trendValue="Watch" hint="this month"></eds-stat>
+        <p class="meta meta-clamp">Workspaces already past Lakshmi Poluru’s 80% alert on the current month cycle.</p>
       </eds-card>
       <eds-card class="card-pad" [elevated]="false">
         <eds-stat label="Projected breaches" [value]="breachLabel()" trend="up" trendValue="If growth holds" hint="month-end"></eds-stat>
+        <p class="meta meta-clamp">Caps that close at or above 100% if weekly growth stays on this slider.</p>
       </eds-card>
       <eds-card class="card-pad" [elevated]="false">
         <eds-stat label="Soonest cap" [value]="soonest().workspace" trend="down" [trendValue]="soonest().daysToCap + ' days'" hint="Lakshmi Poluru"></eds-stat>
+        <p class="meta meta-clamp">{{ soonest().workspace }} hits first. Owner {{ soonest().owner }} at {{ soonest().cap }}.</p>
       </eds-card>
       <eds-card class="card-pad forecast-hero" [elevated]="false">
         <eds-circular-progress [value]="soonest().projected" [max]="120" [size]="64" [showValue]="true"></eds-circular-progress>
         <div>
           <p class="eyebrow">Projected</p>
           <h2>{{ soonest().projected }}%</h2>
+          <p class="meta meta-clamp">Month-end share of cap for the soonest workspace at {{ growth() }}% weekly growth.</p>
         </div>
       </eds-card>
     </section>
@@ -110,6 +114,23 @@ import { applyForecastGrowth } from '../../shared/utils/usage';
         </div>
         <p class="meta">Priya Poluru’s finance digest uses this table. <a routerLink="/budgets">Open budgets</a></p>
       </eds-card>
+    </section>
+
+    <section class="grid-3" style="margin-top: 0.9rem">
+      @for (item of projected(); track item.workspace) {
+        <eds-card class="card-pad collection-card" [elevated]="false">
+          <div class="section-head">
+            <h3>{{ item.workspace }}</h3>
+            <eds-status [label]="spendStatus(item.projected)" [variant]="statusVariant(spendStatus(item.projected))"></eds-status>
+          </div>
+          <p class="meta meta-clamp">{{ forecastHint(item) }}</p>
+          <p class="meta">{{ item.owner }} · cap {{ item.cap }} · {{ item.daysToCap }} days to cap</p>
+          <p class="meta">Current {{ item.current }}% · projected {{ item.projected }}%</p>
+          <div footer class="card-actions">
+            <eds-tag [label]="item.trend" variant="brand"></eds-tag>
+          </div>
+        </eds-card>
+      }
     </section>
   `
 })
@@ -168,5 +189,9 @@ export class ForecastsPageComponent {
 
   protected goAlerts(): void {
     void this.router.navigateByUrl('/alerts');
+  }
+
+  protected forecastHint(item: ForecastRow): string {
+    return `${item.workspace} is ${item.current}% of ${item.cap} today and projects to ${item.projected}% for ${item.owner}.`;
   }
 }

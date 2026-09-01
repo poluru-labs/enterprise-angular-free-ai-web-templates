@@ -12,15 +12,17 @@ Give support teams a live view of AI-assisted replies, resolution quality, and q
 | Local demo | [http://localhost:4217](http://localhost:4217) |
 | Source | [github.com/poluru-labs/…/ai-support-copilot-dashboard](https://github.com/poluru-labs/enterprise-angular-free-ai-web-templates/tree/main/ai-support-copilot-dashboard) |
 
-After `npm start`, try **⌘K** to draft a copilot reply, open the inbox drawer from the bell, and walk Queue → Inbox → Suggestions → Knowledge → Settings.
+After `npm start`, switch Day / Week / Month on Queue, then open Inbox, Suggestions, Knowledge, Agents, and Reports. Try ⌘K to search tickets. If another template is already on port 4217, start with `npx ng serve --port 4227`.
 
 ## What you get
 
-- Live queue KPIs (AI-assisted replies, resolution rate, wait, CSAT)
+- Live queue KPIs (AI-assisted replies, resolution rate, wait, CSAT) that change by day / week / month
 - Hourly volume, SLA meters, and agent load
-- Conversation inbox with search, date range, tags, and pagination
+- Conversation inbox with search, date range, tags, pagination, and equal-height spotlight cards
 - Suggestion map for billing, orders, and escalations
 - Knowledge publish cycle and article hit rates
+- Agent staffing by shift with load and open tickets
+- CSAT / deflection / groundedness reports
 - Workspace settings for auto-draft, grounding, and retention
 
 ## Run
@@ -39,6 +41,8 @@ npm start
 | `/conversations` | Inbox — filters, conversation table, pagination |
 | `/suggestions` | Suggestion map — billing, orders, escalations, owners |
 | `/knowledge` | Article cycle, hit rates, topic nav |
+| `/agents` | Staffing, shift load, and coverage |
+| `/reports` | CSAT, deflection, and groundedness packs |
 | `/settings` | Drafts, grounding, retention, and admin PIN |
 
 ```bash
@@ -51,7 +55,26 @@ Production output: `dist/ai-support-copilot-dashboard`.
 
 Angular 21 (standalone components, router), Bootstrap 5, Material Symbols, DM Sans, [`@poluru-labs/enterprise-design-system-angular`](https://www.npmjs.com/package/@poluru-labs/enterprise-design-system-angular). Demo people include **Ananya Poluru**, Kavya Poluru, Rohan Poluru, Nikhil Poluru, Meera Poluru, Sravani Poluru, Hana Poluru, Venkata Poluru, Arjun Poluru, Priya Poluru, and Lakshmi Poluru.
 
-Copy lives in `src/template.config.ts`. Layout and brand color live in `src/app/app.component.ts` and `src/styles.scss`.
+Copy lives in `src/app/core/config/template.config.ts`. Layout and brand color live in `src/styles.scss`.
+
+```
+src/
+  app/
+    core/config/          shared template copy
+    features/             one folder per route
+    shared/               spec helpers and support utils
+    app.component.ts
+    app.config.ts
+    app.routes.ts
+  environments/
+  assets/
+```
+
+```bash
+npm test
+npm run lint
+npm run lint:fix
+```
 
 ## License
 

@@ -99,6 +99,7 @@ import { statusVariant } from '../../shared/utils/status-variant';
             [trendValue]="metric.trend"
             [hint]="metric.hint + ' · ' + period()"
           ></eds-stat>
+          <p class="meta meta-clamp">{{ metricHint(metric.label) }}</p>
         </eds-card>
       }
     </section>
@@ -173,7 +174,7 @@ import { statusVariant } from '../../shared/utils/status-variant';
           <eds-status label="Stable" variant="success" [pulse]="true"></eds-status>
         </div>
         <eds-rating [value]="4" [readonly]="true" size="lg"></eds-rating>
-        <p class="meta">Scored on Lakshmi Poluru’s production eval set.</p>
+        <p class="meta meta-clamp">Scored on Lakshmi Poluru’s production eval set, including gpt-4.1 and claude-3.5 p95.</p>
         <eds-divider spacing="md" label="Workspace"></eds-divider>
         <eds-description-list [items]="facts" [columns]="1" [compact]="true"></eds-description-list>
       </eds-card>
@@ -183,6 +184,7 @@ import { statusVariant } from '../../shared/utils/status-variant';
       <eds-card class="card-pad" [elevated]="false">
         <p class="eyebrow">Owners</p>
         <h2>Workspace load</h2>
+        <p class="meta meta-clamp">Capacity across production, support, research, and knowledge reindex jobs.</p>
         @for (person of config.owners; track person.name) {
           <div class="owner-row">
             <span><span>{{ person.name }}</span><strong>{{ person.load }}%</strong></span>
@@ -194,6 +196,7 @@ import { statusVariant } from '../../shared/utils/status-variant';
       <eds-card class="card-pad" [elevated]="false">
         <p class="eyebrow">SLA</p>
         <h2>Platform freshness</h2>
+        <p class="meta meta-clamp">Budget, latency, and key rotation stay inside Lakshmi Poluru’s platform bar.</p>
         @for (item of config.sla; track item.label) {
           <div class="meter-row">
             <span><span>{{ item.label }}</span><strong>{{ item.value }}</strong></span>
@@ -205,6 +208,7 @@ import { statusVariant } from '../../shared/utils/status-variant';
       <eds-card class="card-pad" [elevated]="false">
         <p class="eyebrow">Live</p>
         <h2>Usage activity</h2>
+        <p class="meta meta-clamp">Latest spend, routing, and digest events for the FY26 Q3 platform workspace.</p>
         @for (entry of config.activity; track entry.title) {
           <div class="query-hit">
             <div>
@@ -289,5 +293,15 @@ export class OverviewPageComponent {
 
   protected openExport(): void {
     window.dispatchEvent(new CustomEvent('meter:export'));
+  }
+
+  protected metricHint(label: string): string {
+    const hints: Record<string, string> = {
+      'Total tokens': 'Production gpt-4.1 plus Support Gemini traffic are the volume drivers.',
+      'Current spend': 'Lakshmi Poluru’s $9,200 platform cap. Production is the 88% hotspot.',
+      'Active models': 'OpenAI, Anthropic, Gemini, and self-hosted Llama endpoints in routing.',
+      'Avg. latency': 'p95 across production agents. Gemini 1.5 is the current watch.'
+    };
+    return hints[label] ?? 'Workspace pulse for Lakshmi Poluru’s platform meter.';
   }
 }

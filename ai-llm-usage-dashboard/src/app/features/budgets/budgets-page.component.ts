@@ -7,11 +7,12 @@ import {
   EdsSpinnerComponent,
   EdsStatusComponent,
   EdsStepperComponent,
+  EdsTagComponent,
   EdsTimelineComponent,
   type EdsStepperStep,
   type EdsTimelineItem
 } from '@poluru-labs/enterprise-design-system-angular';
-import { templateConfig } from '../../core/config/template.config';
+import { templateConfig, type WorkspaceCap } from '../../core/config/template.config';
 import { spendStatus, statusVariant } from '../../shared/utils/status-variant';
 
 @Component({
@@ -25,6 +26,7 @@ import { spendStatus, statusVariant } from '../../shared/utils/status-variant';
     EdsSpinnerComponent,
     EdsStatusComponent,
     EdsStepperComponent,
+    EdsTagComponent,
     EdsTimelineComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -74,6 +76,23 @@ import { spendStatus, statusVariant } from '../../shared/utils/status-variant';
         <eds-timeline [items]="timeline"></eds-timeline>
       </eds-card>
     </section>
+
+    <section class="grid-3" style="margin-top: 0.9rem">
+      @for (item of config.workspaces; track item.name) {
+        <eds-card class="card-pad collection-card" [elevated]="false">
+          <div class="section-head">
+            <h3>{{ item.name }}</h3>
+            <eds-status [label]="spendStatus(item.spend)" [variant]="statusVariant(spendStatus(item.spend))"></eds-status>
+          </div>
+          <p class="meta meta-clamp">{{ budgetHint(item) }}</p>
+          <p class="meta">Owner {{ item.owner }} · cap {{ item.cap }}</p>
+          <p class="meta">Spend {{ item.spend }}% of this month’s workspace cap.</p>
+          <div footer class="card-actions">
+            <eds-tag [label]="item.spend + '% used'" variant="brand"></eds-tag>
+          </div>
+        </eds-card>
+      }
+    </section>
   `
 })
 export class BudgetsPageComponent {
@@ -95,4 +114,8 @@ export class BudgetsPageComponent {
     timestamp: entry.day,
     status: index === 0 ? 'current' : index < 3 ? 'complete' : 'upcoming'
   }));
+
+  protected budgetHint(item: WorkspaceCap): string {
+    return `${item.name} is at ${item.spend}% of ${item.cap} for ${item.owner} on the FY26 Q3 cycle.`;
+  }
 }

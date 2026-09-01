@@ -12,15 +12,17 @@ Equip sellers with AI-generated next steps, account research, and pipeline signa
 | Local demo | [http://localhost:4216](http://localhost:4216) |
 | Source | [github.com/poluru-labs/…/ai-sales-assistant-panel](https://github.com/poluru-labs/enterprise-angular-free-ai-web-templates/tree/main/ai-sales-assistant-panel) |
 
-After `npm start`, use **⌘K** or **Create brief** to walk the research stepper, then open Accounts, Signals, and Sequences.
+After `npm start`, switch Day / Week / Month on Overview, then open Accounts, Signals, Sequences, Meetings, and Forecasts. Try ⌘K to search accounts. If another template is already on port 4216, start with `npx ng serve --port 4226`.
 
 ## What you get
 
-- Qualified pipeline, researched accounts, and meeting-prep coverage
+- Qualified pipeline, researched accounts, next-best actions, and meeting-prep KPIs that change by day / week / month
 - Seller activity by hour and next-best-action coaching
-- Account table with risk, stage, and brief status
-- Signal map for expansion, renewal, and outreach
+- Account catalog with search, risk tags, pagination, and equal-height spotlight cards
+- Signal map for expansion, renewal, outreach, and deal risk
 - Sequence cadences with stall alerts
+- Meeting prep packs (QBR, discovery, legal, champion)
+- Forecast books with commit / upside / at-risk coverage
 - Coaching and retention settings
 
 ## Run
@@ -39,6 +41,8 @@ npm start
 | `/accounts` | Accounts — filters, research table, pagination |
 | `/signals` | Signal map — expansion, renewal, outreach, owners |
 | `/sequences` | Sequence cycle, cadence progress, weekly motion |
+| `/meetings` | Meeting prep packs by type |
+| `/forecasts` | Commit, upside, and at-risk coverage |
 | `/settings` | Briefs, coaching, retention, and admin PIN |
 
 ```bash
@@ -49,9 +53,28 @@ Production output: `dist/ai-sales-assistant-panel`.
 
 ## Stack
 
-Angular 21 (standalone components, router), Bootstrap 5, Material Symbols, DM Sans, [`@poluru-labs/enterprise-design-system-angular`](https://www.npmjs.com/package/@poluru-labs/enterprise-design-system-angular). Demo people include **Ananya Poluru**, Kavya Poluru, Rohan Poluru, Nikhil Poluru, Meera Poluru, Sravani Poluru, Hana Poluru, Venkata Poluru, and Priya Poluru.
+Angular 21 (standalone components, router), Bootstrap 5, Material Symbols, DM Sans, [`@poluru-labs/enterprise-design-system-angular`](https://www.npmjs.com/package/@poluru-labs/enterprise-design-system-angular). Demo people include **Ananya Poluru**, Kavya Poluru, Rohan Poluru, Nikhil Poluru, Meera Poluru, Sravani Poluru, Hana Poluru, Venkata Poluru, Arjun Poluru, Lakshmi Poluru, Priya Poluru, and Ramesh Poluru.
 
-Copy lives in `src/template.config.ts`. Layout and brand color live in `src/app/app.component.ts` and `src/styles.scss`.
+Copy lives in `src/app/core/config/template.config.ts`. Layout and brand color live in `src/styles.scss`.
+
+```
+src/
+  app/
+    core/config/          shared template copy
+    features/             one folder per route
+    shared/               spec helpers and sales utils
+    app.component.ts
+    app.config.ts
+    app.routes.ts
+  environments/
+  assets/
+```
+
+```bash
+npm test
+npm run lint
+npm run lint:fix
+```
 
 ## License
 

@@ -67,7 +67,7 @@ export const templateConfig = {
   eyebrow: 'Platform analytics',
   summary: 'Track token consumption, spend, and latency so every workspace stays inside budget.',
   action: 'Export report',
-  brand: { mark: 'L', name: 'Poluru Cloud', accent: 'Lilac Meter' },
+  brand: { mark: 'L', name: 'Lilac Meter', accent: 'Lilac Meter' },
   workspace: 'FY26 Q3 · Platform',
   user: { initials: 'LP', name: 'Lakshmi Poluru', role: 'Platform lead' },
   nav: [

@@ -24,8 +24,9 @@ describe('AppComponent', () => {
 
   it('creates the Lilac Meter shell', () => {
     expect(component).toBeTruthy();
-    expect(nativeElement.querySelector('.brand')?.textContent).toContain('Poluru Cloud');
     expect(nativeElement.querySelector('.brand')?.textContent).toContain('Lilac Meter');
+    expect(nativeElement.querySelector('.brand')?.textContent).not.toContain('Poluru Cloud');
+    expect(nativeElement.querySelector('.brand')?.textContent).not.toContain('Poluru Labs');
     expect(nativeElement.textContent).toContain(templateConfig.user.name);
     expect(nativeElement.querySelector('.shell')?.getAttribute('data-app')).toBe('Lilac Meter');
   });

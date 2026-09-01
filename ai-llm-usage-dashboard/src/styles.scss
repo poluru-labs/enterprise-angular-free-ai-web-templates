@@ -95,19 +95,11 @@ a {
   font-weight: 800;
 }
 
-.brand-copy small {
-  display: block;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.78;
-}
-
-.brand-copy strong {
-  display: block;
+.brand-copy {
   font-size: 0.98rem;
+  font-weight: 800;
   line-height: 1.15;
+  letter-spacing: -0.01em;
 }
 
 .live-pill {
@@ -519,6 +511,7 @@ h3 {
 .stack {
   display: grid;
   gap: 0.9rem;
+  align-items: stretch;
 }
 
 .grid-4 {
@@ -538,8 +531,18 @@ h3 {
   grid-template-columns: 1fr;
 }
 
-.card-pad {
-  display: block;
+.grid-4 > *,
+.grid-3 > *,
+.split > * {
+  min-height: 0;
+  height: 100%;
+}
+
+.card-pad,
+eds-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .section-head {
@@ -554,6 +557,15 @@ h3 {
   margin: 0.35rem 0 0;
   color: var(--muted);
   font-size: 0.8rem;
+}
+
+.meta-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.5em;
 }
 
 .hours {
@@ -654,8 +666,16 @@ h3 {
 }
 
 .collection-card {
-  display: grid;
-  gap: 0.55rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 14.5rem;
+}
+
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .job-row {
@@ -703,8 +723,35 @@ h3 {
 }
 
 eds-card .card {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 100%;
   border: 0 !important;
   box-shadow: 0 10px 24px rgb(22 19 38 / 0.06) !important;
+}
+
+eds-card .card .media:empty,
+eds-card .card .header:empty,
+eds-card .card .footer:empty {
+  display: none;
+}
+
+eds-card .card .body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+eds-card .card .footer {
+  margin-top: auto;
+}
+
+eds-card .card .header,
+eds-card .card .footer {
+  border: 0 !important;
 }
 
 eds-stat .eds-stat,

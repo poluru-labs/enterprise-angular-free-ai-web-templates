@@ -74,12 +74,9 @@ import { environment } from '../environments/environment';
             (clicked)="toggleNav()"
           ></eds-button>
 
-          <a class="brand" routerLink="/">
+          <a class="brand" routerLink="/" [attr.aria-label]="config.brand.accent">
             <span class="brand-mark">{{ config.brand.mark }}</span>
-            <span class="brand-copy">
-              <small>{{ config.brand.name }}</small>
-              <strong>{{ config.brand.accent }}</strong>
-            </span>
+            <strong class="brand-copy">{{ config.brand.accent }}</strong>
           </a>
 
           <span class="live-pill">

@@ -94,9 +94,11 @@ import { providerTree, selectedModelLabel, selectedModelOwner } from '../../shar
             <h3>{{ model.title }}</h3>
             <eds-status [label]="model.status" [variant]="statusVariant(model.status)"></eds-status>
           </div>
-          <p class="meta">{{ model.detail }}</p>
-          <p class="meta">Owner {{ model.owner }}</p>
-          <eds-tag [label]="model.access === 'Restricted' ? 'Restricted access' : model.provider" variant="brand"></eds-tag>
+          <p class="meta meta-clamp">{{ model.detail }}</p>
+          <p class="meta">Owner {{ model.owner }} · {{ model.provider }}</p>
+          <div footer class="card-actions">
+            <eds-tag [label]="model.access === 'Restricted' ? 'Restricted access' : model.provider" variant="brand"></eds-tag>
+          </div>
         </eds-card>
       }
     </section>

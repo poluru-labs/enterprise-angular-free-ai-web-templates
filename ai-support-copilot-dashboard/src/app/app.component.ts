@@ -3,7 +3,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import {
   EdsAvatarComponent,
-  EdsBadgeComponent,
   EdsButtonComponent,
   EdsComboboxComponent,
   EdsDrawerComponent,
@@ -28,7 +27,9 @@ import {
   type EdsStepperStep
 } from '@poluru-labs/enterprise-design-system-angular';
 import { filter, fromEvent } from 'rxjs';
-import { templateConfig } from '../template.config';
+import { templateConfig } from './core/config/template.config';
+import { environment } from '../environments/environment';
+import { reviewCount } from './shared/utils/support';
 
 @Component({
   selector: 'app-root',
@@ -38,7 +39,6 @@ import { templateConfig } from '../template.config';
     RouterLink,
     RouterLinkActive,
     EdsAvatarComponent,
-    EdsBadgeComponent,
     EdsButtonComponent,
     EdsComboboxComponent,
     EdsDrawerComponent,
@@ -60,9 +60,9 @@ import { templateConfig } from '../template.config';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="shell" [class.nav-open]="navOpen()">
+    <div class="shell" [attr.data-app]="appName" [class.nav-open]="navOpen()">
       <header class="topbar">
-        <div class="topbar-inner">
+        <div class="topbar-primary">
           <eds-button
             class="menu-button topbar-icon"
             variant="tertiary"
@@ -73,57 +73,100 @@ import { templateConfig } from '../template.config';
             (clicked)="toggleNav()"
           ></eds-button>
 
-          <a class="brand" routerLink="/">
+          <a class="brand" routerLink="/" [attr.aria-label]="config.brand.accent">
             <span class="brand-mark">{{ config.brand.mark }}</span>
-            <span class="brand-copy">
-              <small>{{ config.brand.name }}</small>
-              <strong>{{ config.brand.accent }}</strong>
-            </span>
+            <strong class="brand-copy">{{ config.brand.accent }}</strong>
           </a>
 
-          <span class="live-pill">
-            <eds-badge label="Live" variant="success" [pill]="true"></eds-badge>
-          </span>
-
-          <eds-search
-            class="topbar-search"
-            size="md"
-            placeholder="Search tickets, agents, articles..."
-            [clearable]="true"
-            [value]="query()"
-            (valueChange)="query.set($event)"
-          ></eds-search>
+          <div class="command-bar">
+            <eds-search
+              class="topbar-search"
+              size="md"
+              placeholder="Search tickets, agents, articles..."
+              [clearable]="true"
+              [value]="query()"
+              (valueChange)="onQuery($event)"
+            ></eds-search>
+            <eds-kbd keys="⌘K"></eds-kbd>
+          </div>
 
           <div class="topbar-actions">
-            <eds-kbd keys="⌘K"></eds-kbd>
-
-            <eds-tooltip content="Inbox" placement="bottom">
-              <eds-button
-                class="topbar-icon"
-                variant="tertiary"
-                size="sm"
-                icon="bell"
-                [iconOnly]="true"
-                accessibleLabel="Open inbox"
-                (clicked)="inboxOpen.set(true)"
-              ></eds-button>
-            </eds-tooltip>
+            <span class="inbox-wrap">
+              <eds-tooltip content="Inbox" placement="bottom">
+                <eds-button
+                  class="topbar-icon"
+                  variant="tertiary"
+                  size="sm"
+                  icon="bell"
+                  [iconOnly]="true"
+                  accessibleLabel="Open inbox"
+                  (clicked)="inboxOpen.set(true)"
+                ></eds-button>
+              </eds-tooltip>
+              <span class="inbox-count">{{ openReviewCount }}</span>
+            </span>
 
             <eds-button class="topbar-cta" variant="primary" size="sm" icon="edit" (clicked)="openReplyModal()">
               Draft reply
             </eds-button>
 
-            <eds-dropdown-menu>
-              <button trigger type="button" class="account">
-                <eds-avatar [name]="config.user.name" size="sm"></eds-avatar>
-                <span>
+            <span class="topbar-divider" aria-hidden="true"></span>
+
+            <eds-dropdown-menu class="account-menu" placement="bottom">
+              <button
+                trigger
+                type="button"
+                class="account"
+                [attr.aria-label]="'Account menu for ' + config.user.name"
+              >
+                <span class="account-avatar">
+                  <eds-avatar [name]="config.user.name" size="sm"></eds-avatar>
+                  <span class="account-status" title="Online"></span>
+                </span>
+                <span class="account-meta">
                   <strong>{{ config.user.name }}</strong>
                   <small>{{ config.user.role }}</small>
                 </span>
+                <span class="material-symbols-outlined account-caret" aria-hidden="true">expand_more</span>
               </button>
+              <div class="account-menu-head">
+                <eds-avatar [name]="config.user.name" size="md"></eds-avatar>
+                <div>
+                  <strong>{{ config.user.name }}</strong>
+                  <small>{{ config.user.role }}</small>
+                  <span>{{ config.workspace }}</span>
+                </div>
+              </div>
               <eds-menu-item label="Workspace settings" value="settings" (itemSelect)="goSettings()"></eds-menu-item>
+              <eds-menu-item label="Open reports" value="reports" (itemSelect)="goReports()"></eds-menu-item>
               <eds-menu-item label="Draft reply" value="reply" (itemSelect)="openReplyModal()"></eds-menu-item>
             </eds-dropdown-menu>
+          </div>
+        </div>
+
+        <div class="topbar-context">
+          <span class="context-workspace">{{ config.workspace }}</span>
+          <div class="context-chips">
+            <span class="context-chip">
+              <span class="material-symbols-outlined" aria-hidden="true">bolt</span>
+              {{ config.environment }}
+            </span>
+            <span class="context-chip">
+              <span class="material-symbols-outlined" aria-hidden="true">smart_toy</span>
+              {{ config.copilotLabel }}
+            </span>
+            <span class="context-chip">
+              <span class="material-symbols-outlined" aria-hidden="true">support_agent</span>
+              {{ config.user.role }}
+            </span>
+            <button type="button" class="context-chip action" (click)="goConversations()">
+              <span class="material-symbols-outlined" aria-hidden="true">forum</span>
+              {{ openReviewCount }} review
+            </button>
+            <button type="button" class="context-chip action" (click)="goReports()">
+              <span class="material-symbols-outlined" aria-hidden="true">analytics</span>
+              {{ config.qualityLabel }}
+            </button>
           </div>
         </div>
       </header>
@@ -142,9 +185,12 @@ import { templateConfig } from '../template.config';
           }
         </nav>
 
-        <p class="quick-label">Quick action</p>
+        <p class="quick-label">Quick links</p>
         <eds-button variant="primary" size="sm" icon="edit" [fullWidth]="true" (clicked)="openReplyModal()">
           Draft reply
+        </eds-button>
+        <eds-button variant="secondary" size="sm" icon="star" [fullWidth]="true" (clicked)="goReports()">
+          Open reports
         </eds-button>
 
         <div class="profile">
@@ -226,6 +272,7 @@ import { templateConfig } from '../template.config';
       </div>
       <div footer class="drawer-footer">
         <eds-button variant="secondary" (clicked)="inboxOpen.set(false)">Close</eds-button>
+        <eds-button variant="primary" (clicked)="goConversations()">View inbox</eds-button>
       </div>
     </eds-drawer>
 
@@ -243,6 +290,7 @@ import { templateConfig } from '../template.config';
 export class AppComponent {
   private readonly router = inject(Router);
   protected readonly config = templateConfig;
+  protected readonly appName = environment.appName;
   protected readonly navOpen = signal(false);
   protected readonly query = signal('');
   protected readonly replyOpen = signal(false);
@@ -275,6 +323,8 @@ export class AppComponent {
     description: entry.detail
   }));
 
+  protected readonly openReviewCount = reviewCount(this.config.conversations);
+
   constructor() {
     this.router.events
       .pipe(
@@ -292,7 +342,7 @@ export class AppComponent {
   protected onKeydown(event: KeyboardEvent): void {
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
       event.preventDefault();
-      this.openReplyModal();
+      this.goConversationsSearch();
     }
   }
 
@@ -304,6 +354,15 @@ export class AppComponent {
     this.navOpen.set(false);
   }
 
+  protected onQuery(value: string): void {
+    this.query.set(value);
+  }
+
+  protected goConversationsSearch(): void {
+    const q = this.query().trim();
+    void this.router.navigate(['/conversations'], { queryParams: q ? { q } : {} });
+  }
+
   protected openReplyModal(): void {
     this.replyStep.set(0);
     this.replyOpen.set(true);
@@ -311,6 +370,15 @@ export class AppComponent {
 
   protected goSettings(): void {
     void this.router.navigateByUrl('/settings');
+  }
+
+  protected goConversations(): void {
+    this.inboxOpen.set(false);
+    void this.router.navigateByUrl('/conversations');
+  }
+
+  protected goReports(): void {
+    void this.router.navigateByUrl('/reports');
   }
 
   protected canAdvanceReply(): boolean {

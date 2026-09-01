@@ -107,15 +107,19 @@ import { filterUsage, paginate } from '../../shared/utils/usage';
     </eds-card>
 
     <section class="grid-3" style="margin-top: 0.9rem">
-      @for (row of featured; track row.model + row.workspace) {
-        <eds-card class="card-pad" [elevated]="false">
+      @for (row of featured(); track row.model + row.workspace) {
+        <eds-card class="card-pad collection-card" [elevated]="false">
           <div class="section-head">
             <h3>{{ row.model }}</h3>
             <eds-status [label]="row.status" [variant]="statusVariant(row.status)"></eds-status>
           </div>
+          <p class="meta meta-clamp">{{ usageHint(row) }}</p>
           <p class="meta">{{ row.workspace }} · {{ row.tokens }} · {{ row.cost }}</p>
           <p class="meta">Owner {{ row.owner }} · {{ row.latency }}</p>
-          <eds-tag [label]="row.workspace" variant="info"></eds-tag>
+          <div footer class="card-actions">
+            <eds-tag [label]="row.workspace" variant="info"></eds-tag>
+            <eds-button variant="secondary" size="sm" icon="download" (clicked)="openExport()">Export</eds-button>
+          </div>
         </eds-card>
       }
     </section>
@@ -131,7 +135,7 @@ export class UsagePageComponent {
   protected readonly rangeEnd = signal('2026-08-30');
   protected readonly tags = signal(['Production', 'Healthy']);
   protected readonly statusVariant = statusVariant;
-  protected readonly featured = this.config.usage.slice(0, 3);
+  protected readonly featured = computed(() => this.filtered().slice(0, 6));
 
   protected readonly suggestions = [...new Set(this.config.usage.map((item) => item.model))];
 
@@ -181,5 +185,9 @@ export class UsagePageComponent {
     this.search.set('');
     this.tags.set([]);
     this.page.set(1);
+  }
+
+  protected usageHint(row: { model: string; workspace: string; owner: string; latency: string; status: string }): string {
+    return `${row.model} on ${row.workspace} is ${row.status.toLowerCase()} at ${row.latency} p95 for ${row.owner}.`;
   }
 }

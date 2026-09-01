@@ -42,18 +42,22 @@ type AlertFilter = 'All' | OpsAlert['kind'] | OpsAlert['status'];
       <eds-card class="card-pad" [elevated]="false">
         <p class="eyebrow">Open</p>
         <h2>{{ openCount() }}</h2>
+        <p class="meta meta-clamp">Budget, latency, and key notices still waiting on Lakshmi Poluru.</p>
       </eds-card>
       <eds-card class="card-pad" [elevated]="false">
         <p class="eyebrow">Acknowledged</p>
         <h2>{{ count('Acknowledged') }}</h2>
+        <p class="meta meta-clamp">Owners signed the notice. Follow-up stays on the next cost digest.</p>
       </eds-card>
       <eds-card class="card-pad" [elevated]="false">
         <p class="eyebrow">Snoozed</p>
         <h2>{{ count('Snoozed') }}</h2>
+        <p class="meta meta-clamp">Held until the next digest so weekend jobs do not page the on-call.</p>
       </eds-card>
       <eds-card class="card-pad" [elevated]="false">
         <p class="eyebrow">Critical</p>
         <h2>{{ criticalCount() }}</h2>
+        <p class="meta meta-clamp">Open critical items. Gemini 1.5 p95 is the current production watch.</p>
       </eds-card>
     </section>
 

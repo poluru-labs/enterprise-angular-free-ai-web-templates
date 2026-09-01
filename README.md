@@ -13,8 +13,8 @@ Maintained by [Poluru Labs](https://polurus.com). Source: [github.com/poluru-lab
 | [RAG knowledge](ai-rag-knowledge-admin/README.md) | Indigo Vault | Sources, collections, indexing, retrieval, governance, and evaluations | `#4300FF` | [localhost:4214](http://localhost:4214) |
 | [Model evaluation](ai-model-evaluation-board/README.md) | Evaluation board | Suites, datasets, models, regressions, and scorecards | `#2F6B1F` | [localhost:4218](http://localhost:4218) |
 | [Agent ops](ai-agent-ops-console/README.md) | AgentOps Kit | Fleet health, runs, tools, handoffs, and deploys | `#08766C` | [localhost:4200](http://localhost:4200) |
-| [Support copilot](ai-support-copilot-dashboard/README.md) | Harbor Desk | Queue health, AI drafts, knowledge, and CSAT | `#434E78` | [localhost:4217](http://localhost:4217) |
-| [Sales assistant](ai-sales-assistant-panel/README.md) | Garnet Close | Account briefs, pipeline signals, and sequences | `#BD4444` | [localhost:4216](http://localhost:4216) |
+| [Support copilot](ai-support-copilot-dashboard/README.md) | Harbor Desk | Queue health, AI drafts, knowledge, agents, and CSAT | `#434E78` | [localhost:4217](http://localhost:4217) |
+| [Sales assistant](ai-sales-assistant-panel/README.md) | Garnet Close | Account briefs, pipeline signals, meetings, and forecasts | `#BD4444` | [localhost:4216](http://localhost:4216) |
 | [Content studio](ai-content-studio/README.md) | Content Studio | Drafts, approvals, library, brand voice, and calendar | `#0046FF` | [localhost:4200](http://localhost:4200) |
 | [Fraud risk](ai-fraud-risk-monitoring-ui/README.md) | Risk Watch | Alerts, cases, detection rules, and investigators | `#FF6600` | [localhost:4210](http://localhost:4210) |
 | [Human review](ai-human-review-console/README.md) | Review Desk | Review queue, assignments, calibration, reports, and audit | `#3A86FF` | [localhost:4212](http://localhost:4212) |
