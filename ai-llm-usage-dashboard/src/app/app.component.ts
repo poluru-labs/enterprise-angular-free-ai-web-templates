@@ -114,14 +114,33 @@ import { environment } from '../environments/environment';
               Export report
             </eds-button>
 
-            <eds-dropdown-menu>
-              <button trigger type="button" class="account">
-                <eds-avatar [name]="config.user.name" size="sm"></eds-avatar>
-                <span>
+            <span class="topbar-divider" aria-hidden="true"></span>
+
+            <eds-dropdown-menu class="account-menu" placement="bottom">
+              <button
+                trigger
+                type="button"
+                class="account"
+                [attr.aria-label]="'Account menu for ' + config.user.name"
+              >
+                <span class="account-avatar">
+                  <eds-avatar [name]="config.user.name" size="sm"></eds-avatar>
+                  <span class="account-status" title="Online"></span>
+                </span>
+                <span class="account-meta">
                   <strong>{{ config.user.name }}</strong>
                   <small>{{ config.user.role }}</small>
                 </span>
+                <span class="material-symbols-outlined account-caret" aria-hidden="true">expand_more</span>
               </button>
+              <div class="account-menu-head">
+                <eds-avatar [name]="config.user.name" size="md"></eds-avatar>
+                <div>
+                  <strong>{{ config.user.name }}</strong>
+                  <small>{{ config.user.role }}</small>
+                  <span>{{ config.workspace }}</span>
+                </div>
+              </div>
               <eds-menu-item label="Workspace settings" value="settings" (itemSelect)="goSettings()"></eds-menu-item>
               <eds-menu-item label="Open alerts" value="alerts" (itemSelect)="goAlerts()"></eds-menu-item>
               <eds-menu-item label="Export report" value="export" (itemSelect)="openExportModal()"></eds-menu-item>

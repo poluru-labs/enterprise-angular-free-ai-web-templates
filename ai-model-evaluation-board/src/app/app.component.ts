@@ -1,15 +1,30 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ChangeDetectionStrategy, Component, HostListener, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import {
+  EdsAvatarComponent,
   EdsBadgeComponent,
   EdsButtonComponent,
+  EdsDrawerComponent,
+  EdsDropdownMenuComponent,
+  EdsIconComponent,
   EdsInputComponent,
+  EdsKbdComponent,
+  EdsListComponent,
+  EdsMenuItemComponent,
   EdsModalComponent,
   EdsSearchComponent,
   EdsSelectComponent,
-  EdsTextareaComponent
+  EdsTextareaComponent,
+  EdsToastComponent,
+  EdsTooltipComponent,
+  EdsVisuallyHiddenComponent,
+  type EdsListItem,
+  type EdsSelectOption
 } from '@poluru-labs/enterprise-design-system-angular';
-import { templateConfig } from '../template.config';
+import { filter, fromEvent } from 'rxjs';
+import { templateConfig } from './core/config/template.config';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -18,185 +33,173 @@ import { templateConfig } from '../template.config';
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
+    EdsAvatarComponent,
     EdsBadgeComponent,
     EdsButtonComponent,
-    EdsSearchComponent,
-    EdsModalComponent,
+    EdsDrawerComponent,
+    EdsDropdownMenuComponent,
+    EdsIconComponent,
     EdsInputComponent,
+    EdsKbdComponent,
+    EdsListComponent,
+    EdsMenuItemComponent,
+    EdsModalComponent,
+    EdsSearchComponent,
     EdsSelectComponent,
-    EdsTextareaComponent
+    EdsTextareaComponent,
+    EdsToastComponent,
+    EdsTooltipComponent,
+    EdsVisuallyHiddenComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [`
-    :host {
-      --brand: #2f6b1f;
-      --theme: #D8FFC5;
-      --ink: #15262c;
-      --muted: #5d6f5d;
-      --line: #cdeab8;
-      font-family: 'DM Sans', sans-serif;
-      color: var(--ink);
-      display: block;
-      min-height: 100vh;
-      background: #f5faf1;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      width: 100%;
-      background: var(--theme);
-      border-bottom: 1px solid var(--line);
-      padding: 14px 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      box-sizing: border-box;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      text-decoration: none;
-      color: var(--ink);
-    }
-
-    .brand-mark {
-      width: 34px;
-      height: 34px;
-      border-radius: 10px;
-      background: var(--brand);
-      color: #fff;
-      display: grid;
-      place-items: center;
-      font-weight: 700;
-      font-size: 13px;
-    }
-
-    .brand strong {
-      display: block;
-      font-size: 14px;
-      line-height: 1.1;
-    }
-
-    .brand small {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .search {
-      min-width: 220px;
-    }
-
-    .layout {
-      max-width: 1320px;
-      margin: 0 auto;
-      padding: 24px 32px;
-      display: grid;
-      grid-template-columns: 220px minmax(0, 1fr);
-      gap: 22px;
-    }
-
-    .sidebar {
-      align-self: start;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      padding: 12px;
-      border-radius: 14px;
-      background: #fff;
-      border: 1px solid var(--line);
-    }
-
-    .sidebar a {
-      color: #24402a;
-      text-decoration: none;
-      padding: 10px 12px;
-      border-radius: 10px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .sidebar a:hover {
-      background: #eefbe4;
-    }
-
-    .sidebar a.active {
-      background: var(--theme);
-      color: var(--brand);
-      font-weight: 700;
-    }
-
-    .content {
-      min-width: 0;
-    }
-
-    .modal-grid {
-      display: grid;
-      gap: 12px;
-    }
-
-    .modal-footer {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-    }
-
-    @media (max-width: 900px) {
-      .topbar {
-        padding: 12px 16px;
-      }
-
-      .search {
-        display: none;
-      }
-
-      .layout {
-        grid-template-columns: 1fr;
-        padding: 16px;
-      }
-    }
-  `],
   template: `
-    <header class="topbar">
-      <a class="brand" routerLink="/">
-        <span class="brand-mark">AI</span>
-        <span>
-          <strong>Model Evaluation Board</strong>
-          <small>Poluru Labs</small>
-        </span>
-      </a>
-      <div class="top-actions">
-        <eds-badge label="5 release candidates" variant="brand" [soft]="true" [pill]="true"></eds-badge>
-        <eds-search class="search" size="md" placeholder="Search suites or datasets" [clearable]="true"></eds-search>
-        <eds-button variant="primary" (clicked)="openRunModal()">{{ config.action }}</eds-button>
-      </div>
-    </header>
+    <div
+      class="shell"
+      [attr.data-app]="appName"
+      [class.nav-open]="navOpen()"
+      [class.sidebar-collapsed]="sidebarCollapsed()"
+    >
+      <header class="topbar">
+        <div class="topbar-inner">
+          <eds-button
+            class="menu-button topbar-icon"
+            variant="tertiary"
+            size="sm"
+            icon="menu"
+            [iconOnly]="true"
+            [accessibleLabel]="sidebarCollapsed() ? 'Expand sidebar' : 'Show icon sidebar'"
+            (clicked)="onMenuClick()"
+          ></eds-button>
 
-    <div class="layout">
-      <aside class="sidebar">
-        @for (item of navItems; track item.path) {
-          <a [routerLink]="item.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.exact }">
-            <span class="material-symbols-outlined">{{ item.icon }}</span>
-            <span>{{ item.label }}</span>
+          <a class="brand" routerLink="/" [attr.aria-label]="config.brand.accent">
+            <span class="brand-mark">{{ config.brand.mark }}</span>
+            <strong class="brand-copy">{{ config.brand.accent }}</strong>
           </a>
-        }
+
+          <span class="live-pill">
+            <eds-badge label="5 release candidates" variant="brand" [soft]="true" [pill]="true"></eds-badge>
+          </span>
+
+          <eds-search
+            class="topbar-search"
+            size="md"
+            placeholder="Search suites or datasets"
+            [clearable]="true"
+            [value]="query()"
+            (valueChange)="onQuery($event)"
+          ></eds-search>
+
+          <div class="topbar-actions">
+            <eds-kbd keys="⌘K"></eds-kbd>
+
+            <eds-tooltip content="Regressions" placement="bottom">
+              <eds-button
+                class="topbar-icon"
+                variant="tertiary"
+                size="sm"
+                icon="bell"
+                [iconOnly]="true"
+                accessibleLabel="Open regression inbox"
+                (clicked)="inboxOpen.set(true)"
+              ></eds-button>
+            </eds-tooltip>
+
+            <eds-button class="topbar-cta" variant="primary" size="sm" icon="plus" (clicked)="openRunModal()">
+              {{ config.action }}
+            </eds-button>
+
+            <span class="topbar-divider" aria-hidden="true"></span>
+
+            <eds-dropdown-menu class="account-menu" placement="bottom">
+              <button
+                trigger
+                type="button"
+                class="account"
+                [attr.aria-label]="'Account menu for ' + config.user.name"
+              >
+                <span class="account-avatar">
+                  <eds-avatar [name]="config.user.name" size="sm"></eds-avatar>
+                  <span class="account-status" title="Online"></span>
+                </span>
+                <span class="account-meta">
+                  <strong>{{ config.user.name }}</strong>
+                  <small>{{ config.user.role }}</small>
+                </span>
+                <span class="material-symbols-outlined account-caret" aria-hidden="true">expand_more</span>
+              </button>
+              <div class="account-menu-head">
+                <eds-avatar [name]="config.user.name" size="md"></eds-avatar>
+                <div>
+                  <strong>{{ config.user.name }}</strong>
+                  <small>{{ config.user.role }}</small>
+                  <span>{{ config.workspace }}</span>
+                </div>
+              </div>
+              <eds-menu-item label="Workspace settings" value="settings" (itemSelect)="goSettings()"></eds-menu-item>
+              <eds-menu-item label="Open regressions" value="regressions" (itemSelect)="goRegressions()"></eds-menu-item>
+              <eds-menu-item label="Run evaluation" value="run" (itemSelect)="openRunModal()"></eds-menu-item>
+            </eds-dropdown-menu>
+          </div>
+        </div>
+      </header>
+
+      <aside class="sidebar">
+        <div class="sidebar-head">
+          <button
+            type="button"
+            class="collapse-button"
+            [attr.aria-label]="sidebarCollapsed() ? 'Expand sidebar' : 'Show icon sidebar'"
+            [attr.title]="sidebarCollapsed() ? 'Expand sidebar' : 'Show icon sidebar'"
+            (click)="toggleSidebar()"
+          >
+            <span class="material-symbols-outlined" aria-hidden="true">
+              {{ sidebarCollapsed() ? 'chevron_right' : 'chevron_left' }}
+            </span>
+          </button>
+        </div>
+
+        <nav class="nav">
+          @for (item of config.nav; track item.path) {
+            <a
+              [routerLink]="item.path"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: item.exact === true }"
+              [attr.aria-label]="item.label"
+              [attr.title]="item.label"
+            >
+              <span class="material-symbols-outlined" aria-hidden="true">{{ item.icon }}</span>
+              <span class="nav-label">{{ item.label }}</span>
+            </a>
+          }
+        </nav>
+
+        <div class="sidebar-extras">
+          <p class="quick-label">Quick links</p>
+          <eds-button variant="primary" size="sm" icon="plus" [fullWidth]="true" (clicked)="openRunModal()">
+            Run evaluation
+          </eds-button>
+          <eds-button variant="secondary" size="sm" icon="alert-triangle" [fullWidth]="true" (clicked)="goRegressions()">
+            Open regressions
+          </eds-button>
+        </div>
+
+        <div class="profile">
+          <eds-avatar [name]="config.user.name" size="sm"></eds-avatar>
+          <div class="profile-copy">
+            <strong>{{ config.user.name }}</strong>
+            <small>{{ config.user.role }}</small>
+          </div>
+        </div>
       </aside>
 
-      <main class="content">
-        <router-outlet></router-outlet>
-      </main>
+      <button class="backdrop" type="button" aria-label="Close navigation" (click)="closeNav()"></button>
+
+      <div class="main">
+        <main>
+          <eds-visually-hidden>Model evaluation workspace</eds-visually-hidden>
+          <router-outlet />
+        </main>
+      </div>
     </div>
 
     <eds-modal [open]="isRunModalOpen()" heading="Run evaluation" (openChange)="isRunModalOpen.set($event)">
@@ -207,7 +210,6 @@ import { templateConfig } from '../template.config';
           [value]="draftModel()"
           (valueChange)="draftModel.set($event)"
         ></eds-input>
-
         <eds-select
           label="Suite"
           placeholder="Choose suite"
@@ -215,7 +217,6 @@ import { templateConfig } from '../template.config';
           [value]="draftSuite()"
           (valueChange)="draftSuite.set($event)"
         ></eds-select>
-
         <eds-textarea
           label="Notes"
           placeholder="Reason for this run"
@@ -224,30 +225,105 @@ import { templateConfig } from '../template.config';
           (valueChange)="draftNotes.set($event)"
         ></eds-textarea>
       </div>
-
       <div footer class="modal-footer">
         <eds-button variant="secondary" (clicked)="closeRunModal()">Cancel</eds-button>
         <eds-button variant="primary" [disabled]="!canRun()" (clicked)="runEvaluation()">Run</eds-button>
       </div>
     </eds-modal>
+
+    <eds-drawer [open]="inboxOpen()" heading="Regression inbox" side="right" size="md" (openChange)="inboxOpen.set($event)">
+      <div class="drawer-stack">
+        <eds-icon name="alert-triangle" size="md" [decorative]="true"></eds-icon>
+        <eds-list [items]="inboxItems" [divided]="true"></eds-list>
+      </div>
+      <div footer class="drawer-footer">
+        <eds-button variant="secondary" (clicked)="inboxOpen.set(false)">Close</eds-button>
+        <eds-button variant="primary" (clicked)="goRegressions()">View all regressions</eds-button>
+      </div>
+    </eds-drawer>
+
+    <div class="toast-slot">
+      <eds-toast
+        title="Evaluation queued"
+        description="Ananya Poluru will get a copy when the suite finishes."
+        variant="success"
+        [open]="toastOpen()"
+        (openChange)="toastOpen.set($event)"
+      ></eds-toast>
+    </div>
   `
 })
 export class AppComponent {
+  private readonly router = inject(Router);
   protected readonly config = templateConfig;
+  protected readonly appName = environment.appName;
+  protected readonly navOpen = signal(false);
+  protected readonly sidebarCollapsed = signal(false);
+  protected readonly query = signal('');
   protected readonly isRunModalOpen = signal(false);
+  protected readonly inboxOpen = signal(false);
+  protected readonly toastOpen = signal(false);
   protected readonly draftModel = signal('');
   protected readonly draftSuite = signal('');
   protected readonly draftNotes = signal('');
 
-  protected readonly navItems = [
-    { label: 'Board', path: '/', icon: 'dashboard', exact: true },
-    { label: 'Suites', path: '/suites', icon: 'science', exact: false },
-    { label: 'Datasets', path: '/datasets', icon: 'dataset', exact: false },
-    { label: 'Scorecards', path: '/scorecards', icon: 'fact_check', exact: false },
-    { label: 'Settings', path: '/settings', icon: 'tune', exact: false }
-  ];
+  protected readonly suiteOptions: EdsSelectOption[] = this.config.suites.map((suite) => ({
+    label: suite.name,
+    value: suite.name
+  }));
 
-  protected readonly suiteOptions = this.config.suites.map((suite) => ({ label: suite.name, value: suite.name }));
+  protected readonly inboxItems: EdsListItem[] = this.config.inbox;
+
+  constructor() {
+    this.router.events
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        takeUntilDestroyed()
+      )
+      .subscribe(() => this.closeNav());
+
+    fromEvent(window, 'eval:run')
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => this.openRunModal());
+  }
+
+  @HostListener('document:keydown', ['$event'])
+  protected onKeydown(event: KeyboardEvent): void {
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+      event.preventDefault();
+      this.goSuitesSearch();
+    }
+  }
+
+  protected onMenuClick(): void {
+    const compact = typeof window !== 'undefined' && window.matchMedia?.('(max-width: 860px)')?.matches === true;
+    if (compact) {
+      this.toggleNav();
+      return;
+    }
+    this.toggleSidebar();
+  }
+
+  protected toggleNav(): void {
+    this.navOpen.update((open) => !open);
+  }
+
+  protected closeNav(): void {
+    this.navOpen.set(false);
+  }
+
+  protected toggleSidebar(): void {
+    this.sidebarCollapsed.update((collapsed) => !collapsed);
+  }
+
+  protected onQuery(value: string): void {
+    this.query.set(value);
+  }
+
+  protected goSuitesSearch(): void {
+    const q = this.query().trim();
+    void this.router.navigate(['/suites'], { queryParams: q ? { q } : {} });
+  }
 
   protected openRunModal(): void {
     this.isRunModalOpen.set(true);
@@ -255,6 +331,15 @@ export class AppComponent {
 
   protected closeRunModal(): void {
     this.isRunModalOpen.set(false);
+  }
+
+  protected goSettings(): void {
+    void this.router.navigateByUrl('/settings');
+  }
+
+  protected goRegressions(): void {
+    this.inboxOpen.set(false);
+    void this.router.navigateByUrl('/regressions');
   }
 
   protected canRun(): boolean {
@@ -265,10 +350,10 @@ export class AppComponent {
     if (!this.canRun()) {
       return;
     }
-
     this.draftModel.set('');
     this.draftSuite.set('');
     this.draftNotes.set('');
     this.isRunModalOpen.set(false);
+    this.toastOpen.set(true);
   }
 }

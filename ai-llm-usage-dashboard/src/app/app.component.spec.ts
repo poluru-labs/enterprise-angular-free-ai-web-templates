@@ -30,6 +30,14 @@ describe('AppComponent', () => {
     expect(nativeElement.querySelector('.shell')?.getAttribute('data-app')).toBe('Lilac Meter');
   });
 
+  it('renders a styled header profile chip and menu identity', () => {
+    const chip = nativeElement.querySelector('.account');
+    expect(chip?.textContent).toContain('Lakshmi Poluru');
+    expect(chip?.textContent).toContain('Platform lead');
+    expect(nativeElement.querySelector('.account-status')).toBeTruthy();
+    expect(nativeElement.querySelector('.account-menu-head')?.textContent).toContain(templateConfig.workspace);
+  });
+
   it('renders sidebar navigation including new features', () => {
     expect(nativeElement.textContent).toContain('Overview');
     expect(nativeElement.textContent).toContain('Usage');
