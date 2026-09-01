@@ -9,7 +9,7 @@ Maintained by [Poluru Labs](https://polurus.com). Source: [github.com/poluru-lab
 | Template | Product | What it covers | Brand | Local demo |
 | --- | --- | --- | --- | --- |
 | [LLM usage](ai-llm-usage-dashboard/README.md) | Lilac Meter | Token spend, latency, budgets, alerts, and forecasts | `#8D77AB` | [localhost:4215](http://localhost:4215) |
-| [Prompt management](ai-prompt-management-panel/README.md) | Prompt library | Prompt catalog, reviews, and publishing | `#08766C` | [localhost:4200](http://localhost:4200) |
+| [Prompt management](ai-prompt-management-panel/README.md) | Prompt library | Prompt catalog, experiments, versions, and collections | `#08766C` | [localhost:4219](http://localhost:4219) |
 | [RAG knowledge](ai-rag-knowledge-admin/README.md) | Indigo Vault | Sources, collections, indexing, and retrieval | `#4300FF` | [localhost:4214](http://localhost:4214) |
 | [Model evaluation](ai-model-evaluation-board/README.md) | Evaluation board | Suites, datasets, models, regressions, and scorecards | `#2F6B1F` | [localhost:4218](http://localhost:4218) |
 | [Agent ops](ai-agent-ops-console/README.md) | AgentOps Kit | Fleet health, runs, tools, handoffs, and deploys | `#08766C` | [localhost:4200](http://localhost:4200) |
@@ -23,7 +23,7 @@ Browse source for any template:
 
 `https://github.com/poluru-labs/enterprise-angular-free-ai-web-templates/tree/main/<folder-name>`
 
-Templates that share port `4200` (prompt library, AgentOps Kit, content studio) should be started one at a time, or given a unique `--port` when you run `ng serve`.
+Templates that share port `4200` (AgentOps Kit, content studio) should be started one at a time, or given a unique `--port` when you run `ng serve`.
 
 ## Getting started
 
