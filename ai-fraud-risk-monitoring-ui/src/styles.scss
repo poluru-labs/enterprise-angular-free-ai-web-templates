@@ -7,8 +7,10 @@
   --line: #eadfd4;
   --canvas: #f7f3ef;
   --panel: #ffffff;
-  --page-pad-x: 1.75rem;
-  --page-pad-y: 1.35rem;
+  --page-pad-x: 2rem;
+  --page-pad-y: 1.5rem;
+  --card-gap: 1.25rem;
+  --card-pad: 1.4rem;
 }
 
 * {
@@ -248,10 +250,15 @@ header {
 }
 
 main {
+  display: block;
+  padding: var(--page-pad-y) var(--page-pad-x) 2.75rem;
+}
+
+.page {
   display: grid;
-  gap: 1rem;
-  align-content: start;
-  padding: var(--page-pad-y) var(--page-pad-x) 2.5rem;
+  gap: var(--card-gap);
+  width: 100%;
+  min-width: 0;
 }
 
 .page-head {
@@ -377,6 +384,11 @@ main {
   font-weight: 700;
 }
 
+.panel-header + .field,
+.form-panel .field:first-of-type {
+  margin-top: 0.7rem;
+}
+
 .field input,
 .field textarea {
   border: 1px solid var(--line);
@@ -401,7 +413,7 @@ main {
 .split {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(16rem, 0.8fr);
-  gap: 1rem;
+  gap: var(--card-gap);
   align-items: start;
 }
 
@@ -419,15 +431,25 @@ main {
   background: var(--brand-soft);
 }
 
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
 .detail h2 {
-  margin: 0.25rem 0 0.5rem;
+  margin: 0.15rem 0 0.2rem;
+}
+
+.detail > .muted {
+  margin: 0;
 }
 
 .facts {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.75rem 1rem;
-  margin: 1.05rem 0;
+  margin: 0.85rem 0 0.15rem;
 }
 
 .facts dt {
@@ -471,7 +493,12 @@ main {
 .mix {
   display: grid;
   gap: 0.8rem;
-  margin-top: 1.05rem;
+  margin: 0.9rem 0 0;
+}
+
+.panel-header + .mix,
+.coverage-details + .mix {
+  margin-top: 0.9rem;
 }
 
 .mix-label {
@@ -570,7 +597,7 @@ h2 {
 .metrics {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1rem;
+  gap: var(--card-gap);
 }
 
 .metric,
@@ -580,8 +607,14 @@ h2 {
   background: var(--panel);
 }
 
+.panel p:not(.eyebrow),
+.metric p,
+.detail p:not(.eyebrow) {
+  margin-bottom: 0;
+}
+
 .metric {
-  padding: 1.15rem 1.2rem;
+  padding: 1.25rem 1.35rem;
 }
 
 .metric-top {
@@ -635,12 +668,12 @@ h2 {
 .dashboard-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-  gap: 1rem;
+  gap: var(--card-gap);
   margin: 0;
 }
 
 .panel {
-  padding: 1.25rem 1.3rem;
+  padding: var(--card-pad);
 }
 
 .panel-header {
@@ -648,7 +681,7 @@ h2 {
   align-items: flex-start;
   justify-content: space-between;
   gap: 0.85rem;
-  margin-bottom: 0.15rem;
+  margin: 0 0 0.15rem;
 }
 
 .text-action {
@@ -662,16 +695,35 @@ h2 {
 }
 
 .rows {
-  margin-top: 0.7rem;
+  display: grid;
+  margin: 0.35rem 0 0;
 }
 
-.row,
+.entry,
 .people li {
   display: flex;
   align-items: center;
   gap: 0.8rem;
+  margin: 0;
   padding: 0.85rem 0;
   border-top: 1px solid #f0e8df;
+}
+
+.entry:first-child,
+.people li:first-child {
+  padding-top: 0.7rem;
+}
+
+.entry:last-child,
+.people li:last-child {
+  padding-bottom: 0.1rem;
+}
+
+.entry > * {
+  width: auto;
+  max-width: none;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .copy {
@@ -781,7 +833,7 @@ h2 {
 }
 
 .people {
-  margin: 0.7rem 0 0;
+  margin: 0.35rem 0 0;
   padding: 0;
   list-style: none;
 }
@@ -815,11 +867,15 @@ h2 {
 
 .stack {
   display: grid;
-  gap: 1rem;
+  gap: var(--card-gap);
 }
 
 .list-panel {
-  padding: 0.5rem 1.15rem 1rem;
+  padding: 0.55rem 1.25rem 1rem;
+}
+
+.list-panel .empty {
+  padding: 1.5rem 0.5rem 1.15rem;
 }
 
 .list-head,
@@ -839,8 +895,17 @@ h2 {
 }
 
 .list-row {
+  margin: 0;
   padding: 0.9rem 0.5rem;
   border-top: 1px solid #f0e8df;
+}
+
+.list-panel > .list-row:first-child {
+  border-top: 0;
+}
+
+.list-row:last-child {
+  padding-bottom: 0.65rem;
 }
 
 .alert-row {
@@ -856,6 +921,7 @@ h2 {
 }
 
 .muted {
+  margin: 0;
   color: var(--muted);
   font-size: 0.78rem;
 }
@@ -865,9 +931,14 @@ h2 {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  margin: 0;
   padding: 0.95rem 0;
   border-top: 1px solid #f0e8df;
   cursor: pointer;
+}
+
+.setting-row:last-child {
+  padding-bottom: 0.15rem;
 }
 
 .query-hit {
@@ -953,6 +1024,7 @@ h2 {
   .rules-grid,
   .split {
     grid-template-columns: 1fr;
+    gap: var(--card-gap);
   }
 
   .list-row.cases-grid,
