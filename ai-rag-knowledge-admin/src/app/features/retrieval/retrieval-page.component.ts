@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import {
+  EdsButtonComponent,
   EdsCardComponent,
   EdsCodeSnippetComponent,
+  EdsEmptyStateComponent,
   EdsLinkComponent,
   EdsNumberInputComponent,
   EdsRatingComponent,
@@ -12,14 +14,17 @@ import {
   EdsTimePickerComponent,
   type EdsTabItem
 } from '@poluru-labs/enterprise-design-system-angular';
-import { templateConfig } from '../template.config';
+import { templateConfig } from '../../core/config/template.config';
+import { groundedHits, hybridRequest, retrievalMode } from '../../shared/utils/knowledge';
 
 @Component({
   selector: 'app-retrieval-page',
   standalone: true,
   imports: [
+    EdsButtonComponent,
     EdsCardComponent,
     EdsCodeSnippetComponent,
+    EdsEmptyStateComponent,
     EdsLinkComponent,
     EdsNumberInputComponent,
     EdsRatingComponent,
@@ -39,6 +44,10 @@ import { templateConfig } from '../template.config';
       </div>
       <eds-status label="Hybrid on" variant="success" [pulse]="true"></eds-status>
     </section>
+
+    @if (notice()) {
+      <p class="notice">{{ notice() }}</p>
+    }
 
     <section class="split">
       <eds-card class="card-pad" [elevated]="false">
@@ -73,7 +82,10 @@ import { templateConfig } from '../template.config';
           ></eds-number-input>
         </div>
         <eds-tabs [tabs]="modes" [selectedIndex]="mode()" (selectedIndexChange)="mode.set($event)"></eds-tabs>
-        <eds-code-snippet [code]="sampleQuery" language="json" label="Last request"></eds-code-snippet>
+        <eds-code-snippet [code]="sampleQuery()" language="json" label="Last request"></eds-code-snippet>
+        <div class="inline-actions" style="margin-top: 0.85rem">
+          <eds-button variant="primary" size="sm" icon="search" (clicked)="runQuery()">Run search</eds-button>
+        </div>
       </eds-card>
 
       <eds-card class="card-pad" [elevated]="false">
@@ -81,14 +93,22 @@ import { templateConfig } from '../template.config';
           <h2>Grounded hits</h2>
           <eds-rating [value]="rating()" size="sm" (valueChange)="rating.set($event)"></eds-rating>
         </div>
-        @for (hit of config.queries; track hit.query) {
-          <div class="query-hit">
-            <div>
-              <strong>{{ hit.query }}</strong>
-              <p class="meta">{{ hit.hit }} · {{ hit.citations }} citations</p>
+        @if (hits().length === 0) {
+          <eds-empty-state heading="No hits above the floor" description="Lower the min score or switch to keyword mode." [icon]="true">
+            <div actions>
+              <eds-button variant="primary" size="sm" (clicked)="minScore.set(0.5)">Drop floor to 0.50</eds-button>
             </div>
-            <eds-status [label]="hit.score" variant="info"></eds-status>
-          </div>
+          </eds-empty-state>
+        } @else {
+          @for (hit of hits(); track hit.query) {
+            <div class="query-hit">
+              <div>
+                <strong>{{ hit.query }}</strong>
+                <p class="meta">{{ hit.hit }} · {{ hit.citations }} citations</p>
+              </div>
+              <eds-status [label]="hit.score" variant="info"></eds-status>
+            </div>
+          }
         }
         <div style="margin-top: 1rem">
           <eds-time-picker
@@ -110,6 +130,8 @@ export class RetrievalPageComponent {
   protected readonly mode = signal(0);
   protected readonly rating = signal(4);
   protected readonly evalTime = signal('02:30');
+  protected readonly ran = signal(false);
+  protected readonly notice = signal('');
 
   protected readonly modes: EdsTabItem[] = [
     { label: 'Hybrid', content: 'Dense + BM25 with reciprocal rank fusion.' },
@@ -117,10 +139,16 @@ export class RetrievalPageComponent {
     { label: 'Keyword', content: 'BM25 for exact policy and ID lookups.' }
   ];
 
-  protected readonly sampleQuery = `{
-  "query": "How do we rotate API keys?",
-  "top_k": 8,
-  "mode": "hybrid",
-  "owner": "Nikhil Poluru"
-}`;
+  protected readonly hits = computed(() => groundedHits(this.config.queries, this.minScore(), this.topK()));
+
+  protected readonly sampleQuery = computed(() =>
+    hybridRequest(this.query(), this.topK(), retrievalMode(this.mode()), 'Nikhil Poluru')
+  );
+
+  protected runQuery(): void {
+    this.ran.set(true);
+    this.notice.set(
+      `Ran ${retrievalMode(this.mode())} search · ${this.hits().length} hits above ${this.minScore().toFixed(2)}.`
+    );
+  }
 }

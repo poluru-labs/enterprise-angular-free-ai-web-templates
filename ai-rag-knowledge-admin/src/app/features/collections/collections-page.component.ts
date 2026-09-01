@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import {
   EdsBadgeComponent,
+  EdsButtonComponent,
   EdsCardComponent,
   EdsCheckboxComponent,
   EdsListComponent,
@@ -12,13 +13,21 @@ import {
   type EdsListItem,
   type EdsTreeNode
 } from '@poluru-labs/enterprise-design-system-angular';
-import { templateConfig } from '../template.config';
+import { templateConfig, type CollectionRow } from '../../core/config/template.config';
+import {
+  collectionTree,
+  filterCollections,
+  pinCollection,
+  selectedCollectionLabel,
+  selectedCollectionOwner
+} from '../../shared/utils/knowledge';
 
 @Component({
   selector: 'app-collections-page',
   standalone: true,
   imports: [
     EdsBadgeComponent,
+    EdsButtonComponent,
     EdsCardComponent,
     EdsCheckboxComponent,
     EdsListComponent,
@@ -36,8 +45,18 @@ import { templateConfig } from '../template.config';
         <h1>Collections</h1>
         <p class="summary">Group sources for retrieval, citations, and access control. Owned by Ananya Poluru’s knowledge team.</p>
       </div>
-      <eds-badge label="6 collections" variant="brand" [soft]="true" [pill]="true"></eds-badge>
+      <eds-badge [label]="rows().length + ' collections'" variant="brand" [soft]="true" [pill]="true"></eds-badge>
     </section>
+
+    @if (notice()) {
+      <p class="notice">{{ notice() }}</p>
+    }
+
+    <div class="chips" style="margin-bottom: 0.9rem">
+      @for (item of filters; track item) {
+        <button type="button" class="chip" [class.active]="filter() === item" (click)="filter.set(item)">{{ item }}</button>
+      }
+    </div>
 
     <section class="split">
       <eds-card class="card-pad" [elevated]="false">
@@ -91,14 +110,21 @@ import { templateConfig } from '../template.config';
     </section>
 
     <section class="grid-3" style="margin-top: 0.9rem">
-      @for (item of config.collections; track item.name) {
+      @for (item of filtered(); track item.name) {
         <eds-card class="card-pad collection-card" [elevated]="false">
           <div class="section-head">
             <h3>{{ item.name }}</h3>
             <eds-badge [label]="item.visibility" variant="info" [soft]="true" size="sm"></eds-badge>
           </div>
-          <p class="meta">{{ item.sources }} sources · {{ item.docs }} docs</p>
-          <p class="meta">{{ item.owner }}</p>
+          <p class="meta meta-clamp">{{ item.detail }}</p>
+          <p class="meta">{{ item.sources }} sources · {{ item.docs }} docs · {{ item.quality }} nDCG</p>
+          <p class="meta">{{ item.owner }} · synced {{ item.lastSync }} ago</p>
+          <div footer class="card-actions">
+            <eds-tag [label]="item.pinned ? 'Pinned' : 'Open'" variant="brand"></eds-tag>
+            <eds-button variant="secondary" size="sm" icon="star" (clicked)="togglePin(item.name)">
+              {{ item.pinned ? 'Unpin' : 'Pin' }}
+            </eds-button>
+          </div>
         </eds-card>
       }
     </section>
@@ -106,60 +132,43 @@ import { templateConfig } from '../template.config';
 })
 export class CollectionsPageComponent {
   protected readonly config = templateConfig;
+  protected readonly rows = signal<CollectionRow[]>(this.config.collections.map((item) => ({ ...item })));
   protected readonly selectedId = signal('public');
   protected readonly published = signal(true);
   protected readonly citations = signal(true);
   protected readonly visibility = signal('workspace');
+  protected readonly filter = signal<'All' | 'Pinned' | 'Restricted'>('All');
+  protected readonly notice = signal('');
+
+  protected readonly filters: Array<'All' | 'Pinned' | 'Restricted'> = ['All', 'Pinned', 'Restricted'];
 
   protected readonly expanded: Record<string, boolean> = {
     library: true,
     public: true
   };
 
-  protected readonly tree: EdsTreeNode[] = [
-    {
-      id: 'library',
-      label: 'Indigo Vault',
-      children: [
-        {
-          id: 'public',
-          label: 'Public',
-          children: [
-            { id: 'docs', label: 'Product documentation' },
-            { id: 'help', label: 'Help center' }
-          ]
-        },
-        { id: 'legal', label: 'Legal' },
-        { id: 'support', label: 'Support' },
-        { id: 'engineering', label: 'Engineering' },
-        { id: 'hr', label: 'HR' },
-        { id: 'gtm', label: 'GTM' }
-      ]
-    }
-  ];
+  protected readonly tree: EdsTreeNode[] = collectionTree(this.config.collections, this.config.sources);
 
   protected readonly owners: EdsListItem[] = this.config.collections.map((item) => ({
     label: item.owner,
     description: item.name + ' · ' + item.visibility
   }));
 
+  protected readonly filtered = computed(() => filterCollections(this.rows(), this.filter()));
+
+  protected readonly pinnedCount = computed(() => this.rows().filter((item) => item.pinned).length);
+
   protected selectedLabel(): string {
-    const map: Record<string, string> = {
-      library: 'Indigo Vault',
-      public: 'Public',
-      docs: 'Product documentation',
-      help: 'Help center',
-      legal: 'Legal',
-      support: 'Support',
-      engineering: 'Engineering',
-      hr: 'HR',
-      gtm: 'GTM'
-    };
-    return map[this.selectedId()] ?? 'Public';
+    return selectedCollectionLabel(this.selectedId(), this.config.collections, this.config.sources);
   }
 
   protected selectedOwner(): string {
-    const found = this.config.collections.find((item) => item.name === this.selectedLabel());
-    return found?.owner ?? 'Ananya Poluru';
+    return selectedCollectionOwner(this.selectedLabel(), this.config.collections, this.config.sources, 'Ananya Poluru');
+  }
+
+  protected togglePin(name: string): void {
+    this.rows.set(pinCollection(this.rows(), name));
+    const pinned = this.rows().find((item) => item.name === name)?.pinned;
+    this.notice.set(pinned ? `${name} pinned for Ananya Poluru.` : `${name} unpinned from the library.`);
   }
 }

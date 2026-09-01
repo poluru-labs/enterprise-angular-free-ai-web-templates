@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute } from '@angular/router';
 import {
   EdsAutocompleteComponent,
   EdsBadgeComponent,
@@ -16,7 +18,9 @@ import {
   EdsTagComponent,
   EdsToolbarComponent
 } from '@poluru-labs/enterprise-design-system-angular';
-import { templateConfig } from '../template.config';
+import { templateConfig } from '../../core/config/template.config';
+import { statusVariant } from '../../shared/utils/status-variant';
+import { filterSources, paginate } from '../../shared/utils/knowledge';
 
 @Component({
   selector: 'app-sources-page',
@@ -60,7 +64,7 @@ import { templateConfig } from '../template.config';
           placeholder="Product documentation"
           [suggestions]="suggestions"
           [value]="search()"
-          (valueChange)="search.set($event)"
+          (valueChange)="onSearch($event)"
         ></eds-autocomplete>
         <eds-date-range-picker
           label="Last synced"
@@ -84,7 +88,7 @@ import { templateConfig } from '../template.config';
       @if (pageRows().length === 0) {
         <eds-empty-state heading="No sources match" description="Clear filters or connect a new connector." [icon]="true">
           <div actions>
-            <eds-button variant="primary" size="sm" (clicked)="search.set('')">Clear search</eds-button>
+            <eds-button variant="primary" size="sm" (clicked)="clearFilters()">Clear filters</eds-button>
           </div>
         </eds-empty-state>
       } @else {
@@ -103,28 +107,35 @@ import { templateConfig } from '../template.config';
     </eds-card>
 
     <section class="grid-3" style="margin-top: 0.9rem">
-      @for (source of config.sources.slice(0, 3); track source.name) {
-        <eds-card class="card-pad" [elevated]="false">
+      @for (source of featured; track source.name) {
+        <eds-card class="card-pad collection-card" [elevated]="false">
           <div class="section-head">
             <h3>{{ source.name }}</h3>
             <eds-status [label]="source.status" [variant]="statusVariant(source.status)"></eds-status>
           </div>
+          <p class="meta meta-clamp">{{ source.detail }}</p>
           <p class="meta">{{ source.type }} · {{ source.docs.toLocaleString() }} docs · {{ source.freshness }}</p>
           <p class="meta">Owner {{ source.owner }}</p>
-          <eds-tag [label]="source.collection" variant="info"></eds-tag>
+          <div footer class="card-actions">
+            <eds-tag [label]="source.collection" variant="info"></eds-tag>
+            <eds-tag [label]="source.freshness" variant="brand"></eds-tag>
+          </div>
         </eds-card>
       }
     </section>
   `
 })
 export class SourcesPageComponent {
+  private readonly route = inject(ActivatedRoute);
   protected readonly config = templateConfig;
   protected readonly search = signal('');
   protected readonly page = signal(1);
   protected readonly pageSize = 5;
   protected readonly rangeStart = signal('2026-08-01');
   protected readonly rangeEnd = signal('2026-08-30');
-  protected readonly tags = signal(['Healthy', 'Workspace']);
+  protected readonly tags = signal(['Healthy']);
+  protected readonly statusVariant = statusVariant;
+  protected readonly featured = this.config.sources.slice(0, 3);
 
   protected readonly suggestions = this.config.sources.map((item) => item.name);
 
@@ -137,27 +148,35 @@ export class SourcesPageComponent {
     { key: 'status', label: 'Status', sortable: true }
   ];
 
-  protected readonly filtered = computed(() => {
-    const q = this.search().trim().toLowerCase();
-    return this.config.sources
-      .filter((item) => !q || item.name.toLowerCase().includes(q) || item.owner.toLowerCase().includes(q))
-      .map((item) => ({
-        name: item.name,
-        type: item.type,
-        owner: item.owner,
-        docs: item.docs,
-        freshness: item.freshness,
-        status: item.status
-      }));
-  });
+  protected readonly filtered = computed(() => filterSources(this.config.sources, this.search(), this.tags()));
 
-  protected readonly pageRows = computed(() => {
-    const start = (this.page() - 1) * this.pageSize;
-    return this.filtered().slice(start, start + this.pageSize);
-  });
+  protected readonly pageRows = computed(() =>
+    paginate(this.filtered(), this.page(), this.pageSize).map((item) => ({
+      name: item.name,
+      type: item.type,
+      owner: item.owner,
+      docs: item.docs,
+      freshness: item.freshness,
+      status: item.status
+    }))
+  );
+
+  constructor() {
+    this.route.queryParamMap.pipe(takeUntilDestroyed()).subscribe((params) => {
+      const q = params.get('q') ?? '';
+      if (q) {
+        this.onSearch(q);
+      }
+    });
+  }
 
   protected openAdd(): void {
     window.dispatchEvent(new CustomEvent('vault:add-source'));
+  }
+
+  protected onSearch(value: string): void {
+    this.search.set(value);
+    this.page.set(1);
   }
 
   protected onRange(range: { start: string; end: string }): void {
@@ -167,18 +186,12 @@ export class SourcesPageComponent {
 
   protected dismissTag(tag: string): void {
     this.tags.update((items) => items.filter((item) => item !== tag));
+    this.page.set(1);
   }
 
-  protected statusVariant(status: string): 'success' | 'warning' | 'danger' | 'info' | 'neutral' {
-    if (status === 'Healthy') {
-      return 'success';
-    }
-    if (status === 'Review' || status === 'Syncing') {
-      return 'warning';
-    }
-    if (status === 'Failed') {
-      return 'danger';
-    }
-    return 'neutral';
+  protected clearFilters(): void {
+    this.search.set('');
+    this.tags.set([]);
+    this.page.set(1);
   }
 }

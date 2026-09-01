@@ -10,7 +10,7 @@ Maintained by [Poluru Labs](https://polurus.com). Source: [github.com/poluru-lab
 | --- | --- | --- | --- | --- |
 | [LLM usage](ai-llm-usage-dashboard/README.md) | Lilac Meter | Token spend, latency, budgets, alerts, and forecasts | `#8D77AB` | [localhost:4215](http://localhost:4215) |
 | [Prompt management](ai-prompt-management-panel/README.md) | Prompt library | Prompt catalog, experiments, versions, and collections | `#08766C` | [localhost:4219](http://localhost:4219) |
-| [RAG knowledge](ai-rag-knowledge-admin/README.md) | Indigo Vault | Sources, collections, indexing, and retrieval | `#4300FF` | [localhost:4214](http://localhost:4214) |
+| [RAG knowledge](ai-rag-knowledge-admin/README.md) | Indigo Vault | Sources, collections, indexing, retrieval, governance, and evaluations | `#4300FF` | [localhost:4214](http://localhost:4214) |
 | [Model evaluation](ai-model-evaluation-board/README.md) | Evaluation board | Suites, datasets, models, regressions, and scorecards | `#2F6B1F` | [localhost:4218](http://localhost:4218) |
 | [Agent ops](ai-agent-ops-console/README.md) | AgentOps Kit | Fleet health, runs, tools, handoffs, and deploys | `#08766C` | [localhost:4200](http://localhost:4200) |
 | [Support copilot](ai-support-copilot-dashboard/README.md) | Harbor Desk | Queue health, AI drafts, knowledge, and CSAT | `#434E78` | [localhost:4217](http://localhost:4217) |
