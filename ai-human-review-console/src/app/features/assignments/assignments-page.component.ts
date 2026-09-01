@@ -1,18 +1,19 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
-import { templateConfig } from '../template.config';
+import { templateConfig } from '../../core/config/template.config';
 
-type Assignment = (typeof templateConfig.assignments)[number];
+type Assignment = (typeof templateConfig.assignments)[number] & { note?: string };
 
 @Component({
   selector: 'app-assignments-page',
   standalone: true,
+  host: { class: 'page' },
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="page-head">
       <div>
         <p class="eyebrow">Work</p>
         <h1>Assignments</h1>
-        <p class="summary">Take, reassign, or release items. Dual-review Safety work stays with Aisha or Sahana Poluru.</p>
+        <p class="summary">Take, reassign, release, or resolve items. Dual-review Safety work stays with Aisha or Sahana Poluru.</p>
       </div>
     </section>
 
@@ -30,7 +31,7 @@ type Assignment = (typeof templateConfig.assignments)[number];
     <div class="toolbar">
       <label class="search">
         <span class="material-symbols-outlined">search</span>
-        <input type="search" placeholder="Search ID, person, or queue" (input)="query.set($any($event.target).value)" />
+        <input type="search" placeholder="Search ID, person, or queue" (input)="onQuery($event)" />
       </label>
       <div class="chips">
         @for (item of filters; track item) {
@@ -81,10 +82,15 @@ type Assignment = (typeof templateConfig.assignments)[number];
               </div>
             }
           </div>
+          <label class="field">
+            <span>Decision note</span>
+            <textarea rows="3" placeholder="Why this decision?" [value]="draftNote()" (input)="onNote($event)"></textarea>
+          </label>
           <div class="inline-actions">
             <button type="button" class="primary" (click)="take(item.id)">Assign to me</button>
             <button type="button" class="secondary" (click)="reassign(item.id)">Reassign Maya</button>
             <button type="button" class="secondary" (click)="release(item.id)">Release</button>
+            <button type="button" class="secondary" (click)="resolve(item.id)">Resolve</button>
           </div>
         </aside>
       }
@@ -98,6 +104,7 @@ export class AssignmentsPageComponent {
   protected readonly query = signal('');
   protected readonly selectedId = signal(templateConfig.assignments[0].id);
   protected readonly notice = signal('');
+  protected readonly draftNote = signal('');
   protected readonly rows = signal<Assignment[]>(templateConfig.assignments.map((item) => ({ ...item })));
 
   protected readonly filtered = computed(() => {
@@ -122,6 +129,14 @@ export class AssignmentsPageComponent {
     return this.rows().filter((item) => item.owner === 'Aisha Poluru').length;
   }
 
+  protected onQuery(event: Event): void {
+    this.query.set((event.target as HTMLInputElement).value);
+  }
+
+  protected onNote(event: Event): void {
+    this.draftNote.set((event.target as HTMLTextAreaElement).value);
+  }
+
   protected take(id: string): void {
     this.patch(id, { owner: 'Aisha Poluru', status: 'In review', tone: 'warn' });
     this.notice.set(`${id} assigned to Aisha Poluru.`);
@@ -135,6 +150,15 @@ export class AssignmentsPageComponent {
   protected release(id: string): void {
     this.patch(id, { owner: 'Unassigned', status: 'Waiting', tone: 'rose' });
     this.notice.set(`${id} returned to the unassigned queue.`);
+  }
+
+  protected resolve(id: string): void {
+    const note = this.draftNote().trim();
+    this.patch(id, { owner: 'Aisha Poluru', status: 'Resolved', tone: 'ok', note });
+    this.draftNote.set('');
+    this.notice.set(
+      note ? `${id} resolved with a note for Maya Poluru.` : `${id} resolved by Aisha Poluru.`
+    );
   }
 
   private patch(id: string, next: Partial<Assignment>): void {

@@ -1,11 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
-import { templateConfig } from '../template.config';
+import { templateConfig } from '../../core/config/template.config';
+import type { Tone } from '../../core/config/template.config';
 
 type Policy = (typeof templateConfig.policies)[number];
 
 @Component({
   selector: 'app-policies-page',
   standalone: true,
+  host: { class: 'page' },
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="page-head">
@@ -28,7 +30,7 @@ type Policy = (typeof templateConfig.policies)[number];
       <article class="metric"><p>Live</p><div class="value">{{ count('Live') }}</div></article>
       <article class="metric"><p>Tuning</p><div class="value">{{ count('Tuning') }}</div></article>
       <article class="metric"><p>Shadow</p><div class="value">{{ count('Shadow') }}</div></article>
-      <article class="metric"><p>Hits today</p><div class="value">259</div></article>
+      <article class="metric"><p>Hits today</p><div class="value">{{ hitsToday() }}</div></article>
     </section>
 
     <div class="toolbar">
@@ -77,9 +79,18 @@ type Policy = (typeof templateConfig.policies)[number];
     @if (showForm()) {
       <article class="panel form-panel">
         <div class="panel-header"><h2>Draft a policy</h2></div>
-        <label class="field"><span>Name</span><input type="text" placeholder="Medical advice hold" /></label>
-        <label class="field"><span>Owner</span><input type="text" value="Aisha Poluru" /></label>
-        <label class="field"><span>When to route</span><textarea rows="3" placeholder="Hold any output that recommends treatment or dosage."></textarea></label>
+        <label class="field">
+          <span>Name</span>
+          <input type="text" placeholder="Medical advice hold" [value]="draftName()" (input)="onDraftName($event)" />
+        </label>
+        <label class="field">
+          <span>Owner</span>
+          <input type="text" [value]="draftOwner()" (input)="onDraftOwner($event)" />
+        </label>
+        <label class="field">
+          <span>When to route</span>
+          <textarea rows="3" placeholder="Hold any output that recommends treatment or dosage." [value]="draftWhen()" (input)="onDraftWhen($event)"></textarea>
+        </label>
         <div class="inline-actions">
           <button type="button" class="primary" (click)="draft()">Save as shadow</button>
           <button type="button" class="secondary" (click)="showForm.set(false)">Cancel</button>
@@ -89,12 +100,14 @@ type Policy = (typeof templateConfig.policies)[number];
   `
 })
 export class PoliciesPageComponent {
-  protected readonly config = templateConfig;
   protected readonly filters = ['All', 'Live', 'Tuning', 'Shadow'] as const;
   protected readonly filter = signal<(typeof this.filters)[number]>('All');
   protected readonly selectedName = signal(templateConfig.policies[0].name);
   protected readonly showForm = signal(false);
   protected readonly notice = signal('');
+  protected readonly draftName = signal('');
+  protected readonly draftOwner = signal('Aisha Poluru');
+  protected readonly draftWhen = signal('');
   protected readonly rows = signal<Policy[]>(templateConfig.policies.map((item) => ({ ...item })));
 
   protected readonly filtered = computed(() => {
@@ -110,13 +123,43 @@ export class PoliciesPageComponent {
     return this.rows().filter((item) => item.status === status).length;
   }
 
-  protected setStatus(name: string, status: Policy['status'], tone: Policy['tone']): void {
+  protected hitsToday(): number {
+    return this.rows().reduce((sum, item) => sum + Number(item.hits), 0);
+  }
+
+  protected setStatus(name: string, status: Policy['status'], tone: Tone): void {
     this.rows.update((list) => list.map((item) => (item.name === name ? { ...item, status, tone } : item)));
     this.notice.set(`${name} is now ${status}.`);
   }
 
+  protected onDraftName(event: Event): void {
+    this.draftName.set((event.target as HTMLInputElement).value);
+  }
+
+  protected onDraftOwner(event: Event): void {
+    this.draftOwner.set((event.target as HTMLInputElement).value);
+  }
+
+  protected onDraftWhen(event: Event): void {
+    this.draftWhen.set((event.target as HTMLTextAreaElement).value);
+  }
+
   protected draft(): void {
+    const name = this.draftName().trim() || 'Untitled guideline';
+    const next: Policy = {
+      name,
+      owner: this.draftOwner().trim() || 'Aisha Poluru',
+      hits: '0',
+      agreement: '—',
+      status: 'Shadow',
+      tone: 'info'
+    };
+    this.rows.update((list) => [next, ...list]);
+    this.selectedName.set(name);
+    this.filter.set('All');
     this.showForm.set(false);
-    this.notice.set('Shadow policy saved. Jordan Poluru will review before go-live.');
+    this.draftName.set('');
+    this.draftWhen.set('');
+    this.notice.set(`${name} saved as shadow. Jordan Poluru will review before go-live.`);
   }
 }

@@ -153,6 +153,10 @@ header {
   color: var(--brand-deep);
 }
 
+.header-search-icon {
+  display: none;
+}
+
 .sidebar {
   position: sticky;
   top: var(--header-h);
@@ -365,6 +369,17 @@ main {
 
 .search input {
   min-height: 2.35rem;
+}
+
+.search-lg {
+  flex: none;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.15rem 1rem;
+}
+
+.search-lg input {
+  min-height: 2.75rem;
 }
 
 .field {
@@ -732,6 +747,7 @@ h2 {
 .stack {
   display: grid;
   gap: 1rem;
+  margin-top: 1rem;
 }
 
 .list-panel {
@@ -906,6 +922,40 @@ h2 {
   text-align: center;
 }
 
+.query-hit {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.9rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.query-hit:first-of-type {
+  border-top: 0;
+  padding-top: 0.15rem;
+}
+
+.query-hit:last-of-type {
+  padding-bottom: 0.15rem;
+}
+
+.toast-slot {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 60;
+  max-width: 20rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid #d9eedc;
+  border-radius: 0.6rem;
+  background: #edf8ec;
+  color: #2f6b3a;
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 12px 28px rgb(18 24 38 / 0.12);
+}
+
 .form-panel {
   margin-top: 1rem;
 }
@@ -943,7 +993,8 @@ h2 {
     display: block;
   }
 
-  .menu-button {
+  .menu-button,
+  .header-search-icon {
     display: grid;
   }
 

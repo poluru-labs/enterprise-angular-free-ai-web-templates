@@ -17,7 +17,7 @@ Maintained by [Poluru Labs](https://polurus.com). Source: [github.com/poluru-lab
 | [Sales assistant](ai-sales-assistant-panel/README.md) | Garnet Close | Account briefs, pipeline signals, and sequences | `#BD4444` | [localhost:4216](http://localhost:4216) |
 | [Content studio](ai-content-studio/README.md) | Content Studio | Drafts, approvals, library, brand voice, and calendar | `#0046FF` | [localhost:4200](http://localhost:4200) |
 | [Fraud risk](ai-fraud-risk-monitoring-ui/README.md) | Risk Watch | Alerts, cases, detection rules, and investigators | `#FF6600` | [localhost:4210](http://localhost:4210) |
-| [Human review](ai-human-review-console/README.md) | Review Desk | Review queue, assignments, policies, and audit | `#3A86FF` | [localhost:4212](http://localhost:4212) |
+| [Human review](ai-human-review-console/README.md) | Review Desk | Review queue, assignments, calibration, reports, and audit | `#3A86FF` | [localhost:4212](http://localhost:4212) |
 
 Browse source for any template:
 

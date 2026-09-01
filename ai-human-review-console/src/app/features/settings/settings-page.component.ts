@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { templateConfig } from '../template.config';
+import { templateConfig } from '../../core/config/template.config';
+import { initials } from '../../shared/utils/initials';
 
 @Component({
   selector: 'app-settings-page',
   standalone: true,
+  host: { class: 'page' },
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section class="page-head">
@@ -12,7 +14,7 @@ import { templateConfig } from '../template.config';
         <h1>Settings</h1>
         <p class="summary">SLA, routing, and access controls for human review.</p>
       </div>
-      <button type="button" class="primary" (click)="saved.set(true)">Save changes</button>
+      <button type="button" class="primary" (click)="save()">Save changes</button>
     </section>
 
     @if (saved()) {
@@ -22,10 +24,22 @@ import { templateConfig } from '../template.config';
     <section class="split">
       <article class="panel">
         <div class="panel-header"><h2>SLA</h2></div>
-        <label class="field"><span>High severity minutes</span><input type="text" value="30" /></label>
-        <label class="field"><span>Dual-review minutes</span><input type="text" value="15" /></label>
-        <label class="field"><span>Idle lock hours</span><input type="text" value="2" /></label>
-        <label class="field"><span>On-call until</span><input type="text" [value]="config.onCall.until" /></label>
+        <label class="field">
+          <span>High severity minutes</span>
+          <input type="text" [value]="highMinutes()" (input)="onHigh($event)" />
+        </label>
+        <label class="field">
+          <span>Dual-review minutes</span>
+          <input type="text" [value]="dualMinutes()" (input)="onDual($event)" />
+        </label>
+        <label class="field">
+          <span>Idle lock hours</span>
+          <input type="text" [value]="idleHours()" (input)="onIdle($event)" />
+        </label>
+        <label class="field">
+          <span>On-call until</span>
+          <input type="text" [value]="onCallUntil()" (input)="onCall($event)" />
+        </label>
       </article>
 
       <article class="panel">
@@ -45,7 +59,7 @@ import { templateConfig } from '../template.config';
       </article>
     </section>
 
-    <section class="stack" style="margin-top:1rem">
+    <section class="stack">
       @for (group of groups(); track group.group) {
         <article class="panel">
           <div class="panel-header">
@@ -66,7 +80,7 @@ import { templateConfig } from '../template.config';
       <article class="panel">
         <div class="panel-header"><h2>Audit log</h2></div>
         <div class="rows">
-          @for (item of config.audit; track item.time) {
+          @for (item of config.audit; track item.time + item.action) {
             <div class="row">
               <span class="agenda-time">{{ item.time }}</span>
               <div class="copy">
@@ -82,22 +96,50 @@ import { templateConfig } from '../template.config';
 })
 export class SettingsPageComponent {
   protected readonly config = templateConfig;
+  protected readonly initials = initials;
   protected readonly saved = signal(false);
-  protected readonly groups = signal(templateConfig.settings.map((group) => ({
-    ...group,
-    items: group.items.map((item) => ({ ...item }))
-  })));
+  protected readonly highMinutes = signal('30');
+  protected readonly dualMinutes = signal('15');
+  protected readonly idleHours = signal('2');
+  protected readonly onCallUntil = signal(templateConfig.onCall.until);
+  protected readonly groups = signal(
+    templateConfig.settings.map((group) => ({
+      group: group.group,
+      items: group.items.map((item) => ({ ...item }))
+    }))
+  );
 
-  protected initials(name: string): string {
-    return name.split(' ').map((part) => part[0]).join('').slice(0, 2);
+  protected onHigh(event: Event): void {
+    this.highMinutes.set((event.target as HTMLInputElement).value);
+    this.saved.set(false);
+  }
+
+  protected onDual(event: Event): void {
+    this.dualMinutes.set((event.target as HTMLInputElement).value);
+    this.saved.set(false);
+  }
+
+  protected onIdle(event: Event): void {
+    this.idleHours.set((event.target as HTMLInputElement).value);
+    this.saved.set(false);
+  }
+
+  protected onCall(event: Event): void {
+    this.onCallUntil.set((event.target as HTMLInputElement).value);
+    this.saved.set(false);
+  }
+
+  protected save(): void {
+    this.saved.set(true);
   }
 
   protected toggle(title: string): void {
-    this.groups.update((list) =>
-      list.map((group) => ({
-        ...group,
+    this.groups.update((groups) =>
+      groups.map((group) => ({
+        group: group.group,
         items: group.items.map((item) => (item.title === title ? { ...item, enabled: !item.enabled } : item))
       }))
     );
+    this.saved.set(false);
   }
 }

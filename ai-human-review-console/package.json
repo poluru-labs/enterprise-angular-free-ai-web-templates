@@ -2,11 +2,14 @@
   "name": "ai-human-review-console",
   "version": "1.0.0",
   "private": true,
-  "description": "Review Desk — human review console. Full-width sticky header, simple sidebar, queue and assignments. Light theme, brand #3A86FF.",
+  "description": "Review Desk — human review console. Full-width sticky header, simple sidebar, queue, assignments, calibration, and audit. Light theme, brand #3A86FF.",
   "scripts": {
     "start": "ng serve",
     "dev": "ng serve",
-    "build": "ng build"
+    "build": "ng build",
+    "test": "ng test --watch=false",
+    "lint": "ng lint",
+    "lint:fix": "ng lint --fix"
   },
   "dependencies": {
     "@angular/common": "^21.2.21",
@@ -24,6 +27,12 @@
     "@angular-devkit/build-angular": "^21.2.21",
     "@angular/cli": "^21.2.21",
     "@angular/compiler-cli": "^21.2.21",
-    "typescript": "~5.9.3"
+    "@eslint/js": "^10.0.1",
+    "angular-eslint": "^21.4.0",
+    "eslint": "^10.9.1",
+    "jsdom": "^29.1.1",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.69.0",
+    "vitest": "^4.1.11"
   }
 }
