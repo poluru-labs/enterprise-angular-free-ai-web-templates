@@ -15,7 +15,7 @@ Maintained by [Poluru Labs](https://polurus.com). Source: [github.com/poluru-lab
 | [Agent ops](ai-agent-ops-console/README.md) | AgentOps Kit | Fleet health, runs, tools, handoffs, and deploys | `#08766C` | [localhost:4200](http://localhost:4200) |
 | [Support copilot](ai-support-copilot-dashboard/README.md) | Harbor Desk | Queue health, AI drafts, knowledge, and CSAT | `#434E78` | [localhost:4217](http://localhost:4217) |
 | [Sales assistant](ai-sales-assistant-panel/README.md) | Garnet Close | Account briefs, pipeline signals, and sequences | `#BD4444` | [localhost:4216](http://localhost:4216) |
-| [Content studio](ai-content-studio/README.md) | Content Studio | Drafts, approvals, brand voice, and calendar | `#0046FF` | [localhost:4200](http://localhost:4200) |
+| [Content studio](ai-content-studio/README.md) | Content Studio | Drafts, approvals, library, brand voice, and calendar | `#0046FF` | [localhost:4200](http://localhost:4200) |
 | [Fraud risk](ai-fraud-risk-monitoring-ui/README.md) | Risk Watch | Alerts, cases, detection rules, and investigators | `#FF6600` | [localhost:4210](http://localhost:4210) |
 | [Human review](ai-human-review-console/README.md) | Review Desk | Review queue, assignments, policies, and audit | `#3A86FF` | [localhost:4212](http://localhost:4212) |
 
@@ -52,7 +52,7 @@ Output lands in `dist/<template-name>`.
 - DM Sans + Material Symbols
 - [`@poluru-labs/enterprise-design-system-angular`](https://www.npmjs.com/package/@poluru-labs/enterprise-design-system-angular)
 
-Copy and mock data live in each app’s `src/template.config.ts`. Layout and brand color live in `src/styles.scss` or `src/app/app.component.ts`.
+Copy and mock data live in each app’s `src/template.config.ts` or `src/app/core/config/template.config.ts`. Layout and brand color live in `src/styles.scss` or `src/app/app.component.ts`.
 
 ## License
 

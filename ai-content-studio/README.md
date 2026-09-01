@@ -12,14 +12,17 @@ Draft, approve, and schedule campaign content with brand guardrails. Content Stu
 | Local demo | [http://localhost:4200](http://localhost:4200) |
 | Source | [github.com/poluru-labs/…/ai-content-studio](https://github.com/poluru-labs/enterprise-angular-free-ai-web-templates/tree/main/ai-content-studio) |
 
-After `npm start`, open Projects and Calendar, then check Brand voice. If another template is already on port 4200, start with `npx ng serve --port 4213`.
+After `npm start`, open Projects and Calendar, then walk an approval and check Brand voice. If another template is already on port 4200, start with `npx ng serve --port 4213`.
 
 ## What you get
 
 - Production, approval, and brand-match KPIs
-- Project list with owners and due dates
+- Project list with owners, channels, and due dates
+- Asset library with brand-match scores
 - Editorial calendar
-- Brand-voice guardrails
+- Approval queue (approve / request changes / block)
+- Brand-voice guardrails and restricted claims
+- Workspace search (⌘K)
 - Draft / approve workflow modal
 
 ## Run
@@ -34,11 +37,14 @@ npm start
 
 | Route | Page |
 | --- | --- |
-| `/` | Dashboard — KPIs, features, and recent activity |
+| `/` | Dashboard — KPIs, features, channel mix, and activity |
 | `/projects` | Projects — owners, progress, due dates |
+| `/library` | Library — published and in-flight assets |
 | `/calendar` | Calendar — weekly publishing plan |
+| `/approvals` | Approvals — review queue and decisions |
 | `/brand-voice` | Brand voice — naming and claim rules |
-| `/settings` | Workspace toggles |
+| `/search` | Search — projects, assets, approvals |
+| `/settings` | Workspace toggles and guardrail floor |
 
 ```bash
 npm run build
@@ -48,9 +54,28 @@ Production output: `dist/ai-content-studio`.
 
 ## Stack
 
-Angular 21 (standalone components, router), Bootstrap 5, Material Symbols, DM Sans, [`@poluru-labs/enterprise-design-system-angular`](https://www.npmjs.com/package/@poluru-labs/enterprise-design-system-angular).
+Angular 21 (standalone components, router), Bootstrap 5, Material Symbols, DM Sans, [`@poluru-labs/enterprise-design-system-angular`](https://www.npmjs.com/package/@poluru-labs/enterprise-design-system-angular). Demo editors include **Alex Poluru**, Maya Subbu, Priya Subbu, and Sam Poluru.
 
-Copy lives in `src/template.config.ts`. Layout and brand color live in `src/app/app.component.ts` and `src/styles.scss`.
+Copy lives in `src/app/core/config/template.config.ts`. Layout and brand color live in `src/styles.scss`.
+
+```
+src/
+  app/
+    core/config/          shared template copy
+    features/             one folder per route
+    shared/testing/       spec helpers
+    app.component.ts
+    app.config.ts
+    app.routes.ts
+  environments/
+  assets/
+```
+
+```bash
+npm test
+npm run lint
+npm run lint:fix
+```
 
 ## License
 
