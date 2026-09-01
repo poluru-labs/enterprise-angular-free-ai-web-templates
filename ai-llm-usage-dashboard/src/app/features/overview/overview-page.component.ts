@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import {
   EdsAccordionComponent,
   EdsAlertComponent,
@@ -30,7 +30,8 @@ import {
   type EdsTabItem,
   type EdsTimelineItem
 } from '@poluru-labs/enterprise-design-system-angular';
-import { templateConfig } from '../template.config';
+import { templateConfig } from '../../core/config/template.config';
+import { statusVariant } from '../../shared/utils/status-variant';
 
 @Component({
   selector: 'app-overview-page',
@@ -89,7 +90,7 @@ import { templateConfig } from '../template.config';
     ></eds-alert>
 
     <section class="grid-4" style="margin-top: 1rem">
-      @for (metric of config.metrics; track metric.label) {
+      @for (metric of visibleMetrics(); track metric.label) {
         <eds-card class="card-pad" [elevated]="false">
           <eds-stat
             [label]="metric.label"
@@ -156,7 +157,7 @@ import { templateConfig } from '../template.config';
             <p class="eyebrow">Metering</p>
             <h2>Top workspaces</h2>
           </div>
-          <eds-tag label="8 rows" variant="brand"></eds-tag>
+          <eds-tag [label]="usageRows.length + ' rows'" variant="brand"></eds-tag>
         </div>
         <div class="table-wrap">
           <eds-data-table [columns]="usageColumns" [rows]="usageRows" [striped]="true" [compact]="true"></eds-data-table>
@@ -221,6 +222,7 @@ export class OverviewPageComponent {
   protected readonly config = templateConfig;
   protected readonly period = signal('week');
   protected readonly coachTab = signal(0);
+  protected readonly statusVariant = statusVariant;
 
   protected readonly crumbs: EdsBreadcrumbItem[] = [
     { label: 'Lilac Meter', href: '/' },
@@ -238,6 +240,10 @@ export class OverviewPageComponent {
     { label: 'Motion', content: 'Recent spend and routing events.' },
     { label: 'Inbox', content: 'Mentions for Lakshmi Poluru.' }
   ];
+
+  protected readonly visibleMetrics = computed(
+    () => this.config.metricsByPeriod[this.period() as 'day' | 'week' | 'month'] ?? this.config.metrics
+  );
 
   protected readonly alertItems: EdsAccordionItem[] = this.config.alerts.map((item, index) => ({
     heading: item.heading,
@@ -265,7 +271,7 @@ export class OverviewPageComponent {
     { key: 'status', label: 'Status', sortable: true }
   ];
 
-  protected readonly usageRows = this.config.usage.slice(0, 5).map((entry) => ({
+  protected readonly usageRows = this.config.usage.slice(0, 6).map((entry) => ({
     model: entry.model,
     workspace: entry.workspace,
     tokens: entry.tokens,
@@ -277,23 +283,11 @@ export class OverviewPageComponent {
     { term: 'Workspace', description: this.config.workspace },
     { term: 'Platform lead', description: this.config.user.name },
     { term: 'Cost gate', description: 'Off for sandbox' },
-    { term: 'Primary model', description: 'gpt-4.1' }
+    { term: 'Primary model', description: 'gpt-4.1' },
+    { term: 'Open alerts', description: String(this.config.opsAlerts.filter((item) => item.status === 'Open').length) }
   ];
 
   protected openExport(): void {
     window.dispatchEvent(new CustomEvent('meter:export'));
-  }
-
-  protected statusVariant(status: string): 'success' | 'warning' | 'danger' | 'info' | 'neutral' {
-    if (status === 'Active' || status === 'Ready' || status === 'Healthy') {
-      return 'success';
-    }
-    if (status === 'Watch' || status === 'Restricted') {
-      return 'warning';
-    }
-    if (status === 'Updated') {
-      return 'info';
-    }
-    return 'neutral';
   }
 }

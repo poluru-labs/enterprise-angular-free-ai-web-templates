@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import {
+  EdsButtonComponent,
   EdsCardComponent,
   EdsCheckboxComponent,
   EdsCodeSnippetComponent,
@@ -7,17 +8,22 @@ import {
   EdsDividerComponent,
   EdsIconComponent,
   EdsLinkComponent,
+  EdsListComponent,
   EdsNumberInputComponent,
   EdsPinInputComponent,
   EdsSliderComponent,
+  EdsStatusComponent,
   EdsSwitchComponent,
-  EdsTimePickerComponent
+  EdsTimePickerComponent,
+  type EdsListItem
 } from '@poluru-labs/enterprise-design-system-angular';
+import { templateConfig } from '../../core/config/template.config';
 
 @Component({
   selector: 'app-settings-page',
   standalone: true,
   imports: [
+    EdsButtonComponent,
     EdsCardComponent,
     EdsCheckboxComponent,
     EdsCodeSnippetComponent,
@@ -25,9 +31,11 @@ import {
     EdsDividerComponent,
     EdsIconComponent,
     EdsLinkComponent,
+    EdsListComponent,
     EdsNumberInputComponent,
     EdsPinInputComponent,
     EdsSliderComponent,
+    EdsStatusComponent,
     EdsSwitchComponent,
     EdsTimePickerComponent
   ],
@@ -39,7 +47,12 @@ import {
         <h1>Settings</h1>
         <p class="summary">Govern alerts, cost gates, and retention for Lakshmi Poluru’s platform workspace.</p>
       </div>
+      <eds-button variant="primary" size="sm" icon="save" (clicked)="save()">Save changes</eds-button>
     </section>
+
+    @if (saved()) {
+      <p class="notice">Settings saved for Lakshmi Poluru’s workspace.</p>
+    }
 
     <section class="stack">
       <eds-card class="card-pad setting" [elevated]="false">
@@ -47,7 +60,7 @@ import {
           <h3>Budget alerts</h3>
           <p>Notify workspace owners when spend crosses 80% of the monthly budget.</p>
         </div>
-        <eds-switch label="Enabled" [checked]="budgetAlerts()" (checkedChange)="budgetAlerts.set($event)"></eds-switch>
+        <eds-switch label="Enabled" [checked]="budgetAlerts()" (checkedChange)="toggle('budgetAlerts', $event)"></eds-switch>
       </eds-card>
 
       <eds-card class="card-pad setting" [elevated]="false">
@@ -58,7 +71,7 @@ import {
         <eds-switch
           label="Enabled"
           [checked]="latencyNotifications()"
-          (checkedChange)="latencyNotifications.set($event)"
+          (checkedChange)="toggle('latencyNotifications', $event)"
         ></eds-switch>
       </eds-card>
 
@@ -67,7 +80,7 @@ import {
           <h3>Strict cost gate</h3>
           <p>Block new model calls once a workspace budget is fully consumed.</p>
         </div>
-        <eds-switch label="Enabled" [checked]="strictCostGate()" (checkedChange)="strictCostGate.set($event)"></eds-switch>
+        <eds-switch label="Enabled" [checked]="strictCostGate()" (checkedChange)="toggle('strictCostGate', $event)"></eds-switch>
       </eds-card>
 
       <eds-card class="card-pad" [elevated]="false">
@@ -80,7 +93,7 @@ import {
           [step]="50"
           [value]="cap()"
           [showValue]="true"
-          (valueChange)="cap.set($event)"
+          (valueChange)="onCap($event)"
         ></eds-slider>
         <eds-number-input
           label="Alert at percent"
@@ -88,13 +101,21 @@ import {
           [min]="50"
           [max]="100"
           [step]="5"
-          (valueChange)="alertPct.set($event)"
+          (valueChange)="onAlertPct($event)"
         ></eds-number-input>
         <eds-checkbox
           label="Include embeddings in spend"
           [checked]="includeEmbeds()"
-          (checkedChange)="includeEmbeds.set($event)"
+          (checkedChange)="toggle('includeEmbeds', $event)"
         ></eds-checkbox>
+      </eds-card>
+
+      <eds-card class="card-pad" [elevated]="false">
+        <div class="section-head">
+          <h3>API keys</h3>
+          <eds-status label="5 keys" variant="info"></eds-status>
+        </div>
+        <eds-list [items]="keyItems" [divided]="true"></eds-list>
       </eds-card>
 
       <eds-card class="card-pad" [elevated]="false">
@@ -129,6 +150,8 @@ import {
   `
 })
 export class SettingsPageComponent {
+  protected readonly config = templateConfig;
+  protected readonly saved = signal(false);
   protected readonly budgetAlerts = signal(true);
   protected readonly latencyNotifications = signal(true);
   protected readonly strictCostGate = signal(false);
@@ -139,9 +162,33 @@ export class SettingsPageComponent {
   protected readonly digestTime = signal('02:30');
   protected readonly pin = signal('');
 
+  protected readonly keyItems: EdsListItem[] = this.config.apiKeys.map((item) => ({
+    label: item.name,
+    description: `${item.workspace} · ${item.owner} · rotates ${item.rotates}`
+  }));
+
   protected readonly samplePolicy = `{
   "owner": "Lakshmi Poluru",
   "alert_at": 0.8,
   "gate": false
 }`;
+
+  protected toggle(field: 'budgetAlerts' | 'latencyNotifications' | 'strictCostGate' | 'includeEmbeds', value: boolean): void {
+    this[field].set(value);
+    this.saved.set(false);
+  }
+
+  protected onCap(value: number): void {
+    this.cap.set(value);
+    this.saved.set(false);
+  }
+
+  protected onAlertPct(value: number): void {
+    this.alertPct.set(value);
+    this.saved.set(false);
+  }
+
+  protected save(): void {
+    this.saved.set(true);
+  }
 }

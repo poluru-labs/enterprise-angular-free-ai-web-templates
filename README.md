@@ -8,7 +8,7 @@ Maintained by [Poluru Labs](https://polurus.com). Source: [github.com/poluru-lab
 
 | Template | Product | What it covers | Brand | Local demo |
 | --- | --- | --- | --- | --- |
-| [LLM usage](ai-llm-usage-dashboard/README.md) | Lilac Meter | Token spend, latency, budgets, and model cost | `#8D77AB` | [localhost:4215](http://localhost:4215) |
+| [LLM usage](ai-llm-usage-dashboard/README.md) | Lilac Meter | Token spend, latency, budgets, alerts, and forecasts | `#8D77AB` | [localhost:4215](http://localhost:4215) |
 | [Prompt management](ai-prompt-management-panel/README.md) | Prompt library | Prompt catalog, reviews, and publishing | `#08766C` | [localhost:4200](http://localhost:4200) |
 | [RAG knowledge](ai-rag-knowledge-admin/README.md) | Indigo Vault | Sources, collections, indexing, and retrieval | `#4300FF` | [localhost:4214](http://localhost:4214) |
 | [Model evaluation](ai-model-evaluation-board/README.md) | Evaluation board | Suites, datasets, scorecards, and release sign-off | `#2F6B1F` | [localhost:4200](http://localhost:4200) |

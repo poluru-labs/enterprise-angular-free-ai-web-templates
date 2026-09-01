@@ -11,7 +11,8 @@ import {
   type EdsStepperStep,
   type EdsTimelineItem
 } from '@poluru-labs/enterprise-design-system-angular';
-import { templateConfig } from '../template.config';
+import { templateConfig } from '../../core/config/template.config';
+import { spendStatus, statusVariant } from '../../shared/utils/status-variant';
 
 @Component({
   selector: 'app-budgets-page',
@@ -55,7 +56,7 @@ import { templateConfig } from '../template.config';
                 <strong>{{ item.name }}</strong>
                 <p class="meta">{{ item.owner }} · cap {{ item.cap }}</p>
               </div>
-              <eds-status [label]="item.spend >= 80 ? 'Watch' : 'On track'" [variant]="item.spend >= 80 ? 'warning' : 'success'"></eds-status>
+              <eds-status [label]="spendStatus(item.spend)" [variant]="statusVariant(spendStatus(item.spend))"></eds-status>
             </div>
             @if (item.spend >= 80) {
               <eds-progress-bar [value]="item.spend" [max]="100" [label]="item.name" [showValue]="true"></eds-progress-bar>
@@ -77,6 +78,8 @@ import { templateConfig } from '../template.config';
 })
 export class BudgetsPageComponent {
   protected readonly config = templateConfig;
+  protected readonly spendStatus = spendStatus;
+  protected readonly statusVariant = statusVariant;
 
   protected readonly steps: EdsStepperStep[] = [
     { label: 'Forecast', description: 'Plan caps' },

@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute } from '@angular/router';
 import {
   EdsAutocompleteComponent,
   EdsBadgeComponent,
@@ -16,7 +18,9 @@ import {
   EdsTagComponent,
   EdsToolbarComponent
 } from '@poluru-labs/enterprise-design-system-angular';
-import { templateConfig } from '../template.config';
+import { templateConfig } from '../../core/config/template.config';
+import { statusVariant } from '../../shared/utils/status-variant';
+import { filterUsage, paginate } from '../../shared/utils/usage';
 
 @Component({
   selector: 'app-usage-page',
@@ -60,7 +64,7 @@ import { templateConfig } from '../template.config';
           placeholder="gpt-4.1"
           [suggestions]="suggestions"
           [value]="search()"
-          (valueChange)="search.set($event)"
+          (valueChange)="onSearch($event)"
         ></eds-autocomplete>
         <eds-date-range-picker
           label="Window"
@@ -84,7 +88,7 @@ import { templateConfig } from '../template.config';
       @if (pageRows().length === 0) {
         <eds-empty-state heading="No usage matches" description="Clear filters or pick another window." [icon]="true">
           <div actions>
-            <eds-button variant="primary" size="sm" (clicked)="search.set('')">Clear search</eds-button>
+            <eds-button variant="primary" size="sm" (clicked)="clearFilters()">Clear filters</eds-button>
           </div>
         </eds-empty-state>
       } @else {
@@ -103,7 +107,7 @@ import { templateConfig } from '../template.config';
     </eds-card>
 
     <section class="grid-3" style="margin-top: 0.9rem">
-      @for (row of config.usage.slice(0, 3); track row.model) {
+      @for (row of featured; track row.model + row.workspace) {
         <eds-card class="card-pad" [elevated]="false">
           <div class="section-head">
             <h3>{{ row.model }}</h3>
@@ -118,6 +122,7 @@ import { templateConfig } from '../template.config';
   `
 })
 export class UsagePageComponent {
+  private readonly route = inject(ActivatedRoute);
   protected readonly config = templateConfig;
   protected readonly search = signal('');
   protected readonly page = signal(1);
@@ -125,8 +130,10 @@ export class UsagePageComponent {
   protected readonly rangeStart = signal('2026-08-01');
   protected readonly rangeEnd = signal('2026-08-30');
   protected readonly tags = signal(['Production', 'Healthy']);
+  protected readonly statusVariant = statusVariant;
+  protected readonly featured = this.config.usage.slice(0, 3);
 
-  protected readonly suggestions = this.config.usage.map((item) => item.model);
+  protected readonly suggestions = [...new Set(this.config.usage.map((item) => item.model))];
 
   protected readonly columns: EdsDataTableColumn[] = [
     { key: 'model', label: 'Model', sortable: true },
@@ -138,24 +145,26 @@ export class UsagePageComponent {
     { key: 'status', label: 'Status', sortable: true }
   ];
 
-  protected readonly filtered = computed(() => {
-    const q = this.search().trim().toLowerCase();
-    return this.config.usage.filter(
-      (item) =>
-        !q ||
-        item.model.toLowerCase().includes(q) ||
-        item.workspace.toLowerCase().includes(q) ||
-        item.owner.toLowerCase().includes(q)
-    );
-  });
+  protected readonly filtered = computed(() => filterUsage(this.config.usage, this.search(), this.tags()));
 
-  protected readonly pageRows = computed(() => {
-    const start = (this.page() - 1) * this.pageSize;
-    return this.filtered().slice(start, start + this.pageSize);
-  });
+  protected readonly pageRows = computed(() => paginate(this.filtered(), this.page(), this.pageSize));
+
+  constructor() {
+    this.route.queryParamMap.pipe(takeUntilDestroyed()).subscribe((params) => {
+      const q = params.get('q') ?? '';
+      if (q) {
+        this.onSearch(q);
+      }
+    });
+  }
 
   protected openExport(): void {
     window.dispatchEvent(new CustomEvent('meter:export'));
+  }
+
+  protected onSearch(value: string): void {
+    this.search.set(value);
+    this.page.set(1);
   }
 
   protected onRange(range: { start: string; end: string }): void {
@@ -165,15 +174,12 @@ export class UsagePageComponent {
 
   protected dismissTag(tag: string): void {
     this.tags.update((items) => items.filter((item) => item !== tag));
+    this.page.set(1);
   }
 
-  protected statusVariant(status: string): 'success' | 'warning' | 'danger' | 'info' | 'neutral' {
-    if (status === 'Healthy') {
-      return 'success';
-    }
-    if (status === 'Watch' || status === 'Restricted') {
-      return 'warning';
-    }
-    return 'neutral';
+  protected clearFilters(): void {
+    this.search.set('');
+    this.tags.set([]);
+    this.page.set(1);
   }
 }

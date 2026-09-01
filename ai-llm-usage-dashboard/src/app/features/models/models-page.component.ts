@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import {
   EdsBadgeComponent,
   EdsCardComponent,
@@ -10,10 +10,11 @@ import {
   EdsSwitchComponent,
   EdsTagComponent,
   EdsTreeViewComponent,
-  type EdsListItem,
-  type EdsTreeNode
+  type EdsListItem
 } from '@poluru-labs/enterprise-design-system-angular';
-import { templateConfig } from '../template.config';
+import { templateConfig } from '../../core/config/template.config';
+import { statusVariant } from '../../shared/utils/status-variant';
+import { providerTree, selectedModelLabel, selectedModelOwner } from '../../shared/utils/usage';
 
 @Component({
   selector: 'app-models-page',
@@ -51,7 +52,7 @@ import { templateConfig } from '../template.config';
           [items]="tree"
           [selectedId]="selectedId()"
           [expandedIds]="expanded"
-          (nodeSelect)="selectedId.set($event)"
+          (nodeSelect)="onSelect($event)"
         ></eds-tree-view>
       </eds-card>
 
@@ -91,7 +92,7 @@ import { templateConfig } from '../template.config';
         <eds-card class="card-pad collection-card" [elevated]="false">
           <div class="section-head">
             <h3>{{ model.title }}</h3>
-            <eds-status [label]="model.status" [variant]="model.status === 'Active' ? 'success' : 'warning'"></eds-status>
+            <eds-status [label]="model.status" [variant]="statusVariant(model.status)"></eds-status>
           </div>
           <p class="meta">{{ model.detail }}</p>
           <p class="meta">Owner {{ model.owner }}</p>
@@ -107,54 +108,32 @@ export class ModelsPageComponent {
   protected readonly enabled = signal(true);
   protected readonly attribution = signal(true);
   protected readonly access = signal('open');
+  protected readonly statusVariant = statusVariant;
+  protected readonly tree = providerTree(this.config.models);
 
   protected readonly expanded: Record<string, boolean> = {
     catalog: true,
-    openai: true
+    openai: true,
+    anthropic: true
   };
-
-  protected readonly tree: EdsTreeNode[] = [
-    {
-      id: 'catalog',
-      label: 'Lilac Meter',
-      children: [
-        {
-          id: 'openai',
-          label: 'OpenAI',
-          children: [
-            { id: 'gpt-4.1', label: 'gpt-4.1' },
-            { id: 'embed-3-large', label: 'embed-3-large' }
-          ]
-        },
-        { id: 'anthropic', label: 'Anthropic' },
-        { id: 'google', label: 'Google' },
-        { id: 'meta', label: 'Meta' },
-        { id: 'mistral', label: 'Mistral' }
-      ]
-    }
-  ];
 
   protected readonly owners: EdsListItem[] = this.config.models.map((item) => ({
     label: item.owner,
     description: item.title + ' · ' + item.access
   }));
 
-  protected selectedLabel(): string {
-    const map: Record<string, string> = {
-      catalog: 'Lilac Meter',
-      openai: 'OpenAI',
-      'gpt-4.1': 'gpt-4.1',
-      'embed-3-large': 'embed-3-large',
-      anthropic: 'Anthropic',
-      google: 'Google',
-      meta: 'Meta',
-      mistral: 'Mistral'
-    };
-    return map[this.selectedId()] ?? 'OpenAI';
-  }
+  protected readonly selectedLabel = computed(() => selectedModelLabel(this.selectedId(), this.config.models));
 
-  protected selectedOwner(): string {
-    const found = this.config.models.find((item) => item.title === this.selectedLabel() || item.provider === this.selectedLabel());
-    return found?.owner ?? 'Lakshmi Poluru';
+  protected readonly selectedOwner = computed(() =>
+    selectedModelOwner(this.selectedLabel(), this.config.models, this.config.user.name)
+  );
+
+  protected onSelect(id: string): void {
+    this.selectedId.set(id);
+    const model = this.config.models.find((item) => item.title === id);
+    if (model) {
+      this.access.set(model.access === 'Restricted' ? 'restricted' : 'open');
+      this.enabled.set(model.status === 'Active');
+    }
   }
 }

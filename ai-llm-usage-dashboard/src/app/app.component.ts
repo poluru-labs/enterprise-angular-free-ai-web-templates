@@ -28,7 +28,8 @@ import {
   type EdsStepperStep
 } from '@poluru-labs/enterprise-design-system-angular';
 import { filter, fromEvent } from 'rxjs';
-import { templateConfig } from '../template.config';
+import { templateConfig } from './core/config/template.config';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -60,7 +61,7 @@ import { templateConfig } from '../template.config';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="shell" [class.nav-open]="navOpen()">
+    <div class="shell" [attr.data-app]="appName" [class.nav-open]="navOpen()">
       <header class="topbar">
         <div class="topbar-inner">
           <eds-button
@@ -91,20 +92,20 @@ import { templateConfig } from '../template.config';
             placeholder="Search models, workspaces, owners..."
             [clearable]="true"
             [value]="query()"
-            (valueChange)="query.set($event)"
+            (valueChange)="onQuery($event)"
           ></eds-search>
 
           <div class="topbar-actions">
             <eds-kbd keys="⌘K"></eds-kbd>
 
-            <eds-tooltip content="Inbox" placement="bottom">
+            <eds-tooltip content="Alerts" placement="bottom">
               <eds-button
                 class="topbar-icon"
                 variant="tertiary"
                 size="sm"
                 icon="bell"
                 [iconOnly]="true"
-                accessibleLabel="Open inbox"
+                accessibleLabel="Open alerts"
                 (clicked)="inboxOpen.set(true)"
               ></eds-button>
             </eds-tooltip>
@@ -122,6 +123,7 @@ import { templateConfig } from '../template.config';
                 </span>
               </button>
               <eds-menu-item label="Workspace settings" value="settings" (itemSelect)="goSettings()"></eds-menu-item>
+              <eds-menu-item label="Open alerts" value="alerts" (itemSelect)="goAlerts()"></eds-menu-item>
               <eds-menu-item label="Export report" value="export" (itemSelect)="openExportModal()"></eds-menu-item>
             </eds-dropdown-menu>
           </div>
@@ -145,6 +147,9 @@ import { templateConfig } from '../template.config';
         <p class="quick-label">Quick links</p>
         <eds-button variant="primary" size="sm" icon="download" [fullWidth]="true" (clicked)="openExportModal()">
           Export report
+        </eds-button>
+        <eds-button variant="secondary" size="sm" icon="bell" [fullWidth]="true" (clicked)="goAlerts()">
+          Open alerts
         </eds-button>
 
         <div class="profile">
@@ -226,6 +231,7 @@ import { templateConfig } from '../template.config';
       </div>
       <div footer class="drawer-footer">
         <eds-button variant="secondary" (clicked)="inboxOpen.set(false)">Close</eds-button>
+        <eds-button variant="primary" (clicked)="goAlerts()">View all alerts</eds-button>
       </div>
     </eds-drawer>
 
@@ -243,6 +249,7 @@ import { templateConfig } from '../template.config';
 export class AppComponent {
   private readonly router = inject(Router);
   protected readonly config = templateConfig;
+  protected readonly appName = environment.appName;
   protected readonly navOpen = signal(false);
   protected readonly query = signal('');
   protected readonly exportOpen = signal(false);
@@ -271,7 +278,7 @@ export class AppComponent {
     ).values()
   ];
 
-  protected readonly inboxItems: EdsListItem[] = this.config.activity.slice(0, 4).map((entry) => ({
+  protected readonly inboxItems: EdsListItem[] = this.config.opsAlerts.slice(0, 4).map((entry) => ({
     label: entry.title,
     description: entry.detail
   }));
@@ -293,7 +300,7 @@ export class AppComponent {
   protected onKeydown(event: KeyboardEvent): void {
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
       event.preventDefault();
-      this.exportOpen.set(true);
+      this.goUsageSearch();
     }
   }
 
@@ -305,6 +312,15 @@ export class AppComponent {
     this.navOpen.set(false);
   }
 
+  protected onQuery(value: string): void {
+    this.query.set(value);
+  }
+
+  protected goUsageSearch(): void {
+    const q = this.query().trim();
+    void this.router.navigate(['/usage'], { queryParams: q ? { q } : {} });
+  }
+
   protected openExportModal(): void {
     this.exportStep.set(0);
     this.exportOpen.set(true);
@@ -312,6 +328,11 @@ export class AppComponent {
 
   protected goSettings(): void {
     void this.router.navigateByUrl('/settings');
+  }
+
+  protected goAlerts(): void {
+    this.inboxOpen.set(false);
+    void this.router.navigateByUrl('/alerts');
   }
 
   protected canAdvanceExport(): boolean {
