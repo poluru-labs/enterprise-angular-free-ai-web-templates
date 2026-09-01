@@ -25,7 +25,7 @@ import {
   type EdsStepperStep
 } from '@poluru-labs/enterprise-design-system-angular';
 import { filter, fromEvent } from 'rxjs';
-import { templateConfig } from '../template.config';
+import { templateConfig } from './core/config/template.config';
 
 @Component({
   selector: 'app-root',

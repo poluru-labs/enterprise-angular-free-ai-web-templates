@@ -1,13 +1,13 @@
 import { Routes } from '@angular/router';
-import { AlertsPageComponent } from './alerts-page.component';
-import { AgentsPageComponent } from './agents-page.component';
-import { DashboardComponent } from './dashboard.component';
-import { DeployPageComponent } from './deploy-page.component';
-import { HandoffsPageComponent } from './handoffs-page.component';
-import { RunsPageComponent } from './runs-page.component';
-import { SearchPageComponent } from './search-page.component';
-import { SettingsPageComponent } from './settings-page.component';
-import { ToolsPageComponent } from './tools-page.component';
+import { AlertsPageComponent } from './features/alerts/alerts-page.component';
+import { AgentsPageComponent } from './features/agents/agents-page.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
+import { DeployPageComponent } from './features/deploy/deploy-page.component';
+import { HandoffsPageComponent } from './features/handoffs/handoffs-page.component';
+import { RunsPageComponent } from './features/runs/runs-page.component';
+import { SearchPageComponent } from './features/search/search-page.component';
+import { SettingsPageComponent } from './features/settings/settings-page.component';
+import { ToolsPageComponent } from './features/tools/tools-page.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', component: DashboardComponent },

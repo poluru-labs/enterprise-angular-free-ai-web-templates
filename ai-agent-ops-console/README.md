@@ -57,7 +57,26 @@ Production output: `dist/ai-agent-ops-console`.
 
 Angular 21 (standalone components, router), Bootstrap 5, Material Symbols, DM Sans, [`@poluru-labs/enterprise-design-system-angular`](https://www.npmjs.com/package/@poluru-labs/enterprise-design-system-angular). Demo operators include **Alex Poluru**, Maya Subbu, Priya Subbu, and Sam Poluru.
 
-Copy lives in `src/template.config.ts`. Layout and brand color live in `src/styles.scss`.
+Copy lives in `src/app/core/config/template.config.ts`. Layout and brand color live in `src/styles.scss`.
+
+```
+src/
+  app/
+    core/config/          shared template copy
+    features/             one folder per route
+    shared/testing/       spec helpers
+    app.component.ts
+    app.config.ts
+    app.routes.ts
+  environments/
+  assets/
+```
+
+```bash
+npm test
+npm run lint
+npm run lint:fix
+```
 
 ## License
 

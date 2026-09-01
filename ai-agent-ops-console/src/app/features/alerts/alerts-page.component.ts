@@ -13,7 +13,7 @@ import {
   type EdsListItem,
   type EdsTimelineItem
 } from '@poluru-labs/enterprise-design-system-angular';
-import { templateConfig } from '../template.config';
+import { templateConfig } from '../../core/config/template.config';
 
 @Component({
   selector: 'app-alerts-page',
