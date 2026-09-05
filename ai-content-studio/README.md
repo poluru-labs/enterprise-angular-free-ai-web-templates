@@ -7,6 +7,9 @@ Draft, approve, and schedule campaign content with brand guardrails. Content Stu
 
 ## Demo
 
+<img width="3360" height="4230" alt="image" src="https://github.com/user-attachments/assets/c5bc0eff-0035-4fd9-9a65-973754fdb12a" />
+
+
 | | |
 | --- | --- |
 | Local demo | [http://localhost:4200](http://localhost:4200) |
