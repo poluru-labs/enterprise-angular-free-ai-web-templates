@@ -19,6 +19,7 @@ Maintained by [Poluru Labs](https://polurus.com). Source: [github.com/poluru-lab
 | [Fraud risk](ai-fraud-risk-monitoring-ui/README.md) | Risk Watch | Alerts, cases, detection rules, and investigators | `#FF6600` | [localhost:4210](http://localhost:4210) |
 | [Human review](ai-human-review-console/README.md) | Review Desk | Review queue, assignments, calibration, reports, and audit | `#3A86FF` | [localhost:4212](http://localhost:4212) |
 | [Vector DB explorer](ai-vector-db-explorer/README.md) | Lattice | Embeddings, namespaces, similarity scores, and indexes | `#45A9A9` | [localhost:4220](http://localhost:4220) |
+| [Guardrails policy](ai-guardrails-policy-center/README.md) | Reef | Content filters, PII redaction, and safety policies for LLM endpoints | `#26CCC2` | [localhost:4221](http://localhost:4221) |
 
 Browse source for any template:
 
