@@ -18,6 +18,7 @@ Maintained by [Poluru Labs](https://polurus.com). Source: [github.com/poluru-lab
 | [Content studio](ai-content-studio/README.md) | Content Studio | Drafts, approvals, library, brand voice, and calendar | `#0046FF` | [localhost:4200](http://localhost:4200) |
 | [Fraud risk](ai-fraud-risk-monitoring-ui/README.md) | Risk Watch | Alerts, cases, detection rules, and investigators | `#FF6600` | [localhost:4210](http://localhost:4210) |
 | [Human review](ai-human-review-console/README.md) | Review Desk | Review queue, assignments, calibration, reports, and audit | `#3A86FF` | [localhost:4212](http://localhost:4212) |
+| [Vector DB explorer](ai-vector-db-explorer/README.md) | Lattice | Embeddings, namespaces, similarity scores, and indexes | `#45A9A9` | [localhost:4220](http://localhost:4220) |
 
 Browse source for any template:
 
