@@ -7,6 +7,9 @@ Fleet health, runs, tools, human handoffs, and deploys for AI agents. AgentOps K
 
 ## Demo
 
+<img width="3360" height="4232" alt="image" src="https://github.com/user-attachments/assets/96244f34-15ed-4c98-9cdd-2ae2a91b1ed8" />
+
+
 | | |
 | --- | --- |
 | Local demo | [http://localhost:4200](http://localhost:4200) |
