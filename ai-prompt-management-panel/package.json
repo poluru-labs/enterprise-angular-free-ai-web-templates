@@ -1,7 +1,6 @@
 {
   "name": "ai-prompt-management-panel",
   "version": "1.0.0",
-  "private": true,
   "description": "Prompt library — prompt catalog, experiments, versions, and collections. Brand #08766C.",
   "scripts": {
     "start": "ng serve",

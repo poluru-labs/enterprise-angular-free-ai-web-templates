@@ -1,7 +1,6 @@
 {
   "name": "ai-support-copilot-dashboard",
   "version": "1.0.0",
-  "private": true,
   "description": "Harbor Desk — AI support copilot admin. Full-width sticky header, simple sidebar, brand #434E78.",
   "scripts": {
     "start": "ng serve",

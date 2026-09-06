@@ -1,7 +1,6 @@
 {
   "name": "ai-model-evaluation-board",
   "version": "1.0.0",
-  "private": true,
   "description": "Model evaluation board — suites, datasets, scorecards, and release sign-off. Light canvas, brand #2F6B1F.",
   "scripts": {
     "start": "ng serve",

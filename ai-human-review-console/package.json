@@ -1,7 +1,6 @@
 {
   "name": "ai-human-review-console",
   "version": "1.0.0",
-  "private": true,
   "description": "Review Desk — human review console. Full-width sticky header, simple sidebar, queue, assignments, calibration, and audit. Light theme, brand #3A86FF.",
   "scripts": {
     "start": "ng serve",

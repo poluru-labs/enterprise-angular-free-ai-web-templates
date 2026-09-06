@@ -1,7 +1,6 @@
 {
   "name": "ai-rag-knowledge-admin",
   "version": "1.0.0",
-  "private": true,
   "description": "Indigo Vault — RAG knowledge admin. Full-width sticky header, simple sidebar, brand #4300FF.",
   "scripts": {
     "start": "ng serve",

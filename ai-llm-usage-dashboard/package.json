@@ -1,7 +1,6 @@
 {
   "name": "ai-llm-usage-dashboard",
   "version": "1.0.0",
-  "private": true,
   "description": "Lilac Meter — LLM usage dashboard. Full-width sticky header, simple sidebar, brand #8D77AB.",
   "scripts": {
     "start": "ng serve",

@@ -1,7 +1,6 @@
 {
   "name": "ai-sales-assistant-panel",
   "version": "1.0.0",
-  "private": true,
   "description": "Garnet Close — AI sales assistant admin. Full-width sticky header, simple sidebar, brand #BD4444.",
   "scripts": {
     "start": "ng serve",

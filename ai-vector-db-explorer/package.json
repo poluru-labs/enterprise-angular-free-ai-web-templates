@@ -1,7 +1,6 @@
 {
   "name": "ai-vector-db-explorer",
   "version": "1.0.0",
-  "private": true,
   "description": "Lattice — AI vector DB explorer. Browse embeddings, namespaces, and similarity scores. Brand #45A9A9.",
   "scripts": {
     "start": "ng serve",

@@ -1,7 +1,6 @@
 {
   "name": "ai-content-studio",
   "version": "1.0.0",
-  "private": true,
   "description": "Content Studio — AI content workspace. Drafts, approvals, brand voice, calendar, and library. Light theme, brand #0046FF.",
   "scripts": {
     "start": "ng serve",
