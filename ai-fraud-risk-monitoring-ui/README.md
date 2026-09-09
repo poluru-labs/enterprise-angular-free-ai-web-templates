@@ -2,6 +2,11 @@
 
 Alerts, cases, detection rules, watchlist, and investigator queues. Risk Watch uses a **full-height sticky sidebar**.
 
+## Screenshot
+
+<img width="3360" height="4154" alt="ai-fraud-risk-monitoring-ui" src="https://github.com/user-attachments/assets/d4f27786-b155-4bb6-a9eb-1bdab4f4d4ae" />
+
+
 **Brand:** `#FF6600`  
 **Folder:** `ai-fraud-risk-monitoring-ui`
 
