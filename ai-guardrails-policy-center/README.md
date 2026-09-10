@@ -2,6 +2,11 @@
 
 Define and test content filters, PII redaction rules, and safety policies for LLM endpoints. Reef is a policy admin with a **full-width sticky header** and a **simple sidebar**.
 
+## Screenshot
+
+<img width="3360" height="4234" alt="ai-guardrails-policy-center" src="https://github.com/user-attachments/assets/45769cd4-3fdd-4127-b840-56f977702485" />
+
+
 **Brand:** `#26CCC2`  
 **Folder:** `ai-guardrails-policy-center`
 
