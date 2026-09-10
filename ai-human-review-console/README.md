@@ -2,6 +2,10 @@
 
 A human-in-the-loop workspace for queue, assignments, policies, calibration, reports, and audit. Review Desk uses a **full-width sticky header** and a **simple sidebar**.
 
+## Screenshot
+
+<img width="3360" height="7540" alt="ai-human-review-console" src="https://github.com/user-attachments/assets/ffb5af8d-f178-45b2-8ed4-cd0f3a5560a4" />
+
 **Brand:** `#3A86FF`  
 **Folder:** `ai-human-review-console`
 
