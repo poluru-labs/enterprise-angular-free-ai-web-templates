@@ -1,0 +1,40 @@
+<main class="app-shell">
+  <aside class="sidebar" aria-label="Primary navigation">
+    <div class="brand"><span>AP</span><strong>Aperture</strong></div>
+    <nav>
+      <p>WORKSPACE</p>
+      <a class="active" href="#overview"><eds-icon icon="home" size="sm" />Overview</a>
+      <a href="#spend"><eds-icon icon="filter" size="sm" />Spend explorer</a>
+      <a href="#budgets"><eds-icon icon="folder" size="sm" />Budgets</a>
+      <a href="#recommendations"><eds-icon icon="star" size="sm" />Recommendations <eds-badge>4</eds-badge></a>
+      <p>MANAGE</p>
+      <a href="#teams"><eds-icon icon="user" size="sm" />Teams</a>
+      <a href="#settings"><eds-icon icon="settings" size="sm" />Settings</a>
+    </nav>
+    <div class="workspace"><eds-avatar initials="PN" size="sm" /><div><strong>Poluru Labs</strong><small>Growth plan</small></div><eds-icon icon="more-horizontal" size="sm" /></div>
+  </aside>
+
+  <section class="page">
+    <header class="topbar"><button class="workspace-picker" type="button">Poluru Labs <eds-icon icon="chevron-down" size="sm" /></button><div><eds-button variant="tertiary" aria-label="Notifications"><eds-icon icon="bell" size="sm" /></eds-button><eds-avatar initials="SP" size="sm" /></div></header>
+    <div class="content" id="overview">
+      <section class="heading"><div><p class="eyebrow">COST INTELLIGENCE</p><h1>AI Cost Optimization</h1><p>Track usage, keep budgets on course, and find the next efficiency win.</p></div><div class="actions"><eds-button variant="secondary" icon="download">Export report</eds-button><eds-button variant="primary">Set budget</eds-button></div></section>
+      <section class="filters"><eds-button variant="secondary" size="sm" icon="calendar">Sep 1 - Sep 30, 2026</eds-button><eds-button variant="secondary" size="sm">All teams <eds-icon icon="chevron-down" size="sm" /></eds-button><span>Updated 12 min ago</span></section>
+
+      <section class="metric-grid" aria-label="Cost summary">
+        <eds-card><p>Total spend</p><strong>$24,860</strong><small class="up">+12.4% <i>vs. last period</i></small></eds-card>
+        <eds-card><p>Tokens used</p><strong>1.84B</strong><small class="up">+8.7% <i>vs. last period</i></small></eds-card>
+        <eds-card><p>Cost per 1M tokens</p><strong>$13.51</strong><small class="down">-4.1% <i>vs. last period</i></small></eds-card>
+        <eds-card><p>Projected month end</p><strong>$31,420</strong><small class="up">4.7% <i>over budget</i></small></eds-card>
+      </section>
+
+      <section class="grid" id="spend">
+        <eds-card class="panel"><div class="panel-head"><div><h2>Spend over time</h2><p>Daily spend across all models</p></div><eds-button variant="tertiary" size="sm">Daily <eds-icon icon="chevron-down" size="sm" /></eds-button></div><div class="chart" role="img" aria-label="Daily AI spend rises from 680 dollars to 1250 dollars"><div class="labels"><span>$1.5k</span><span>$1k</span><span>$500</span><span>$0</span></div><div class="plot"><i></i><i></i><i></i><i></i><svg viewBox="0 0 720 210" preserveAspectRatio="none" aria-hidden="true"><path d="M0 170C52 140 76 157 125 134S190 142 238 105S297 116 344 83S410 101 457 69S521 88 571 47S650 55 720 17V210H0Z"/><path d="M0 170C52 140 76 157 125 134S190 142 238 105S297 116 344 83S410 101 457 69S521 88 571 47S650 55 720 17"/><circle cx="720" cy="17" r="5"/></svg><div><span>Sep 1</span><span>Sep 7</span><span>Sep 14</span><span>Sep 21</span><span>Sep 30</span></div></div></div></eds-card>
+        <eds-card class="panel" id="budgets"><div class="panel-head"><div><h2>Monthly budget</h2><p>September 2026</p></div><eds-button variant="tertiary" size="sm">View budgets</eds-button></div><div class="budget"><strong>$24,860</strong><span>of $30,000</span></div><eds-progress-bar [value]="83" /><div class="budget-status"><eds-status status="warning">$5,140 remaining</eds-status><strong>83%</strong></div><div class="warning"><eds-icon icon="warning" size="sm" /><p>At the current pace, this budget will be exceeded by <strong>$1,420</strong>.</p></div></eds-card>
+      </section>
+
+      <section class="grid lower"><eds-card class="panel"><div class="panel-head"><div><h2>Spend by model</h2><p>Where your AI budget goes</p></div><eds-button variant="tertiary" size="sm">View all</eds-button></div><div class="model-list"><div><b class="model openai">O</b><p><strong>GPT-4o</strong><small>OpenAI</small></p><i style="--size:86%"></i><strong>$10,920</strong><small>44%</small></div><div><b class="model anthropic">A</b><p><strong>Claude 3.5 Sonnet</strong><small>Anthropic</small></p><i style="--size:62%"></i><strong>$7,840</strong><small>32%</small></div><div><b class="model google">G</b><p><strong>Gemini 1.5 Pro</strong><small>Google</small></p><i style="--size:35%"></i><strong>$3,920</strong><small>16%</small></div></div></eds-card><eds-card class="panel" id="teams"><div class="panel-head"><div><h2>Top spending teams</h2><p>September 2026</p></div><eds-button variant="tertiary" size="sm">View teams</eds-button></div><div class="team-list"><div><small>01</small><b>PR</b><p><strong>Product</strong><small>31 members</small></p><strong>$8,640</strong><em>+18%</em></div><div><small>02</small><b>CS</b><p><strong>Customer Success</strong><small>18 members</small></p><strong>$5,920</strong><em>+11%</em></div><div><small>03</small><b>MK</b><p><strong>Marketing</strong><small>12 members</small></p><strong>$4,780</strong><em class="down">-6%</em></div></div></eds-card></section>
+
+      <section class="recommendations" id="recommendations"><div class="heading"><div><p class="eyebrow">OPTIMIZATION QUEUE</p><h2>Rightsizing recommendations</h2><p>Estimated savings based on the last 30 days of traffic.</p></div><eds-button variant="secondary">View all recommendations</eds-button></div><div class="recommendation-grid"><eds-card><eds-badge>Save $1,840/mo</eds-badge><h3>Move support triage to GPT-4o mini</h3><p>Low-complexity classification accounts for 73% of Support Copilot calls.</p><footer><span>High confidence</span><eds-button variant="tertiary" size="sm">Review</eds-button></footer></eds-card><eds-card><eds-badge>Save $960/mo</eds-badge><h3>Enable semantic cache for help center</h3><p>Repeated questions represent 28% of your retrieval-augmented generation traffic.</p><footer><span>Medium confidence</span><eds-button variant="tertiary" size="sm">Review</eds-button></footer></eds-card><eds-card><eds-badge>Save $720/mo</eds-badge><h3>Lower output limits in content drafts</h3><p>Most accepted drafts use fewer than 600 output tokens per generation.</p><footer><span>High confidence</span><eds-button variant="tertiary" size="sm">Review</eds-button></footer></eds-card></div></section>
+    </div>
+  </section>
+</main>
