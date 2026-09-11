@@ -1,4 +1,4 @@
-# Enterprise Angular Free AI Web Templates
+# Download Enterprise Angular Free AI Web Templates
 
 Free, production-shaped Angular 21 templates for AI dashboards, ops consoles, and admin workspaces. Each folder is a self-contained app: install it, run it, and restyle it independently.
 
