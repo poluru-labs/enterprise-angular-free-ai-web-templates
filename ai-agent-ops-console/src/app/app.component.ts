@@ -155,6 +155,10 @@ import { templateConfig } from './core/config/template.config';
         </header>
         <eds-visually-hidden>AgentOps Kit operations workspace</eds-visually-hidden>
         <router-outlet />
+        <footer class="site-footer">
+          <span>Created by <a href="https://polurus.com">Subrahmanyam Poluru</a></span>
+          <span>Built with <a href="https://www.npmjs.com/package/@poluru-labs/enterprise-design-system-angular">Enterprise Design System Angular</a></span>
+        </footer>
       </main>
     </div>
 
