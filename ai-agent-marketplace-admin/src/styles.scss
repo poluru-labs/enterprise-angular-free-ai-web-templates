@@ -1,1 +1,51 @@
-/* You can add global styles to this file, and also import other style files */
+@import '@poluru-labs/enterprise-design-system-angular/tokens.css';
+@import '@poluru-labs/enterprise-design-system-angular/styles.css';
+
+:root {
+  --eds-font-sans: 'Roboto', sans-serif;
+  --eds-font-display: 'Lato', sans-serif;
+  --eds-color-brand-900: #31092d;
+  --eds-color-brand-800: #390a34;
+  --eds-color-brand-700: #450c3f;
+  --eds-color-brand-600: #621959;
+  --eds-color-brand-500: #823b78;
+  --eds-color-brand-400: #a66a9d;
+  --eds-color-brand-300: #c295bb;
+  --eds-color-brand-200: #dfc7da;
+  --eds-color-brand-100: #f0e5ed;
+  --eds-color-brand-50: #faf5f9;
+  --eds-color-primary: #450c3f;
+  --eds-color-primary-hover: #621959;
+  --eds-color-primary-active: #31092d;
+  --eds-color-bg: #f7f8fa;
+  --eds-color-text: #25232b;
+  --eds-color-text-muted: #74717d;
+  --eds-color-border: #e9e7ec;
+  --eds-radius-md: 8px;
+  --eds-shadow-focus: 0 0 0 3px #450c3f26;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: #f7f8fa; font-family: 'Roboto', sans-serif; color: #25232b; font-size: 14px; }
+button, input, select { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+a { color: #450c3f; }
+button { cursor: pointer; }
+h1, h2, h3 { font-family: 'Lato', sans-serif; }
+button:focus-visible, a:focus-visible { outline: 3px solid #aa78a2; outline-offset: 4px; }
+/* Compose the library's public components with the marketplace theme. */
+eds-card { display: block; min-width: 0; }
+eds-card > .card { height: 100%; box-shadow: 0 2px 3px #23102a02; border-radius: 12px; }
+eds-card > .card > .body { padding: 22px; }
+.sidebar .eds-side-nav { background: transparent; border: 0; padding: 0; width: 100%; }
+.sidebar .eds-side-nav__link { color: #695c6c; border-radius: 7px; padding: 13px 17px; margin: 5px 0; font-size: 14px; }
+.sidebar .eds-side-nav__link:hover { background: #f4ecf2; color: #450c3f; }
+.sidebar .eds-side-nav__link--active { background: #eee0eb; color: #450c3f; box-shadow: inset 3px 0 #450c3f; font-weight: 600; }
+.sidebar .eds-side-nav__link--active:hover { background: #e6d3e2; color: #450c3f; }
+.sidebar .eds-side-nav__link:focus-visible { outline: 2px solid #823b78; outline-offset: 2px; }
+.catalog-controls .eds-tabs__panel { display: none; }
+.catalog-controls .eds-tabs { border: 0; }
+.catalog-filters .eds-label, .catalog-filters .eds-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+eds-avatar { --eds-color-brand-100: #f0e5ed; --eds-color-brand-700: #450c3f; }
+eds-modal .dialog { width: min(600px, calc(100vw - 32px)); }
+
+eds-card > .card > .header:empty, eds-card > .card > .footer:empty, eds-card > .card > .media:empty { display: none; }
