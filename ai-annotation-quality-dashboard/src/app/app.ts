@@ -10,7 +10,7 @@ interface Review { id: string; dataset: string; text: string; first: string; sec
 })
 export class App {
   readonly page = signal('Overview');
-  readonly mobileMenu = signal(false);
+  readonly sidebarOpen = signal(false);
   readonly project = signal('all');
   readonly period = signal('30');
   readonly search = signal('');
@@ -87,7 +87,7 @@ export class App {
   weighted(key: 'accuracy' | 'agreement') { return this.scoped().reduce((sum, d) => sum + d[key] * d.reviewed, 0) / this.reviewed(); }
   isHealthy(dataset: Dataset) { return dataset.accuracy >= this.accuracyTarget() && dataset.agreement >= this.agreementTarget(); }
   datasetName(id: string) { return this.datasets.find(d => d.id === id)?.name || id; }
-  navigate(page: string) { this.page.set(page); this.mobileMenu.set(false); this.error.set(''); }
+  navigate(page: string) { this.page.set(page); this.sidebarOpen.set(false); this.error.set(''); }
   openAudit() { this.auditDataset.set(this.project() === 'all' ? 'support' : this.project()); this.error.set(''); this.modal.set('audit'); }
   inspect(dataset: Dataset) { this.selectedDataset.set(dataset); this.modal.set('dataset'); }
   review(item: Review) { this.selectedReview.set(item); this.finalLabel.set(''); this.note.set(''); this.error.set(''); this.modal.set('review'); }

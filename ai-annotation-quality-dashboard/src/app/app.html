@@ -1,13 +1,14 @@
 <a class="skip-link" href="#main">Skip to content</a>
-<div class="app-shell">
-  <aside class="sidebar" [class.open]="mobileMenu()">
+<div class="app-shell" [class.sidebar-expanded]="sidebarOpen()">
+  <aside id="workspace-sidebar" class="sidebar" [hidden]="!sidebarOpen()" (keydown.escape)="sidebarOpen.set(false)">
     <a class="brand" href="#main" (click)="navigate('Overview')"><span class="brand-symbol"><eds-icon name="check" /></span><span>Label<span class="brand-light">wise</span><small>QUALITY WORKSPACE</small></span></a>
     <div class="workspace"><span class="workspace-logo">P</span><div><strong>Poluru Labs</strong><small>Enterprise workspace</small></div><eds-icon name="chevron-down" size="sm" /></div>
     <p class="nav-label">WORKSPACE</p><eds-side-nav [items]="navigation()" (navigateEvent)="navigate($event.label)" />
     <div class="sidebar-bottom"><div class="sidebar-note"><eds-icon name="check-circle" /><strong>Quality starts here.</strong><p>Every thoughtful label builds a better dataset.</p></div><div class="profile"><eds-avatar name="Riya Poluru" size="sm" /><div><strong>Riya Poluru</strong><small>Workspace administrator</small></div></div></div>
   </aside>
+  @if (sidebarOpen()) { <button type="button" class="sidebar-backdrop" aria-label="Close navigation" (click)="sidebarOpen.set(false)"></button> }
   <div class="page">
-    <header class="topbar"><div class="breadcrumb"><eds-button class="mobile-toggle" variant="tertiary" icon="menu" [iconOnly]="true" accessibleLabel="Toggle navigation" (clicked)="mobileMenu.set(!mobileMenu())" /><span>Workspace</span><eds-icon name="chevron-right" size="sm" /><strong>{{ page() }}</strong></div><div class="topbar-actions"><eds-badge variant="neutral">Demo workspace</eds-badge><span class="separator"></span><eds-button variant="tertiary" icon="bell" [iconOnly]="true" accessibleLabel="Open review queue" (clicked)="navigate('Review queue')" /><eds-avatar name="Riya Poluru" size="sm" /></div></header>
+    <header class="topbar"><div class="breadcrumb"><button class="nav-toggle" type="button" [attr.aria-label]="sidebarOpen() ? 'Collapse navigation' : 'Expand navigation'" [attr.aria-expanded]="sidebarOpen()" aria-controls="workspace-sidebar" (click)="sidebarOpen.set(!sidebarOpen())"><eds-icon [name]="sidebarOpen() ? 'x' : 'menu'" /></button><span>Workspace</span><eds-icon name="chevron-right" size="sm" /><strong>{{ page() }}</strong></div><div class="topbar-actions"><eds-badge variant="neutral">Demo workspace</eds-badge><span class="separator"></span><eds-button variant="tertiary" icon="bell" [iconOnly]="true" accessibleLabel="Open review queue" (clicked)="navigate('Review queue')" /><eds-avatar name="Riya Poluru" size="sm" /></div></header>
     <main id="main" class="content">
       <section class="page-heading"><div><p class="eyebrow">BETTER LABELS. BETTER OUTCOMES.</p><h1>{{ page() === 'Overview' ? 'Annotation Quality Dashboard' : page() }}</h1><p>Measure agreement, improve accuracy, and build datasets you can trust.</p></div><div class="actions"><eds-button variant="secondary" icon="download" (clicked)="exportReport()">Export report</eds-button><eds-button icon="plus" (clicked)="openAudit()">Run quality check</eds-button></div></section>
       @if (notice()) { <div class="notice" role="status"><eds-alert variant="success" [message]="notice()" /><eds-button variant="tertiary" icon="x" [iconOnly]="true" accessibleLabel="Dismiss notification" (clicked)="notice.set('')" /></div> }

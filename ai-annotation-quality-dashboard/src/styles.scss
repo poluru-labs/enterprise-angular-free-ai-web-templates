@@ -39,8 +39,9 @@ eds-card > .card > .body { padding: 24px; }
 eds-card > .card > .header:empty, eds-card > .card > .footer:empty, eds-card > .card > .media:empty { display: none; }
 eds-button .eds-button--primary { color: #163f36; font-weight: 600; }
 eds-button .eds-button--tertiary { color: #286a59; }
+.sidebar eds-side-nav { display: block; width: 100%; min-width: 0; }
 .sidebar .eds-side-nav { width: 100%; padding: 0; background: transparent; border: 0; }
-.sidebar .eds-side-nav__link { padding: 13px 17px; margin: 6px 0; color: #6b7a73; border-radius: 7px; }
+.sidebar .eds-side-nav__link { justify-content: flex-start; align-items: center; min-height: 44px; text-align: left; line-height: 1.4; padding: 13px 17px; margin: 6px 0; color: #6b7a73; border-radius: 7px; }
 .sidebar .eds-side-nav__link:hover { background: #edf5f1; color: #20594b; }
 .sidebar .eds-side-nav__link--active { background: #e0f0e9; box-shadow: inset 3px 0 #72baa9; color: #20594b; font-weight: 600; }
 .sidebar .eds-side-nav__link--active:hover { background: #d5eade; }
