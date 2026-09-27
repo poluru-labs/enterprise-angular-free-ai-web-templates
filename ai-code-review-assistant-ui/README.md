@@ -1,59 +1,44 @@
-# NgBoilerplate
+# Code Review Assistant Panel
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.23.
+Review AI-generated code suggestions, acceptance rates, and per-repo productivity metrics.
 
-## Development server
+A light Angular dashboard with top navigation, a `#C3110C` theme, Google Fonts Roboto and Lato, and 15 components from `@poluru-labs/enterprise-design-system-angular`.
 
-To start a local development server, run:
+## Features
 
-```bash
-ng serve
+- Overview with suggestion totals, acceptance rates, estimated time saved, and pending reviews.
+- Workspace activity chart with week/month views and a suggestion outcome chart.
+- Original/suggested code comparisons rendered as plain text, never executed.
+- Searchable review queue with repository and decision filters.
+- Accept and decline actions, configurable decline-note requirements, and an activity trail.
+- New review submission with title, repository, file path, and code snippets.
+- Repository productivity table, historical team performance, and CSV export.
+- Responsive horizontal navigation, accessible design-system controls, and review dialogs.
+
+## Development
+
+```sh
+npm ci
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open `http://localhost:4200`.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```sh
+npm run build
+npm test -- --watch=false
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Production browser output: `dist/ai-code-review-assistant-ui/browser`.
 
-```bash
-ng generate --help
-```
+The application uses browser rendering because the design-system SVG icon implementation requires a browser DOM.
 
-## Building
+## Demo behavior
 
-To build the project run:
+All people and metrics are fictional. Session changes reset on reload. No backend, repository connection, code execution, or actual source changes are implemented.
 
-```bash
-ng build
-```
+Historical repository decisions are combined with session decisions for overview metrics. Acceptance rate is accepted decisions divided by all decided suggestions; pending suggestions are excluded. Estimated time saved uses a fixed sample number of minutes per accepted suggestion for each repository. Team performance remains the historical snapshot. The activity chart is an illustrative workspace series; its time selector does not change the repository snapshot metrics.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Created by [Subrahmanyam Poluru](https://polurus.com).
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Built with [@poluru-labs/enterprise-design-system-angular](https://www.npmjs.com/package/@poluru-labs/enterprise-design-system-angular).

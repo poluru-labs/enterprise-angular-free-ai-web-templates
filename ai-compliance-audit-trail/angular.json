@@ -30,6 +30,8 @@
               }
             ],
             "styles": [
+              "@poluru-labs/enterprise-design-system-angular/tokens.css",
+              "@poluru-labs/enterprise-design-system-angular/styles.css",
               "src/styles.scss"
             ],
             "server": "src/main.server.ts",

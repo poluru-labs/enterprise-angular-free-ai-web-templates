@@ -1,1 +1,117 @@
-/* You can add global styles to this file, and also import other style files */
+@import "@poluru-labs/enterprise-design-system-angular/tokens.css";
+@import "@poluru-labs/enterprise-design-system-angular/styles.css";
+:root {
+  --eds-font-sans: "Roboto", sans-serif;
+  --eds-font-display: "Lato", sans-serif;
+  --eds-color-brand-900: #7e0b08;
+  --eds-color-brand-800: #a10e0a;
+  --eds-color-brand-700: #c3110c;
+  --eds-color-brand-600: #cc302b;
+  --eds-color-brand-500: #d85550;
+  --eds-color-brand-400: #e77975;
+  --eds-color-brand-300: #eeaaa7;
+  --eds-color-brand-200: #f5cecc;
+  --eds-color-brand-100: #fbe8e7;
+  --eds-color-brand-50: #fff5f4;
+  --eds-color-primary: #c3110c;
+  --eds-color-primary-hover: #a10e0a;
+  --eds-color-primary-active: #7e0b08;
+  --eds-color-text: #29292e;
+  --eds-color-text-muted: #74747e;
+  --eds-color-border: #e8e8ed;
+  --eds-color-border-strong: #dcdce3;
+  --eds-color-bg: #f8f9fb;
+  --eds-color-focus: #c3110c;
+  --eds-radius-md: 8px;
+  --eds-radius-lg: 12px;
+  --eds-shadow-focus: 0 0 0 3px #c3110c22;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #f8f9fb;
+  color: #29292e;
+  font:
+    14px "Roboto",
+    sans-serif;
+}
+button,
+input,
+select {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+}
+a {
+  color: #c3110c;
+}
+h1,
+h2,
+h3 {
+  font-family: "Lato", sans-serif;
+}
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #c3110c;
+  outline-offset: 3px;
+}
+eds-card {
+  display: block;
+  min-width: 0;
+}
+eds-card > .card {
+  height: 100%;
+  box-shadow: 0 2px 4px #29292e03;
+}
+eds-card > .card > .body {
+  padding: 24px;
+}
+eds-card > .card > .header:empty,
+eds-card > .card > .footer:empty,
+eds-card > .card > .media:empty {
+  display: none;
+}
+eds-tabs .eds-tabs__panel {
+  display: none;
+}
+.top-navigation .eds-tabs__list {
+  border: 0;
+  gap: 22px;
+}
+.top-navigation .eds-tabs__tab {
+  padding: 19px 4px;
+  margin: 0;
+  font-size: 14px;
+}
+.top-navigation .eds-tabs__tab:hover {
+  border-radius: 4px 4px 0 0;
+}
+.repo-filter .eds-label,
+.queue-toolbar .eds-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  clip-path: inset(50%);
+  overflow: hidden;
+}
+.code-card > .card > .body,
+.table-card > .card > .body {
+  padding: 0;
+}
+eds-modal .dialog {
+  width: min(900px, calc(100vw - 32px));
+}
+.settings-row eds-switch .eds-switch__label {
+  font-size: 12px;
+}
+@media (max-width: 700px) {
+  .top-navigation .eds-tabs__list {
+    gap: 18px;
+  }
+  .top-navigation .eds-tabs__tab {
+    white-space: nowrap;
+  }
+}
