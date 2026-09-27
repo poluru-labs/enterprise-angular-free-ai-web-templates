@@ -1,5 +1,6 @@
 {
-  "name": "ng-boilerplate",
+  "name": "ai-agent-marketplace-admin",
+  "description": "Publish, version, and govern internal AI agents with approval workflows and usage analytics.",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +8,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:ng-boilerplate": "node dist/ng-boilerplate/server/server.mjs"
+    "serve:ssr:ai-agent-marketplace-admin": "node dist/ai-agent-marketplace-admin/server/server.mjs"
   },
   "private": true,
   "packageManager": "npm@11.6.2",

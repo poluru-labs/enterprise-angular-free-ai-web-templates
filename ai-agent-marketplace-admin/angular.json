@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "ng-boilerplate": {
+    "ai-agent-marketplace-admin": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -69,10 +69,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ng-boilerplate:build:production"
+              "buildTarget": "ai-agent-marketplace-admin:build:production"
             },
             "development": {
-              "buildTarget": "ng-boilerplate:build:development"
+              "buildTarget": "ai-agent-marketplace-admin:build:development"
             }
           },
           "defaultConfiguration": "development"

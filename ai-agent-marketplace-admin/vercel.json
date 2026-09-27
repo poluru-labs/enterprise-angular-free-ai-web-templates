@@ -2,6 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "angular",
   "buildCommand": "npm run build",
-  "outputDirectory": "dist/ng-boilerplate/browser",
+  "outputDirectory": "dist/ai-agent-marketplace-admin/browser",
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
