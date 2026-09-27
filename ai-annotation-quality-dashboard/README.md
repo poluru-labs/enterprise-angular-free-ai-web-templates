@@ -1,59 +1,42 @@
-# NgBoilerplate
+# Annotation Quality Dashboard
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.23.
+Measure inter-annotator agreement, label accuracy, and dataset health for training pipelines.
 
-## Development server
+A light Angular dashboard using the `#72BAA9` theme, Google Fonts Roboto and Lato, and 17 components from `@poluru-labs/enterprise-design-system-angular`.
 
-To start a local development server, run:
+## Features
 
-```bash
-ng serve
+- Dataset-scoped agreement, accuracy, reviewed annotation counts, and health indicators.
+- Agreement trend charts with 7-day and 30-day views.
+- Searchable dataset table with health filters and detail dialogs.
+- Disagreement review queue with final label selection and required decision notes.
+- Sortable annotator performance table with fictional Poluru names.
+- Session-based quality reports and CSV exports.
+- Configurable accuracy and agreement thresholds with immediate health recalculation.
+- Light sidebar, responsive layouts, and keyboard-accessible design-system controls.
+
+## Local development
+
+```sh
+npm ci
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Open `http://localhost:4200`.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```sh
+npm run build
+npm test -- --watch=false
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Production browser files are generated in `dist/ai-annotation-quality-dashboard/browser`. This dashboard renders in the browser because the design system's SVG icon implementation requires a browser DOM.
 
-```bash
-ng generate --help
-```
+## Demo data
 
-## Building
+All records, people, and metrics are fictional. Changes reset on reload. No backend, authentication, or annotation pipeline is connected.
 
-To build the project run:
+Agreement and accuracy are seeded percentages weighted by reviewed annotation counts for the selected datasets. They are illustrative, not computed from raw labels. The 7-day series is an illustrative recent-window trend. Changing the chart period does not change the September snapshot metrics. Dataset health requires both configured thresholds; coverage is a separate sample metric. Resolving a dispute updates the review queue but does not rerun an evaluation or change snapshot accuracy. Quality checks capture the existing sample metrics into session reports.
 
-```bash
-ng build
-```
+Created by [Subrahmanyam Poluru](https://polurus.com).
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Built with [@poluru-labs/enterprise-design-system-angular](https://www.npmjs.com/package/@poluru-labs/enterprise-design-system-angular).

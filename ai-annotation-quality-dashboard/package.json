@@ -1,5 +1,5 @@
 {
-  "name": "ng-boilerplate",
+  "name": "ai-annotation-quality-dashboard",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:ng-boilerplate": "node dist/ng-boilerplate/server/server.mjs"
+    "serve:ssr:ai-annotation-quality-dashboard": "node dist/ai-annotation-quality-dashboard/server/server.mjs"
   },
   "private": true,
   "packageManager": "npm@11.6.2",
@@ -20,6 +20,7 @@
     "@angular/platform-server": "^21.2.0",
     "@angular/router": "^21.2.0",
     "@angular/ssr": "^21.2.23",
+    "@poluru-labs/enterprise-design-system-angular": "^1.0.0",
     "express": "^5.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
@@ -34,5 +35,6 @@
     "prettier": "^3.8.1",
     "typescript": "~5.9.2",
     "vitest": "^4.0.8"
-  }
+  },
+  "description": "Measure inter-annotator agreement, label accuracy, and dataset health for training pipelines."
 }

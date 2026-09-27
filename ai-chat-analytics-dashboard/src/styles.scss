@@ -1,1 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
+@import '@poluru-labs/enterprise-design-system-angular/tokens.css';
+@import '@poluru-labs/enterprise-design-system-angular/styles.css';
+
+:root {
+  --eds-color-primary-500: #72baa9;
+  --eds-color-primary-600: #4f9f8d;
+  --eds-color-primary-700: #337f70;
+  --eds-font-family-sans: 'Roboto', sans-serif;
+}
+
+html, body { margin: 0; min-height: 100%; background: #f5f8f7; }
+body { font-family: 'Roboto', sans-serif; -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; }
+
+/* Keep projected card layouts flush while retaining design-system surfaces. */
+eds-card .card > .header,
+eds-card .card > .body,
+eds-card .card > .footer { padding: 0; }
+eds-card .card > .media:empty,
+eds-card .card > .header:empty,
+eds-card .card > .footer:empty { display: none; }
+.metric-grid eds-card .card { border: 0; background: transparent; box-shadow: none; }

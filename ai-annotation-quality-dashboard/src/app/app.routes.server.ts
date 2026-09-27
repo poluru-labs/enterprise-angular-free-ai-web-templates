@@ -3,6 +3,7 @@ import { RenderMode, ServerRoute } from '@angular/ssr';
 export const serverRoutes: ServerRoute[] = [
   {
     path: '**',
-    renderMode: RenderMode.Prerender
+    // Design-system SVG icons require the browser DOM.
+    renderMode: RenderMode.Client
   }
 ];

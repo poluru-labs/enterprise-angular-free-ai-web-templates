@@ -1,1 +1,54 @@
-/* You can add global styles to this file, and also import other style files */
+@import '@poluru-labs/enterprise-design-system-angular/tokens.css';
+@import '@poluru-labs/enterprise-design-system-angular/styles.css';
+:root {
+  --eds-font-sans: 'Roboto', sans-serif;
+  --eds-font-display: 'Lato', sans-serif;
+  --eds-color-brand-900: #163f36;
+  --eds-color-brand-800: #20594b;
+  --eds-color-brand-700: #286a59;
+  --eds-color-brand-600: #38846f;
+  --eds-color-brand-500: #72baa9;
+  --eds-color-brand-400: #8fcbbb;
+  --eds-color-brand-300: #afdace;
+  --eds-color-brand-200: #cde8df;
+  --eds-color-brand-100: #e4f3ed;
+  --eds-color-brand-50: #f2f9f6;
+  --eds-color-primary: #72baa9;
+  --eds-color-primary-hover: #60ab98;
+  --eds-color-primary-active: #509a87;
+  --eds-color-text: #263c35;
+  --eds-color-text-muted: #6f7e77;
+  --eds-color-border: #e4eae6;
+  --eds-color-border-strong: #d4dfd8;
+  --eds-color-bg: #f7f9f8;
+  --eds-color-focus: #286a59;
+  --eds-shadow-focus: 0 0 0 3px #72baa945;
+  --eds-radius-md: 8px;
+  --eds-radius-lg: 12px;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: #f7f9f8; color: #263c35; font-family: 'Roboto', sans-serif; font-size: 14px; }
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+a { color: #286a59; }
+h1, h2, h3 { font-family: 'Lato', sans-serif; }
+a:focus-visible, button:focus-visible { outline: 2px solid #286a59; outline-offset: 3px; }
+eds-card { display: block; min-width: 0; }
+eds-card > .card { height: 100%; box-shadow: 0 2px 5px #263c3503; }
+eds-card > .card > .body { padding: 24px; }
+eds-card > .card > .header:empty, eds-card > .card > .footer:empty, eds-card > .card > .media:empty { display: none; }
+eds-button .eds-button--primary { color: #163f36; font-weight: 600; }
+eds-button .eds-button--tertiary { color: #286a59; }
+.sidebar .eds-side-nav { width: 100%; padding: 0; background: transparent; border: 0; }
+.sidebar .eds-side-nav__link { padding: 13px 17px; margin: 6px 0; color: #6b7a73; border-radius: 7px; }
+.sidebar .eds-side-nav__link:hover { background: #edf5f1; color: #20594b; }
+.sidebar .eds-side-nav__link--active { background: #e0f0e9; box-shadow: inset 3px 0 #72baa9; color: #20594b; font-weight: 600; }
+.sidebar .eds-side-nav__link--active:hover { background: #d5eade; }
+.sidebar .eds-side-nav__link:focus-visible { outline: 2px solid #286a59; outline-offset: 2px; }
+.eds-tabs .eds-tabs__tab--selected { color: #286a59; border-bottom-color: #72baa9; }
+eds-tabs .eds-tabs__panel { display: none; }
+.filter-bar .eds-label, .table-toolbar .eds-label { position: absolute; width: 1px; height: 1px; clip-path: inset(50%); overflow: hidden; }
+.dataset-card > .card > .body { padding: 0; }
+eds-avatar { --eds-color-brand-700: #286a59; }
+eds-modal .dialog { width: min(620px, calc(100vw - 32px)); }
+eds-progress-bar { --eds-color-primary: #72baa9; }
