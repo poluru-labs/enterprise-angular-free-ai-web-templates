@@ -18,6 +18,14 @@ describe('App', () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, ng-boilerplate');
+    expect(compiled.querySelector('h1')?.textContent).toContain('AI Experiment Lab');
+  });
+
+  it('should link the footer credits', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const footer = (fixture.nativeElement as HTMLElement).querySelector('.site-footer')?.innerHTML ?? '';
+    expect(footer).toContain('https://polurus.com');
+    expect(footer).toContain('https://www.npmjs.com/package/@poluru-labs/enterprise-design-system-angular');
   });
 });

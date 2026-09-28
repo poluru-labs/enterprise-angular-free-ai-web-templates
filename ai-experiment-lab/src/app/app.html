@@ -1,344 +1,507 @@
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * Delete the template below * * * * * * * * * -->
-<!-- * * * * * * * to get started with your project! * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<a class="skip-link" href="#main">Skip to content</a>
 
-<style>
-  :host {
-    --bright-blue: oklch(51.01% 0.274 263.83);
-    --electric-violet: oklch(53.18% 0.28 296.97);
-    --french-violet: oklch(47.66% 0.246 305.88);
-    --vivid-pink: oklch(69.02% 0.277 332.77);
-    --hot-red: oklch(61.42% 0.238 15.34);
-    --orange-red: oklch(63.32% 0.24 31.68);
-
-    --gray-900: oklch(19.37% 0.006 300.98);
-    --gray-700: oklch(36.98% 0.014 302.71);
-    --gray-400: oklch(70.9% 0.015 304.04);
-
-    --red-to-pink-to-purple-vertical-gradient: linear-gradient(
-      180deg,
-      var(--orange-red) 0%,
-      var(--vivid-pink) 50%,
-      var(--electric-violet) 100%
-    );
-
-    --red-to-pink-to-purple-horizontal-gradient: linear-gradient(
-      90deg,
-      var(--orange-red) 0%,
-      var(--vivid-pink) 50%,
-      var(--electric-violet) 100%
-    );
-
-    --pill-accent: var(--bright-blue);
-
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-      "Segoe UI Symbol";
-    box-sizing: border-box;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    display: block;
-    height: 100dvh;
-  }
-
-  h1 {
-    font-size: 3.125rem;
-    color: var(--gray-900);
-    font-weight: 500;
-    line-height: 100%;
-    letter-spacing: -0.125rem;
-    margin: 0;
-    font-family: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-      "Segoe UI Symbol";
-  }
-
-  p {
-    margin: 0;
-    color: var(--gray-700);
-  }
-
-  main {
-    width: 100%;
-    min-height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-    box-sizing: inherit;
-    position: relative;
-  }
-
-  .angular-logo {
-    max-width: 9.2rem;
-  }
-
-  .content {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    max-width: 700px;
-    margin-bottom: 3rem;
-  }
-
-  .content h1 {
-    margin-top: 1.75rem;
-  }
-
-  .content p {
-    margin-top: 1.5rem;
-  }
-
-  .divider {
-    width: 1px;
-    background: var(--red-to-pink-to-purple-vertical-gradient);
-    margin-inline: 0.5rem;
-  }
-
-  .pill-group {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    flex-wrap: wrap;
-    gap: 1.25rem;
-  }
-
-  .pill {
-    display: flex;
-    align-items: center;
-    --pill-accent: var(--bright-blue);
-    background: color-mix(in srgb, var(--pill-accent) 5%, transparent);
-    color: var(--pill-accent);
-    padding-inline: 0.75rem;
-    padding-block: 0.375rem;
-    border-radius: 2.75rem;
-    border: 0;
-    transition: background 0.3s ease;
-    font-family: var(--inter-font);
-    font-size: 0.875rem;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 1.4rem;
-    letter-spacing: -0.00875rem;
-    text-decoration: none;
-    white-space: nowrap;
-  }
-
-  .pill:hover {
-    background: color-mix(in srgb, var(--pill-accent) 15%, transparent);
-  }
-
-  .pill-group .pill:nth-child(6n + 1) {
-    --pill-accent: var(--bright-blue);
-  }
-  .pill-group .pill:nth-child(6n + 2) {
-    --pill-accent: var(--electric-violet);
-  }
-  .pill-group .pill:nth-child(6n + 3) {
-    --pill-accent: var(--french-violet);
-  }
-
-  .pill-group .pill:nth-child(6n + 4),
-  .pill-group .pill:nth-child(6n + 5),
-  .pill-group .pill:nth-child(6n + 6) {
-    --pill-accent: var(--hot-red);
-  }
-
-  .pill-group svg {
-    margin-inline-start: 0.25rem;
-  }
-
-  .social-links {
-    display: flex;
-    align-items: center;
-    gap: 0.73rem;
-    margin-top: 1.5rem;
-  }
-
-  .social-links path {
-    transition: fill 0.3s ease;
-    fill: var(--gray-400);
-  }
-
-  .social-links a:hover svg path {
-    fill: var(--gray-900);
-  }
-
-  @media screen and (max-width: 650px) {
-    .content {
-      flex-direction: column;
-      width: max-content;
-    }
-
-    .divider {
-      height: 1px;
-      width: 100%;
-      background: var(--red-to-pink-to-purple-horizontal-gradient);
-      margin-block: 1.5rem;
-    }
-  }
-</style>
-
-<main class="main">
-  <div class="content">
-    <div class="left-side">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 982 239"
-        fill="none"
-        class="angular-logo"
-      >
-        <g clip-path="url(#a)">
-          <path
-            fill="url(#b)"
-            d="M388.676 191.625h30.849L363.31 31.828h-35.758l-56.215 159.797h30.848l13.174-39.356h60.061l13.256 39.356Zm-65.461-62.675 21.602-64.311h1.227l21.602 64.311h-44.431Zm126.831-7.527v70.202h-28.23V71.839h27.002v20.374h1.392c2.782-6.71 7.2-12.028 13.255-15.956 6.056-3.927 13.584-5.89 22.503-5.89 8.264 0 15.465 1.8 21.684 5.318 6.137 3.518 10.964 8.673 14.319 15.382 3.437 6.71 5.074 14.81 4.992 24.383v76.175h-28.23v-71.92c0-8.019-2.046-14.237-6.219-18.819-4.173-4.5-9.819-6.791-17.102-6.791-4.91 0-9.328 1.063-13.174 3.272-3.846 2.128-6.792 5.237-9.001 9.328-2.046 4.009-3.191 8.918-3.191 14.728ZM589.233 239c-10.147 0-18.82-1.391-26.103-4.091-7.282-2.7-13.092-6.382-17.511-10.964-4.418-4.582-7.528-9.655-9.164-15.219l25.448-6.136c1.145 2.372 2.782 4.663 4.991 6.954 2.209 2.291 5.155 4.255 8.837 5.81 3.683 1.554 8.428 2.291 14.074 2.291 8.019 0 14.647-1.964 19.884-5.81 5.237-3.845 7.856-10.227 7.856-19.064v-22.665h-1.391c-1.473 2.946-3.601 5.892-6.383 9.001-2.782 3.109-6.464 5.645-10.965 7.691-4.582 2.046-10.228 3.109-17.101 3.109-9.165 0-17.511-2.209-25.039-6.545-7.446-4.337-13.42-10.883-17.757-19.474-4.418-8.673-6.628-19.473-6.628-32.565 0-13.091 2.21-24.301 6.628-33.383 4.419-9.082 10.311-15.955 17.839-20.7 7.528-4.746 15.874-7.037 25.039-7.037 7.037 0 12.846 1.145 17.347 3.518 4.582 2.373 8.182 5.236 10.883 8.51 2.7 3.272 4.746 6.382 6.137 9.327h1.554v-19.8h27.821v121.749c0 10.228-2.454 18.737-7.364 25.447-4.91 6.709-11.538 11.7-20.048 15.055-8.509 3.355-18.165 4.991-28.884 4.991Zm.245-71.266c5.974 0 11.047-1.473 15.302-4.337 4.173-2.945 7.446-7.118 9.573-12.519 2.21-5.482 3.274-12.027 3.274-19.637 0-7.609-1.064-14.155-3.274-19.8-2.127-5.646-5.318-10.064-9.491-13.255-4.174-3.11-9.329-4.746-15.384-4.746s-11.537 1.636-15.792 4.91c-4.173 3.272-7.365 7.772-9.492 13.418-2.128 5.727-3.191 12.191-3.191 19.392 0 7.2 1.063 13.745 3.273 19.228 2.127 5.482 5.318 9.736 9.573 12.764 4.174 3.027 9.41 4.582 15.629 4.582Zm141.56-26.51V71.839h28.23v119.786h-27.412v-21.273h-1.227c-2.7 6.709-7.119 12.191-13.338 16.446-6.137 4.255-13.747 6.382-22.748 6.382-7.855 0-14.81-1.718-20.783-5.237-5.974-3.518-10.72-8.591-14.075-15.382-3.355-6.709-5.073-14.891-5.073-24.464V71.839h28.312v71.921c0 7.609 2.046 13.664 6.219 18.083 4.173 4.5 9.655 6.709 16.365 6.709 4.173 0 8.183-.982 12.111-3.028 3.927-2.045 7.118-5.072 9.655-9.082 2.537-4.091 3.764-9.164 3.764-15.218Zm65.707-109.395v159.796h-28.23V31.828h28.23Zm44.841 162.169c-7.61 0-14.402-1.391-20.457-4.091-6.055-2.7-10.883-6.791-14.32-12.109-3.518-5.319-5.237-11.946-5.237-19.801 0-6.791 1.228-12.355 3.765-16.773 2.536-4.419 5.891-7.937 10.228-10.637 4.337-2.618 9.164-4.664 14.647-6.055 5.4-1.391 11.046-2.373 16.856-3.027 7.037-.737 12.683-1.391 17.102-1.964 4.337-.573 7.528-1.555 9.574-2.782 1.963-1.309 3.027-3.273 3.027-5.973v-.491c0-5.891-1.718-10.391-5.237-13.664-3.518-3.191-8.51-4.828-15.056-4.828-6.955 0-12.356 1.473-16.447 4.5-4.009 3.028-6.71 6.546-8.183 10.719l-26.348-3.764c2.046-7.282 5.483-13.336 10.31-18.328 4.746-4.909 10.638-8.59 17.511-11.045 6.955-2.455 14.565-3.682 22.912-3.682 5.809 0 11.537.654 17.265 2.045s10.965 3.6 15.711 6.71c4.746 3.109 8.51 7.282 11.455 12.6 2.864 5.318 4.337 11.946 4.337 19.883v80.184h-27.166v-16.446h-.9c-1.719 3.355-4.092 6.464-7.201 9.328-3.109 2.864-6.955 5.237-11.619 6.955-4.828 1.718-10.229 2.536-16.529 2.536Zm7.364-20.701c5.646 0 10.556-1.145 14.729-3.354 4.173-2.291 7.364-5.237 9.655-9.001 2.292-3.763 3.355-7.854 3.355-12.273v-14.155c-.9.737-2.373 1.391-4.5 2.046-2.128.654-4.419 1.145-7.037 1.636-2.619.491-5.155.9-7.692 1.227-2.537.328-4.746.655-6.628.901-4.173.572-8.019 1.472-11.292 2.781-3.355 1.31-5.973 3.11-7.855 5.401-1.964 2.291-2.864 5.318-2.864 8.918 0 5.237 1.882 9.164 5.728 11.782 3.682 2.782 8.51 4.091 14.401 4.091Zm64.643 18.328V71.839h27.412v19.965h1.227c2.21-6.955 5.974-12.274 11.292-16.038 5.319-3.763 11.456-5.645 18.329-5.645 1.555 0 3.355.082 5.237.163 1.964.164 3.601.328 4.91.573v25.938c-1.227-.41-3.109-.819-5.646-1.146a58.814 58.814 0 0 0-7.446-.49c-5.155 0-9.738 1.145-13.829 3.354-4.091 2.209-7.282 5.236-9.655 9.164-2.373 3.927-3.519 8.427-3.519 13.5v70.448h-28.312ZM222.077 39.192l-8.019 125.923L137.387 0l84.69 39.192Zm-53.105 162.825-57.933 33.056-57.934-33.056 11.783-28.556h92.301l11.783 28.556ZM111.039 62.675l30.357 73.803H80.681l30.358-73.803ZM7.937 165.115 0 39.192 84.69 0 7.937 165.115Z"
-          />
-          <path
-            fill="url(#c)"
-            d="M388.676 191.625h30.849L363.31 31.828h-35.758l-56.215 159.797h30.848l13.174-39.356h60.061l13.256 39.356Zm-65.461-62.675 21.602-64.311h1.227l21.602 64.311h-44.431Zm126.831-7.527v70.202h-28.23V71.839h27.002v20.374h1.392c2.782-6.71 7.2-12.028 13.255-15.956 6.056-3.927 13.584-5.89 22.503-5.89 8.264 0 15.465 1.8 21.684 5.318 6.137 3.518 10.964 8.673 14.319 15.382 3.437 6.71 5.074 14.81 4.992 24.383v76.175h-28.23v-71.92c0-8.019-2.046-14.237-6.219-18.819-4.173-4.5-9.819-6.791-17.102-6.791-4.91 0-9.328 1.063-13.174 3.272-3.846 2.128-6.792 5.237-9.001 9.328-2.046 4.009-3.191 8.918-3.191 14.728ZM589.233 239c-10.147 0-18.82-1.391-26.103-4.091-7.282-2.7-13.092-6.382-17.511-10.964-4.418-4.582-7.528-9.655-9.164-15.219l25.448-6.136c1.145 2.372 2.782 4.663 4.991 6.954 2.209 2.291 5.155 4.255 8.837 5.81 3.683 1.554 8.428 2.291 14.074 2.291 8.019 0 14.647-1.964 19.884-5.81 5.237-3.845 7.856-10.227 7.856-19.064v-22.665h-1.391c-1.473 2.946-3.601 5.892-6.383 9.001-2.782 3.109-6.464 5.645-10.965 7.691-4.582 2.046-10.228 3.109-17.101 3.109-9.165 0-17.511-2.209-25.039-6.545-7.446-4.337-13.42-10.883-17.757-19.474-4.418-8.673-6.628-19.473-6.628-32.565 0-13.091 2.21-24.301 6.628-33.383 4.419-9.082 10.311-15.955 17.839-20.7 7.528-4.746 15.874-7.037 25.039-7.037 7.037 0 12.846 1.145 17.347 3.518 4.582 2.373 8.182 5.236 10.883 8.51 2.7 3.272 4.746 6.382 6.137 9.327h1.554v-19.8h27.821v121.749c0 10.228-2.454 18.737-7.364 25.447-4.91 6.709-11.538 11.7-20.048 15.055-8.509 3.355-18.165 4.991-28.884 4.991Zm.245-71.266c5.974 0 11.047-1.473 15.302-4.337 4.173-2.945 7.446-7.118 9.573-12.519 2.21-5.482 3.274-12.027 3.274-19.637 0-7.609-1.064-14.155-3.274-19.8-2.127-5.646-5.318-10.064-9.491-13.255-4.174-3.11-9.329-4.746-15.384-4.746s-11.537 1.636-15.792 4.91c-4.173 3.272-7.365 7.772-9.492 13.418-2.128 5.727-3.191 12.191-3.191 19.392 0 7.2 1.063 13.745 3.273 19.228 2.127 5.482 5.318 9.736 9.573 12.764 4.174 3.027 9.41 4.582 15.629 4.582Zm141.56-26.51V71.839h28.23v119.786h-27.412v-21.273h-1.227c-2.7 6.709-7.119 12.191-13.338 16.446-6.137 4.255-13.747 6.382-22.748 6.382-7.855 0-14.81-1.718-20.783-5.237-5.974-3.518-10.72-8.591-14.075-15.382-3.355-6.709-5.073-14.891-5.073-24.464V71.839h28.312v71.921c0 7.609 2.046 13.664 6.219 18.083 4.173 4.5 9.655 6.709 16.365 6.709 4.173 0 8.183-.982 12.111-3.028 3.927-2.045 7.118-5.072 9.655-9.082 2.537-4.091 3.764-9.164 3.764-15.218Zm65.707-109.395v159.796h-28.23V31.828h28.23Zm44.841 162.169c-7.61 0-14.402-1.391-20.457-4.091-6.055-2.7-10.883-6.791-14.32-12.109-3.518-5.319-5.237-11.946-5.237-19.801 0-6.791 1.228-12.355 3.765-16.773 2.536-4.419 5.891-7.937 10.228-10.637 4.337-2.618 9.164-4.664 14.647-6.055 5.4-1.391 11.046-2.373 16.856-3.027 7.037-.737 12.683-1.391 17.102-1.964 4.337-.573 7.528-1.555 9.574-2.782 1.963-1.309 3.027-3.273 3.027-5.973v-.491c0-5.891-1.718-10.391-5.237-13.664-3.518-3.191-8.51-4.828-15.056-4.828-6.955 0-12.356 1.473-16.447 4.5-4.009 3.028-6.71 6.546-8.183 10.719l-26.348-3.764c2.046-7.282 5.483-13.336 10.31-18.328 4.746-4.909 10.638-8.59 17.511-11.045 6.955-2.455 14.565-3.682 22.912-3.682 5.809 0 11.537.654 17.265 2.045s10.965 3.6 15.711 6.71c4.746 3.109 8.51 7.282 11.455 12.6 2.864 5.318 4.337 11.946 4.337 19.883v80.184h-27.166v-16.446h-.9c-1.719 3.355-4.092 6.464-7.201 9.328-3.109 2.864-6.955 5.237-11.619 6.955-4.828 1.718-10.229 2.536-16.529 2.536Zm7.364-20.701c5.646 0 10.556-1.145 14.729-3.354 4.173-2.291 7.364-5.237 9.655-9.001 2.292-3.763 3.355-7.854 3.355-12.273v-14.155c-.9.737-2.373 1.391-4.5 2.046-2.128.654-4.419 1.145-7.037 1.636-2.619.491-5.155.9-7.692 1.227-2.537.328-4.746.655-6.628.901-4.173.572-8.019 1.472-11.292 2.781-3.355 1.31-5.973 3.11-7.855 5.401-1.964 2.291-2.864 5.318-2.864 8.918 0 5.237 1.882 9.164 5.728 11.782 3.682 2.782 8.51 4.091 14.401 4.091Zm64.643 18.328V71.839h27.412v19.965h1.227c2.21-6.955 5.974-12.274 11.292-16.038 5.319-3.763 11.456-5.645 18.329-5.645 1.555 0 3.355.082 5.237.163 1.964.164 3.601.328 4.91.573v25.938c-1.227-.41-3.109-.819-5.646-1.146a58.814 58.814 0 0 0-7.446-.49c-5.155 0-9.738 1.145-13.829 3.354-4.091 2.209-7.282 5.236-9.655 9.164-2.373 3.927-3.519 8.427-3.519 13.5v70.448h-28.312ZM222.077 39.192l-8.019 125.923L137.387 0l84.69 39.192Zm-53.105 162.825-57.933 33.056-57.934-33.056 11.783-28.556h92.301l11.783 28.556ZM111.039 62.675l30.357 73.803H80.681l30.358-73.803ZM7.937 165.115 0 39.192 84.69 0 7.937 165.115Z"
-          />
-        </g>
-        <defs>
-          <radialGradient
-            id="c"
-            cx="0"
-            cy="0"
-            r="1"
-            gradientTransform="rotate(118.122 171.182 60.81) scale(205.794)"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stop-color="#FF41F8" />
-            <stop offset=".707" stop-color="#FF41F8" stop-opacity=".5" />
-            <stop offset="1" stop-color="#FF41F8" stop-opacity="0" />
-          </radialGradient>
-          <linearGradient
-            id="b"
-            x1="0"
-            x2="982"
-            y1="192"
-            y2="192"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stop-color="#F0060B" />
-            <stop offset="0" stop-color="#F0070C" />
-            <stop offset=".526" stop-color="#CC26D5" />
-            <stop offset="1" stop-color="#7702FF" />
-          </linearGradient>
-          <clipPath id="a"><path fill="#fff" d="M0 0h982v239H0z" /></clipPath>
-        </defs>
-      </svg>
-      <h1>Hello, {{ title() }}</h1>
-      <p>Congratulations! Your app is running. 🎉</p>
-    </div>
-    <div class="divider" role="separator" aria-label="Divider"></div>
-    <div class="right-side">
-      <div class="pill-group">
-        @for (item of [
-          { title: 'Explore the Docs', link: 'https://angular.dev' },
-          { title: 'Learn with Tutorials', link: 'https://angular.dev/tutorials' },
-          { title: 'Prompt and best practices for AI', link: 'https://angular.dev/ai/develop-with-ai'},
-          { title: 'CLI Docs', link: 'https://angular.dev/tools/cli' },
-          { title: 'Angular Language Service', link: 'https://angular.dev/tools/language-service' },
-          { title: 'Angular DevTools', link: 'https://angular.dev/tools/devtools' },
-        ]; track item.title) {
-          <a
-            class="pill"
-            [href]="item.link"
-            target="_blank"
-            rel="noopener"
-          >
-            <span>{{ item.title }}</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="14"
-              viewBox="0 -960 960 960"
-              width="14"
-              fill="currentColor"
-            >
-              <path
-                d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z"
-              />
-            </svg>
-          </a>
-        }
-      </div>
-      <div class="social-links">
-        <a
-          href="https://github.com/angular/angular"
-          aria-label="Github"
-          target="_blank"
-          rel="noopener"
-        >
-          <svg
-            width="25"
-            height="24"
-            viewBox="0 0 25 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            alt="Github"
-          >
-            <path
-              d="M12.3047 0C5.50634 0 0 5.50942 0 12.3047C0 17.7423 3.52529 22.3535 8.41332 23.9787C9.02856 24.0946 9.25414 23.7142 9.25414 23.3871C9.25414 23.0949 9.24389 22.3207 9.23876 21.2953C5.81601 22.0377 5.09414 19.6444 5.09414 19.6444C4.53427 18.2243 3.72524 17.8449 3.72524 17.8449C2.61064 17.082 3.81137 17.0973 3.81137 17.0973C5.04697 17.1835 5.69604 18.3647 5.69604 18.3647C6.79321 20.2463 8.57636 19.7029 9.27978 19.3881C9.39052 18.5924 9.70736 18.0499 10.0591 17.7423C7.32641 17.4347 4.45429 16.3765 4.45429 11.6618C4.45429 10.3185 4.9311 9.22133 5.72065 8.36C5.58222 8.04931 5.16694 6.79833 5.82831 5.10337C5.82831 5.10337 6.85883 4.77319 9.2121 6.36459C10.1965 6.09082 11.2424 5.95546 12.2883 5.94931C13.3342 5.95546 14.3801 6.09082 15.3644 6.36459C17.7023 4.77319 18.7328 5.10337 18.7328 5.10337C19.3942 6.79833 18.9789 8.04931 18.8559 8.36C19.6403 9.22133 20.1171 10.3185 20.1171 11.6618C20.1171 16.3888 17.2409 17.4296 14.5031 17.7321C14.9338 18.1012 15.3337 18.8559 15.3337 20.0084C15.3337 21.6552 15.3183 22.978 15.3183 23.3779C15.3183 23.7009 15.5336 24.0854 16.1642 23.9623C21.0871 22.3484 24.6094 17.7341 24.6094 12.3047C24.6094 5.50942 19.0999 0 12.3047 0Z"
-            />
-          </svg>
-        </a>
-        <a
-          href="https://x.com/angular"
-          aria-label="X"
-          target="_blank"
-          rel="noopener"
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            alt="X"
-          >
-            <path
-              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
-            />
-          </svg>
-        </a>
-        <a
-          href="https://www.youtube.com/channel/UCbn1OgGei-DV7aSRo_HaAiw"
-          aria-label="Youtube"
-          target="_blank"
-          rel="noopener"
-        >
-          <svg
-            width="29"
-            height="20"
-            viewBox="0 0 29 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            alt="Youtube"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M27.4896 1.52422C27.9301 1.96749 28.2463 2.51866 28.4068 3.12258C29.0004 5.35161 29.0004 10 29.0004 10C29.0004 10 29.0004 14.6484 28.4068 16.8774C28.2463 17.4813 27.9301 18.0325 27.4896 18.4758C27.0492 18.9191 26.5 19.2389 25.8972 19.4032C23.6778 20 14.8068 20 14.8068 20C14.8068 20 5.93586 20 3.71651 19.4032C3.11363 19.2389 2.56449 18.9191 2.12405 18.4758C1.68361 18.0325 1.36732 17.4813 1.20683 16.8774C0.613281 14.6484 0.613281 10 0.613281 10C0.613281 10 0.613281 5.35161 1.20683 3.12258C1.36732 2.51866 1.68361 1.96749 2.12405 1.52422C2.56449 1.08095 3.11363 0.76113 3.71651 0.596774C5.93586 0 14.8068 0 14.8068 0C14.8068 0 23.6778 0 25.8972 0.596774C26.5 0.76113 27.0492 1.08095 27.4896 1.52422ZM19.3229 10L11.9036 5.77905V14.221L19.3229 10Z"
-            />
-          </svg>
-        </a>
-      </div>
+<header class="header">
+  <div class="header-inner">
+    <a class="brand" href="#main" (click)="navigate(0); $event.preventDefault()">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 20 20" width="18" height="18"><rect x="2" y="9" width="4" height="9" rx="1.5" fill="currentColor" /><rect x="8" y="4" width="4" height="14" rx="1.5" fill="currentColor" opacity=".55" /><rect x="14" y="7" width="4" height="11" rx="1.5" fill="currentColor" /></svg>
+      </span>
+      <strong>Experiment<span>lab</span></strong>
+    </a>
+    <span class="header-divider" aria-hidden="true"></span>
+    <span class="workspace">Poluru Labs <eds-badge variant="brand">A/B testing</eds-badge></span>
+    <div class="header-actions">
+      <span class="sample-label">Demo workspace</span>
+      <eds-popover [open]="helpOpen()" (openChange)="helpOpen.set($event)" heading="Reading results" placement="bottom">
+        <eds-button trigger variant="tertiary" icon="info" [iconOnly]="true" accessibleLabel="How results are judged" />
+        <p class="help-line">Significance level <strong>{{ alpha() }}</strong>, minimum <strong>{{ minSample() }}</strong> per variant.</p>
+        <p class="help-line">{{ strictEarly() ? 'Before the planned sample, results must clear p < 0.005.' : 'Early results use the normal significance level.' }}</p>
+      </eds-popover>
+      <eds-button variant="tertiary" icon="settings" [iconOnly]="true" accessibleLabel="Open settings" (clicked)="navigate(7)" />
+      <eds-dropdown-menu [open]="menuOpen()" (openChange)="menuOpen.set($event)" (itemSelect)="onProfile($event)">
+        <button trigger type="button" class="profile-trigger">
+          <eds-avatar name="Aditi Poluru" size="sm" />
+          <span class="profile-name"><strong>Aditi Poluru</strong><small>Experiment lead</small></span>
+        </button>
+        <eds-menu-item label="My experiments" value="experiments" />
+        <eds-menu-item label="Team" value="team" />
+        <eds-menu-item label="Settings" value="settings" />
+      </eds-dropdown-menu>
     </div>
   </div>
+  <nav class="top-navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <div class="nav-scroll">
+        <eds-tabs [tabs]="nav" [selectedIndex]="page()" (selectedIndexChange)="navigate($event)" />
+      </div>
+      <eds-status [label]="autoRun() ? 'Collecting ' + selectedId() : running().length + ' running'" [variant]="autoRun() ? 'info' : 'success'" [pulse]="autoRun() || running().length > 0" />
+    </div>
+  </nav>
+</header>
+
+<main id="main" class="content">
+  <eds-breadcrumb [items]="breadcrumbs()" />
+  <section class="page-heading">
+    <div>
+      <p class="eyebrow">{{ headings[page()].eyebrow }}</p>
+      <h1>{{ headings[page()].title }}</h1>
+      <eds-visually-hidden>A/B test prompts, models, and parameters side by side with statistical significance tracking.</eds-visually-hidden>
+      <p>{{ headings[page()].summary }}</p>
+    </div>
+    <div class="actions">
+      @if (page() <= 3) {
+        <eds-split-button label="Export CSV" (primaryClick)="exportCsv()" (itemSelect)="exportMenu($event)">
+          <eds-menu-item label="Export experiment config" value="config" />
+        </eds-split-button>
+      }
+      @if (page() <= 4) {
+        <eds-button icon="plus" (clicked)="openNew()">New experiment</eds-button>
+      }
+    </div>
+  </section>
+
+  @if (showIntro() && page() === 0 && readyToCall().length) {
+    <eds-alert variant="success" title="Ready to call" [message]="readyToCall().length + ' experiment(s) reached the planned sample with a significant result.'" [dismissible]="true" (alertDismiss)="showIntro.set(false)" />
+  }
+  @if (notice()) {
+    <div class="notice" role="status">
+      <eds-alert variant="info" [message]="notice()" [dismissible]="true" (alertDismiss)="notice.set('')" />
+    </div>
+  }
+  @if (error() && modal() === null) {
+    <eds-alert variant="danger" [message]="error()" [dismissible]="true" (alertDismiss)="error.set('')" />
+  }
+
+  @if (page() === 0) {
+    <section class="metrics" aria-label="Lab summary">
+      <eds-card><eds-stat label="Running experiments" [value]="'' + running().length" [hint]="experiments().length + ' in the lab'" trend="flat" trendValue="Live" /></eds-card>
+      <eds-card><eds-stat label="Significant results" [value]="'' + significantCount()" [hint]="'At level ' + alpha()" trend="up" trendValue="Trustworthy" /></eds-card>
+      <eds-card><eds-stat label="Samples collected" [value]="totalSamples().toLocaleString()" hint="Across all variants" trend="up" trendValue="Cumulative" /></eds-card>
+      <eds-card><eds-stat label="Ready to call" [value]="'' + readyToCall().length" hint="Planned sample reached" trend="flat" trendValue="Decisions" /></eds-card>
+    </section>
+
+    <eds-card class="table-card">
+      <table class="data">
+        <caption class="sr-only">All experiments</caption>
+        <thead><tr><th scope="col">Experiment</th><th scope="col">Status</th><th scope="col">A</th><th scope="col">B</th><th scope="col">Lift</th><th scope="col">p-value</th><th scope="col">Progress</th><th scope="col">Verdict</th></tr></thead>
+        <tbody>
+          @for (row of allStats(); track row.exp.id) {
+            <tr>
+              <td><button type="button" class="link-button" (click)="open(row.exp.id, 3)">{{ row.exp.name }}</button><small>{{ row.exp.id }} · {{ row.exp.owner }}</small></td>
+              <td><eds-badge [variant]="tone(row.exp.status)">{{ row.exp.status }}</eds-badge></td>
+              <td>{{ row.stats.nA ? pct(row.stats.pA) : '—' }}</td>
+              <td>{{ row.stats.nB ? pct(row.stats.pB) : '—' }}</td>
+              <td [class.up]="row.stats.lift > 0" [class.down]="row.stats.lift < 0">{{ row.stats.nA ? (row.stats.lift > 0 ? '+' : '') + pct(row.stats.lift) : '—' }}</td>
+              <td>{{ row.stats.nA ? pText(row.stats.p) : '—' }}</td>
+              <td class="bar-cell"><eds-progress-bar [value]="row.stats.progress" [label]="row.stats.progress + '%'" /></td>
+              <td>
+                @if (row.exp.winner) { <eds-tag variant="brand">Shipped {{ row.exp.winner }}</eds-tag> }
+                @else if (row.stats.significant) { <eds-tag variant="success">{{ row.stats.verdict }}</eds-tag> }
+                @else { <span class="muted">{{ row.stats.verdict }}</span> }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </eds-card>
+
+    <section class="two-grid overview-row">
+      <eds-card>
+        <div class="card-head">
+          <div>
+            <h2>{{ selected().name }}</h2>
+            <p>Cumulative {{ selected().metric.toLowerCase() }} by day</p>
+          </div>
+          <eds-select label="Experiment" [options]="expOptions()" [value]="selectedId()" (valueChange)="select($event)" />
+        </div>
+        <svg class="chart" viewBox="-6 -6 572 192" preserveAspectRatio="none" role="img" [attr.aria-label]="'Success rate by day for ' + selected().name">
+          <path [attr.d]="ratePath('pA')" class="line-a" />
+          <path [attr.d]="ratePath('pB')" class="line-b" />
+        </svg>
+        <p class="legend"><span class="key a"></span>A · {{ selected().variants[0].label }} <span class="key b"></span>B · {{ selected().variants[1].label }}</p>
+      </eds-card>
+      <eds-card>
+        <h2>Recent activity</h2>
+        <eds-timeline [items]="timeline()" />
+      </eds-card>
+    </section>
+  }
+
+  @if (page() === 1) {
+    <section class="split">
+      <aside class="sidebar">
+        <eds-card>
+          <p class="side-title">Status</p>
+          <eds-side-nav [items]="statusNav()" (navigateEvent)="onStatusNav($event)" />
+          <eds-divider />
+          <p class="side-title">Experiments</p>
+          @if (expList().length) {
+            <eds-list [items]="expList()" (itemSelect)="onExpList($event)" />
+          } @else {
+            <p class="muted">None with this status.</p>
+          }
+        </eds-card>
+      </aside>
+
+      <div class="stage">
+        <eds-card>
+          <div class="card-head">
+            <div>
+              <h2>{{ selected().name }} <small>{{ selected().id }}</small></h2>
+              <p>{{ selected().hypothesis }}</p>
+            </div>
+            <eds-badge [variant]="tone(selected().status)">{{ selected().status }}</eds-badge>
+          </div>
+          <eds-stepper [steps]="lifecycle" [current]="lifecycleStep()" />
+          <eds-description-list [items]="expMeta()" [columns]="3" />
+          <eds-toolbar [bordered]="true">
+            <div edsToolbarStart class="toolbar-group">
+              @if (selected().status === 'Draft' || selected().status === 'Paused') {
+                <eds-button icon="chevron-right" (clicked)="setStatus('Running')">{{ selected().status === 'Draft' ? 'Launch' : 'Resume' }}</eds-button>
+              }
+              @if (selected().status === 'Running') {
+                <eds-button variant="secondary" (clicked)="setStatus('Paused')">Pause</eds-button>
+                <eds-button variant="secondary" icon="plus" (clicked)="runDay()">Add a day of traffic</eds-button>
+                <eds-switch label="Auto-collect" [checked]="autoRun()" (checkedChange)="toggleAuto($event)" />
+              }
+            </div>
+            <div edsToolbarEnd class="toolbar-group">
+              @if (selected().status !== 'Draft' && selected().status !== 'Concluded') {
+                <eds-button variant="tertiary" icon="check-circle" (clicked)="openWinner()">Call winner</eds-button>
+              }
+              @if (selected().winner) { <eds-tag variant="brand">Shipped {{ selected().winner }}</eds-tag> }
+            </div>
+          </eds-toolbar>
+        </eds-card>
+
+        <section class="variant-grid">
+          @for (variant of selected().variants; track variant.key; let i = $index) {
+            <eds-card>
+              <div class="variant-head">
+                <span class="variant-key" [class.b]="variant.key === 'B'">{{ variant.key }}</span>
+                <div><strong>{{ variant.label }}</strong><small>{{ variant.model }}</small></div>
+                @if (selected().winner === variant.key) { <eds-badge variant="success">Winner</eds-badge> }
+              </div>
+              <eds-code-snippet [code]="variant.prompt" language="text" [label]="'Prompt ' + variant.key" />
+              <eds-description-list [items]="variantMeta()[i]" [columns]="2" />
+              @if (stats().latencyBreach.includes(variant.key)) {
+                <eds-alert variant="warning" [message]="'Latency is above the ' + latencyGuard() + ' ms guardrail.'" />
+              }
+            </eds-card>
+          }
+        </section>
+
+        <eds-card>
+          <h2>Traffic split</h2>
+          <eds-slider label="Share of traffic to B (%)" [min]="10" [max]="90" [step]="5" [value]="selected().split" [showValue]="true" [disabled]="selected().status === 'Concluded'" (valueChange)="setSplit($event)" />
+          <div class="split-bar" aria-hidden="true">
+            <span class="seg a" [style.width.%]="100 - selected().split">A {{ 100 - selected().split }}%</span>
+            <span class="seg b" [style.width.%]="selected().split">B {{ selected().split }}%</span>
+          </div>
+        </eds-card>
+      </div>
+    </section>
+  }
+
+  @if (page() === 2) {
+    <eds-toolbar [bordered]="true">
+      <div edsToolbarStart class="toolbar-group">
+        <eds-select label="Experiment" [options]="expOptions()" [value]="selectedId()" (valueChange)="select($event)" />
+      </div>
+      <div edsToolbarEnd class="toolbar-group">
+        <eds-switch label="Blind review" [checked]="blind()" (checkedChange)="blind.set($event)" />
+      </div>
+    </eds-toolbar>
+
+    @if (pagedSample(); as sample) {
+      <eds-card class="input-card">
+        <p class="side-title">Input {{ samplePage() }} of {{ currentSamples().length }}</p>
+        <p class="input-text">{{ sample.input }}</p>
+      </eds-card>
+      <section class="variant-grid">
+        @for (side of [0, 1]; track side) {
+          <eds-card>
+            @let key = (side === 0) !== flipped(samplePage() - 1) ? 'A' : 'B';
+            <div class="variant-head">
+              <span class="variant-key" [class.b]="!blind() && key === 'B'">{{ blind() ? (side === 0 ? 'Left' : 'Right') : key }}</span>
+              <div><strong>{{ blind() ? 'Hidden variant' : selected().variants[key === 'A' ? 0 : 1].label }}</strong><small>{{ blind() ? 'Revealed after voting' : selected().variants[key === 'A' ? 0 : 1].model }}</small></div>
+              @if (voteFor(samplePage() - 1) === key) { <eds-badge variant="success">Your pick</eds-badge> }
+            </div>
+            <p class="output">{{ key === 'A' ? sample.a : sample.b }}</p>
+            <p class="muted">{{ (key === 'A' ? sample.a : sample.b).split(' ').length }} words</p>
+          </eds-card>
+        }
+      </section>
+      <div class="vote-bar">
+        <eds-button-group>
+          <eds-button variant="secondary" icon="chevron-left" (clicked)="vote(samplePage() - 1, flipped(samplePage() - 1) ? 'B' : 'A')">Left is better</eds-button>
+          <eds-button variant="secondary" (clicked)="vote(samplePage() - 1, 'tie')">About the same</eds-button>
+          <eds-button variant="secondary" iconTrailing="chevron-right" (clicked)="vote(samplePage() - 1, flipped(samplePage() - 1) ? 'A' : 'B')">Right is better</eds-button>
+        </eds-button-group>
+        <eds-pagination [page]="samplePage()" [pageSize]="1" [total]="currentSamples().length" (pageChange)="samplePage.set($event)" />
+      </div>
+      <section class="metrics three">
+        <eds-card><eds-stat label="Votes for A" [value]="'' + voteTally().a" [hint]="selected().variants[0].label" trend="flat" [trendValue]="voteTally().ties + ' ties'" /></eds-card>
+        <eds-card><eds-stat label="Votes for B" [value]="'' + voteTally().b" [hint]="selected().variants[1].label" trend="flat" [trendValue]="voteTally().total + ' of ' + currentSamples().length + ' reviewed'" /></eds-card>
+        <eds-card><eds-stat label="Preference p-value" [value]="pText(voteTally().p)" hint="Sign test, ties excluded" trend="flat" [trendValue]="voteTally().p < 0.05 ? 'Clear preference' : 'Too few votes'" /></eds-card>
+      </section>
+    } @else {
+      <eds-card>
+        <eds-empty-state heading="No samples for this experiment" description="Import paired outputs to review them side by side.">
+          <div actions class="actions">
+            <eds-button variant="secondary" (clicked)="select('EXP-201')">Open EXP-201</eds-button>
+          </div>
+        </eds-empty-state>
+      </eds-card>
+    }
+    <eds-card>
+      <eds-file-upload label="Import paired outputs" accept=".csv,.jsonl" hint="CSV or JSONL with input, output_a, output_b columns" (filesChange)="onImport($event)" />
+    </eds-card>
+  }
+
+  @if (page() === 3) {
+    <eds-toolbar [bordered]="true">
+      <div edsToolbarStart class="toolbar-group">
+        <eds-select label="Experiment" [options]="expOptions()" [value]="selectedId()" (valueChange)="select($event)" />
+      </div>
+      <div edsToolbarEnd class="toolbar-group">
+        @if (selected().status === 'Running') {
+          <eds-button variant="secondary" icon="plus" (clicked)="runDay()">Add a day</eds-button>
+        }
+        @if (selected().status !== 'Concluded' && selected().status !== 'Draft') {
+          <eds-button icon="check-circle" (clicked)="openWinner()">Call winner</eds-button>
+        }
+      </div>
+    </eds-toolbar>
+
+    @if (stats().significant) {
+      <eds-alert variant="success" [title]="stats().verdict" [message]="stats().recommendation" />
+    } @else {
+      <eds-alert [variant]="stats().progress >= 100 ? 'warning' : 'info'" [title]="stats().verdict" [message]="stats().recommendation" />
+    }
+
+    <section class="metrics">
+      <eds-card><eds-stat [label]="'A · ' + selected().variants[0].label" [value]="pct(stats().pA)" [hint]="stats().sA.toLocaleString() + ' of ' + stats().nA.toLocaleString()" trend="flat" trendValue="Control" /></eds-card>
+      <eds-card><eds-stat [label]="'B · ' + selected().variants[1].label" [value]="pct(stats().pB)" [hint]="stats().sB.toLocaleString() + ' of ' + stats().nB.toLocaleString()" [trend]="stats().diff > 0 ? 'up' : stats().diff < 0 ? 'down' : 'flat'" [trendValue]="(stats().lift > 0 ? '+' : '') + pct(stats().lift) + ' lift'" /></eds-card>
+      <eds-card><eds-stat label="p-value" [value]="pText(stats().p)" [hint]="'Needs < ' + stats().threshold" trend="flat" [trendValue]="stats().significant ? 'Significant' : 'Not yet'" /></eds-card>
+      <eds-card>
+        <eds-stat label="Planned sample" [value]="stats().progress + '%'" [hint]="Math.min(stats().nA, stats().nB).toLocaleString() + ' of ' + selected().planned.toLocaleString() + ' per variant'" trend="flat" [trendValue]="selected().days.length + ' days'" />
+        <eds-progress-bar [value]="stats().progress" label="Progress" />
+      </eds-card>
+    </section>
+
+    <section class="two-grid">
+      <eds-card>
+        <h2>Difference (B − A)</h2>
+        <p class="muted">{{ Math.round((1 - stats().alpha) * 100) }}% confidence interval, in percentage points</p>
+        <div class="ci" role="img" [attr.aria-label]="'Difference ' + pct(stats().diff) + ', interval ' + pct(stats().low) + ' to ' + pct(stats().high)">
+          <span class="ci-zero" style="left: 50%"></span>
+          <span class="ci-range" [class.sig]="stats().low > 0 || stats().high < 0" [style.left.%]="ciPosition(stats().low)" [style.width.%]="ciPosition(stats().high) - ciPosition(stats().low)"></span>
+          <span class="ci-point" [style.left.%]="ciPosition(stats().diff)"></span>
+        </div>
+        <div class="ci-labels"><span>{{ pct(stats().low) }}</span><strong>{{ (stats().diff > 0 ? '+' : '') + pct(stats().diff) }}</strong><span>{{ pct(stats().high) }}</span></div>
+        <p class="muted">{{ stats().low > 0 || stats().high < 0 ? 'The interval excludes zero.' : 'The interval still includes zero, so no difference is possible.' }}</p>
+      </eds-card>
+      <eds-card>
+        <div class="card-head">
+          <h2>Over time</h2>
+          <eds-segmented-control [options]="metricViews" [value]="metricView()" (valueChange)="metricView.set($event)" size="sm" />
+        </div>
+        <svg class="chart" viewBox="-6 -6 572 192" preserveAspectRatio="none" role="img" [attr.aria-label]="metricView() === 'p' ? 'p-value by day' : 'Success rate by day'">
+          @if (metricView() === 'p') {
+            <line x1="0" x2="560" [attr.y1]="alphaY()" [attr.y2]="alphaY()" class="alpha-line" />
+            <path [attr.d]="pPath()" class="line-p" />
+          } @else {
+            <path [attr.d]="ratePath('pA')" class="line-a" />
+            <path [attr.d]="ratePath('pB')" class="line-b" />
+          }
+        </svg>
+        <p class="legend">
+          @if (metricView() === 'p') { <span class="key p"></span>p-value <span class="key alpha"></span>{{ alpha() }} level }
+          @else { <span class="key a"></span>A <span class="key b"></span>B }
+        </p>
+      </eds-card>
+    </section>
+
+    <eds-card class="table-card">
+      <table class="data">
+        <caption class="sr-only">Guardrail metrics</caption>
+        <thead><tr><th scope="col">Guardrail</th><th scope="col">A</th><th scope="col">B</th><th scope="col">Change</th><th scope="col">Status</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Latency</strong><small>Mean response time</small></td>
+            <td>{{ selected().variants[0].latency }} ms</td>
+            <td>{{ selected().variants[1].latency }} ms</td>
+            <td>{{ selected().variants[1].latency - selected().variants[0].latency > 0 ? '+' : '' }}{{ selected().variants[1].latency - selected().variants[0].latency }} ms</td>
+            <td><eds-badge [variant]="stats().latencyBreach.length ? 'warning' : 'success'">{{ stats().latencyBreach.length ? 'Over ' + latencyGuard() + ' ms' : 'Within guardrail' }}</eds-badge></td>
+          </tr>
+          <tr>
+            <td><strong>Cost</strong><small>Per 1,000 requests</small></td>
+            <td>${{ selected().variants[0].cost.toFixed(2) }}</td>
+            <td>${{ selected().variants[1].cost.toFixed(2) }}</td>
+            <td>{{ pct((selected().variants[1].cost - selected().variants[0].cost) / selected().variants[0].cost, 0) }}</td>
+            <td><eds-badge [variant]="selected().variants[1].cost <= selected().variants[0].cost ? 'success' : 'warning'">{{ selected().variants[1].cost <= selected().variants[0].cost ? 'Cheaper or equal' : 'More expensive' }}</eds-badge></td>
+          </tr>
+        </tbody>
+      </table>
+    </eds-card>
+  }
+
+  @if (page() === 4) {
+    <section class="planner">
+      <eds-card class="form-card">
+        <h2>Inputs</h2>
+        <div class="two-col">
+          <eds-number-input label="Baseline success rate (%)" [value]="planBaseline()" [min]="1" [max]="95" (valueChange)="planBaseline.set($event)" />
+          <eds-number-input label="Minimum lift to detect (%)" [value]="planMde()" [min]="1" [max]="100" hint="Relative to baseline" (valueChange)="planMde.set($event)" />
+        </div>
+        <eds-select label="Significance level" [options]="alphaOptions" [value]="planAlpha()" (valueChange)="planAlpha.set($event)" />
+        <eds-radio-group label="Power" name="power" orientation="horizontal" [value]="planPower()" (valueChange)="planPower.set($event)">
+          <eds-radio label="80%" value="0.8" />
+          <eds-radio label="90%" value="0.9" />
+          <eds-radio label="95%" value="0.95" />
+        </eds-radio-group>
+        <eds-number-input label="Daily requests" [value]="planTraffic()" [min]="10" [max]="100000" (valueChange)="planTraffic.set($event)" />
+        <eds-slider label="Share of traffic to B (%)" [min]="10" [max]="90" [step]="5" [value]="planSplit()" [showValue]="true" (valueChange)="planSplit.set($event)" />
+      </eds-card>
+      <eds-card>
+        <h2>You need</h2>
+        <div class="plan-result">
+          <div><span class="big">{{ plan().n.toLocaleString() }}</span><small>samples per variant</small></div>
+          <div><span class="big">{{ plan().total.toLocaleString() }}</span><small>in total</small></div>
+          <div><span class="big">{{ plan().days }}</span><small>days at this traffic</small></div>
+        </div>
+        <p class="muted">To tell {{ planBaseline() }}% apart from {{ pct(plan().p2) }}.</p>
+        <eds-meter [value]="Math.min(plan().days, 60)" [max]="60" [low]="14" [high]="30" [optimum]="0" label="Run length (days, of 60)" [showValue]="true" />
+        <eds-divider />
+        <eds-code-snippet [code]="planCode()" language="text" label="plan.txt" />
+      </eds-card>
+      <eds-card>
+        <h2>Selected experiment</h2>
+        <div class="quality">
+          <eds-circular-progress [value]="stats().progress" [size]="104" [strokeWidth]="10" [showValue]="true" />
+          <div>
+            <strong>{{ selected().id }}</strong>
+            <p>{{ Math.min(stats().nA, stats().nB).toLocaleString() }} of {{ selected().planned.toLocaleString() }} per variant</p>
+          </div>
+        </div>
+        <eds-accordion [items]="guide" [single]="true" />
+      </eds-card>
+    </section>
+  }
+
+  @if (page() === 5) {
+    <eds-toolbar [bordered]="true">
+      <div edsToolbarStart class="toolbar-group">
+        <eds-date-range-picker label="Period" [startValue]="activityStart()" [endValue]="activityEnd()" (rangeChange)="onActivityRange($event)" />
+      </div>
+    </eds-toolbar>
+    <eds-card class="table-card">
+      <eds-data-table [columns]="activityColumns" [rows]="activityRows()" [compact]="true" [striped]="true" />
+    </eds-card>
+    @if (activity().length > 6) {
+      <eds-pagination [page]="activityPage()" [pageSize]="6" [total]="activity().length" (pageChange)="activityPage.set($event)" />
+    }
+  }
+
+  @if (page() === 6) {
+    <section class="team-grid">
+      @for (member of team; track member.name) {
+        <eds-card>
+          <div class="member">
+            <eds-avatar [name]="member.name" size="md" />
+            <div><strong>{{ member.name }}</strong><small>{{ member.role }}</small></div>
+          </div>
+          <p class="muted">{{ member.area }} · {{ member.experiments }} experiment(s)</p>
+        </eds-card>
+      }
+    </section>
+    <eds-card class="table-card">
+      <eds-data-table [columns]="teamColumns" [rows]="sortedTeam()" [sortable]="true" [striped]="true" (sortChange)="teamSort.set($event)" />
+    </eds-card>
+  }
+
+  @if (page() === 7) {
+    <section class="two-grid">
+      <eds-card class="form-card">
+        <h2>Statistics</h2>
+        <eds-select label="Significance level" [options]="alphaOptions" [value]="alpha()" (valueChange)="alpha.set($event)" />
+        <eds-number-input label="Minimum samples per variant" [value]="minSample()" [min]="50" [max]="10000" (valueChange)="minSample.set($event)" />
+        <eds-checkbox label="Strict threshold (p < 0.005) before the planned sample is reached" [checked]="strictEarly()" (checkedChange)="strictEarly.set($event)" />
+        <eds-number-input label="Latency guardrail (ms)" [value]="latencyGuard()" [min]="100" [max]="10000" (valueChange)="latencyGuard.set($event)" />
+      </eds-card>
+      <eds-card class="form-card">
+        <h2>Daily report</h2>
+        <eds-input label="Send to" type="email" icon="mail" [required]="true" [value]="notifyEmail()" (valueChange)="notifyEmail.set($event)" />
+        <eds-time-picker label="Send at" [value]="reportTime()" (valueChange)="reportTime.set($event)" />
+        <eds-autocomplete label="Default owner" [value]="defaultOwner()" [suggestions]="teamNames" (valueChange)="defaultOwner.set($event)" />
+        <div class="card-actions">
+          <span class="muted"><eds-kbd keys="Demo" /> Not sent in this demo</span>
+          <eds-button icon="save" (clicked)="saveSettings()">Save settings</eds-button>
+        </div>
+      </eds-card>
+    </section>
+  }
+
+  <p class="demo-note"><eds-kbd keys="Demo" /> Simulated traffic with fictional names. Changes stay in this browser session.</p>
 </main>
 
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<footer class="site-footer">
+  <span>Created by <eds-link href="https://polurus.com" [external]="true">Subrahmanyam Poluru</eds-link></span>
+  <span>Built with <eds-link href="https://www.npmjs.com/package/@poluru-labs/enterprise-design-system-angular" [external]="true">&#64;poluru-labs/enterprise-design-system-angular</eds-link></span>
+</footer>
 
+@if (toastOpen()) {
+  <div class="toast-anchor">
+    <eds-toast [open]="true" [title]="toastTitle()" [description]="toastBody()" variant="success" [duration]="4000" (openChange)="toastOpen.set($event)" />
+  </div>
+}
 
-<router-outlet />
+<eds-modal [open]="modal() === 'new'" heading="New experiment" (openChange)="!$event && closeModal()">
+  <div class="modal-body">
+    <eds-stepper [steps]="newSteps" [current]="newStep()" />
+    @if (error()) { <eds-alert variant="danger" [message]="error()" /> }
+    @if (newStep() === 0) {
+      <eds-input label="Name" placeholder="Shorter onboarding emails" [required]="true" [value]="draft().name" (valueChange)="patchDraft({ name: $event })" />
+      <eds-textarea label="Hypothesis" [rows]="3" [maxlength]="240" [value]="draft().hypothesis" (valueChange)="patchDraft({ hypothesis: $event })" />
+      <eds-select label="Primary metric" [options]="metricOptions" [value]="draft().metric" (valueChange)="patchDraft({ metric: $event })" />
+    }
+    @if (newStep() === 1) {
+      <div class="two-col">
+        <eds-combobox label="Model A" [options]="modelOptions" [value]="draft().modelA" (valueChange)="patchDraft({ modelA: $event })" />
+        <eds-combobox label="Model B" [options]="modelOptions" [value]="draft().modelB" (valueChange)="patchDraft({ modelB: $event })" />
+      </div>
+      <eds-textarea label="Prompt A" [rows]="3" [value]="draft().promptA" (valueChange)="patchDraft({ promptA: $event })" />
+      <eds-textarea label="Prompt B" [rows]="3" [value]="draft().promptB" (valueChange)="patchDraft({ promptB: $event })" />
+      <eds-slider label="Temperature for B (×10)" [min]="0" [max]="10" [step]="1" [value]="draft().temperature * 10" [showValue]="true" (valueChange)="patchDraft({ temperature: $event / 10 })" />
+    }
+    @if (newStep() === 2) {
+      <eds-slider label="Share of traffic to B (%)" [min]="10" [max]="90" [step]="5" [value]="draft().split" [showValue]="true" (valueChange)="patchDraft({ split: $event })" />
+      <eds-number-input label="Planned samples per variant" [value]="draft().planned" [min]="100" [max]="100000" hint="Prefilled from the planner" (valueChange)="patchDraft({ planned: $event })" />
+      <eds-description-list [items]="[{ term: 'Name', description: draft().name }, { term: 'Metric', description: draft().metric }, { term: 'A', description: draft().modelA }, { term: 'B', description: draft().modelB }]" [columns]="2" />
+    }
+  </div>
+  <div footer class="modal-actions">
+    <eds-button variant="secondary" (clicked)="newStep() ? prevStep() : closeModal()">{{ newStep() ? 'Back' : 'Cancel' }}</eds-button>
+    <eds-button (clicked)="nextStep()">{{ newStep() < 2 ? 'Next' : 'Create draft' }}</eds-button>
+  </div>
+</eds-modal>
+
+<eds-modal [open]="modal() === 'winner'" heading="Call the winner" (openChange)="!$event && closeModal()">
+  <div class="modal-body">
+    @if (error()) { <eds-alert variant="danger" [message]="error()" /> }
+    @if (!stats().significant) {
+      <eds-alert variant="warning" message="This result is not statistically significant yet. Calling it now risks shipping noise." />
+    }
+    <eds-radio-group label="Ship" name="winner" [value]="winnerKey()" (valueChange)="setWinnerKey($event)">
+      <eds-radio [label]="'A · ' + selected().variants[0].label + ' (' + pct(stats().pA) + ')'" value="A" />
+      <eds-radio [label]="'B · ' + selected().variants[1].label + ' (' + pct(stats().pB) + ')'" value="B" />
+    </eds-radio-group>
+    <eds-textarea label="Decision note" [rows]="3" [maxlength]="240" [value]="winnerNote()" (valueChange)="winnerNote.set($event); error.set('')" />
+    <eds-checkbox label="Send all traffic to the winner" [checked]="stopLoser()" (checkedChange)="stopLoser.set($event)" />
+  </div>
+  <div footer class="modal-actions">
+    <eds-button variant="secondary" (clicked)="closeModal()">Cancel</eds-button>
+    <eds-button icon="check" (clicked)="confirmWinner()">Record decision</eds-button>
+  </div>
+</eds-modal>
