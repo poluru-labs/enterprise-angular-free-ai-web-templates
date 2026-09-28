@@ -1,1 +1,73 @@
-/* You can add global styles to this file, and also import other style files */
+@import '@poluru-labs/enterprise-design-system-angular/tokens.css';
+@import '@poluru-labs/enterprise-design-system-angular/styles.css';
+
+:root {
+  color-scheme: light;
+  --eds-font-sans: 'Roboto', sans-serif;
+  --eds-font-display: 'Lato', sans-serif;
+  --eds-color-brand-900: #045c00;
+  --eds-color-brand-800: #057a00;
+  --eds-color-brand-700: #06a000;
+  --eds-color-brand-600: #08cb00;
+  --eds-color-brand-500: #3dd636;
+  --eds-color-brand-400: #6fe16a;
+  --eds-color-brand-300: #a0eb9c;
+  --eds-color-brand-200: #cdf5cb;
+  --eds-color-brand-100: #e4f9e3;
+  --eds-color-brand-50: #f3fdf2;
+  --eds-color-primary: #08cb00;
+  --eds-color-primary-hover: #07b500;
+  --eds-color-primary-active: #06a000;
+  --eds-color-text: #1d2a1c;
+  --eds-color-text-muted: #5d6b5c;
+  --eds-color-text-subtle: #7f8b7e;
+  /* #08CB00 is too bright for white text, so filled brand surfaces use dark ink. */
+  --eds-color-text-inverse: #062a05;
+  --eds-color-border: #e2ebe1;
+  --eds-color-border-strong: #cfdcce;
+  --eds-color-bg: #f6faf5;
+  --eds-color-surface: #ffffff;
+  --eds-color-focus: #06a000;
+  --eds-shadow-focus: 0 0 0 3px #08cb0040;
+  --eds-radius-md: 8px;
+  --eds-radius-lg: 12px;
+}
+
+* { box-sizing: border-box; }
+
+html, body { min-height: 100%; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(900px 420px at 100% -10%, #dcf8da 0%, transparent 55%),
+    #f6faf5;
+  color: #1d2a1c;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+}
+
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+h1, h2, h3, h4 { font-family: 'Lato', sans-serif; }
+a { color: #057a00; }
+a:focus-visible, button:focus-visible { outline: 2px solid #06a000; outline-offset: 3px; }
+
+eds-card { display: block; min-width: 0; }
+eds-card > .card { height: 100%; background: #fff; border-color: #e2ebe1; box-shadow: 0 8px 24px #045c000a; }
+eds-card > .card > .body { padding: 22px; }
+eds-card > .card > .header:empty,
+eds-card > .card > .footer:empty,
+eds-card > .card > .media:empty { display: none; }
+eds-tabs .eds-tabs__panel { display: none !important; }
+.top-navigation .eds-tabs__list { border: 0; gap: 4px; }
+.top-navigation .eds-tabs__tab { padding: 16px 12px; margin: 0; white-space: nowrap; border-radius: 8px 8px 0 0; }
+.top-navigation .eds-tabs__tab--selected { color: #045c00; border-bottom-color: #08cb00; }
+.sidebar .eds-side-nav { width: 100%; border: 0; padding: 0; background: transparent; }
+.sidebar .eds-side-nav__link { border-radius: 8px; }
+.sidebar .eds-side-nav__link--active { background: #e4f9e3; color: #045c00; }
+eds-modal .dialog { width: min(600px, calc(100vw - 32px)); }
+eds-drawer .panel { width: min(480px, 100vw); }
+eds-link a { color: #057a00; }
+.table-card > .card > .body { padding: 0; }
+.metrics eds-stat .eds-stat { border: 0 !important; padding: 0 !important; background: transparent !important; box-shadow: none !important; }
