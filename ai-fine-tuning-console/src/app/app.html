@@ -1,344 +1,646 @@
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * Delete the template below * * * * * * * * * -->
-<!-- * * * * * * * to get started with your project! * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<a class="skip-link" href="#main">Skip to content</a>
 
-<style>
-  :host {
-    --bright-blue: oklch(51.01% 0.274 263.83);
-    --electric-violet: oklch(53.18% 0.28 296.97);
-    --french-violet: oklch(47.66% 0.246 305.88);
-    --vivid-pink: oklch(69.02% 0.277 332.77);
-    --hot-red: oklch(61.42% 0.238 15.34);
-    --orange-red: oklch(63.32% 0.24 31.68);
-
-    --gray-900: oklch(19.37% 0.006 300.98);
-    --gray-700: oklch(36.98% 0.014 302.71);
-    --gray-400: oklch(70.9% 0.015 304.04);
-
-    --red-to-pink-to-purple-vertical-gradient: linear-gradient(
-      180deg,
-      var(--orange-red) 0%,
-      var(--vivid-pink) 50%,
-      var(--electric-violet) 100%
-    );
-
-    --red-to-pink-to-purple-horizontal-gradient: linear-gradient(
-      90deg,
-      var(--orange-red) 0%,
-      var(--vivid-pink) 50%,
-      var(--electric-violet) 100%
-    );
-
-    --pill-accent: var(--bright-blue);
-
-    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-      "Segoe UI Symbol";
-    box-sizing: border-box;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    display: block;
-    height: 100dvh;
+<ng-template #navigation>
+  <a class="brand" href="#main" (click)="navigate(0); $event.preventDefault()">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 20 20" width="18" height="18"><path d="M3 15.5c2.5-.2 3.6-3.4 5-6.4S10.9 3.6 13.5 4.5 16 9 17 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" /><circle cx="3" cy="15.5" r="1.8" fill="currentColor" /><circle cx="17" cy="9" r="1.8" fill="currentColor" opacity=".6" /></svg>
+    </span>
+    <strong>Fine<span>tune</span></strong>
+  </a>
+  <eds-button icon="plus" (clicked)="navigate(2)">New job</eds-button>
+  <p class="side-title">Workspace</p>
+  <eds-side-nav [items]="navItems()" (navigateEvent)="onNav($event)" />
+  <eds-divider />
+  <p class="side-title">Running now</p>
+  @if (runningList().length) {
+    <eds-list [items]="runningList()" (itemSelect)="onRunningList($event)" />
+  } @else {
+    <p class="muted">Nothing running.</p>
   }
+  <div class="quota">
+    <eds-meter [value]="gpuUsed()" [max]="quota()" [low]="quota() * 0.7" [high]="quota() * 0.9" [optimum]="0" label="GPU hours this month" [showValue]="true" />
+    <small>{{ gpuUsed() }} of {{ quota() }} hours</small>
+  </div>
+</ng-template>
 
-  h1 {
-    font-size: 3.125rem;
-    color: var(--gray-900);
-    font-weight: 500;
-    line-height: 100%;
-    letter-spacing: -0.125rem;
-    margin: 0;
-    font-family: "Inter Tight", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-      Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-      "Segoe UI Symbol";
-  }
+<aside class="sidebar app-sidebar" aria-label="Main navigation">
+  <ng-container *ngTemplateOutlet="navigation" />
+</aside>
 
-  p {
-    margin: 0;
-    color: var(--gray-700);
-  }
-
-  main {
-    width: 100%;
-    min-height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-    box-sizing: inherit;
-    position: relative;
-  }
-
-  .angular-logo {
-    max-width: 9.2rem;
-  }
-
-  .content {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    max-width: 700px;
-    margin-bottom: 3rem;
-  }
-
-  .content h1 {
-    margin-top: 1.75rem;
-  }
-
-  .content p {
-    margin-top: 1.5rem;
-  }
-
-  .divider {
-    width: 1px;
-    background: var(--red-to-pink-to-purple-vertical-gradient);
-    margin-inline: 0.5rem;
-  }
-
-  .pill-group {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    flex-wrap: wrap;
-    gap: 1.25rem;
-  }
-
-  .pill {
-    display: flex;
-    align-items: center;
-    --pill-accent: var(--bright-blue);
-    background: color-mix(in srgb, var(--pill-accent) 5%, transparent);
-    color: var(--pill-accent);
-    padding-inline: 0.75rem;
-    padding-block: 0.375rem;
-    border-radius: 2.75rem;
-    border: 0;
-    transition: background 0.3s ease;
-    font-family: var(--inter-font);
-    font-size: 0.875rem;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 1.4rem;
-    letter-spacing: -0.00875rem;
-    text-decoration: none;
-    white-space: nowrap;
-  }
-
-  .pill:hover {
-    background: color-mix(in srgb, var(--pill-accent) 15%, transparent);
-  }
-
-  .pill-group .pill:nth-child(6n + 1) {
-    --pill-accent: var(--bright-blue);
-  }
-  .pill-group .pill:nth-child(6n + 2) {
-    --pill-accent: var(--electric-violet);
-  }
-  .pill-group .pill:nth-child(6n + 3) {
-    --pill-accent: var(--french-violet);
-  }
-
-  .pill-group .pill:nth-child(6n + 4),
-  .pill-group .pill:nth-child(6n + 5),
-  .pill-group .pill:nth-child(6n + 6) {
-    --pill-accent: var(--hot-red);
-  }
-
-  .pill-group svg {
-    margin-inline-start: 0.25rem;
-  }
-
-  .social-links {
-    display: flex;
-    align-items: center;
-    gap: 0.73rem;
-    margin-top: 1.5rem;
-  }
-
-  .social-links path {
-    transition: fill 0.3s ease;
-    fill: var(--gray-400);
-  }
-
-  .social-links a:hover svg path {
-    fill: var(--gray-900);
-  }
-
-  @media screen and (max-width: 650px) {
-    .content {
-      flex-direction: column;
-      width: max-content;
-    }
-
-    .divider {
-      height: 1px;
-      width: 100%;
-      background: var(--red-to-pink-to-purple-horizontal-gradient);
-      margin-block: 1.5rem;
-    }
-  }
-</style>
-
-<main class="main">
-  <div class="content">
-    <div class="left-side">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 982 239"
-        fill="none"
-        class="angular-logo"
-      >
-        <g clip-path="url(#a)">
-          <path
-            fill="url(#b)"
-            d="M388.676 191.625h30.849L363.31 31.828h-35.758l-56.215 159.797h30.848l13.174-39.356h60.061l13.256 39.356Zm-65.461-62.675 21.602-64.311h1.227l21.602 64.311h-44.431Zm126.831-7.527v70.202h-28.23V71.839h27.002v20.374h1.392c2.782-6.71 7.2-12.028 13.255-15.956 6.056-3.927 13.584-5.89 22.503-5.89 8.264 0 15.465 1.8 21.684 5.318 6.137 3.518 10.964 8.673 14.319 15.382 3.437 6.71 5.074 14.81 4.992 24.383v76.175h-28.23v-71.92c0-8.019-2.046-14.237-6.219-18.819-4.173-4.5-9.819-6.791-17.102-6.791-4.91 0-9.328 1.063-13.174 3.272-3.846 2.128-6.792 5.237-9.001 9.328-2.046 4.009-3.191 8.918-3.191 14.728ZM589.233 239c-10.147 0-18.82-1.391-26.103-4.091-7.282-2.7-13.092-6.382-17.511-10.964-4.418-4.582-7.528-9.655-9.164-15.219l25.448-6.136c1.145 2.372 2.782 4.663 4.991 6.954 2.209 2.291 5.155 4.255 8.837 5.81 3.683 1.554 8.428 2.291 14.074 2.291 8.019 0 14.647-1.964 19.884-5.81 5.237-3.845 7.856-10.227 7.856-19.064v-22.665h-1.391c-1.473 2.946-3.601 5.892-6.383 9.001-2.782 3.109-6.464 5.645-10.965 7.691-4.582 2.046-10.228 3.109-17.101 3.109-9.165 0-17.511-2.209-25.039-6.545-7.446-4.337-13.42-10.883-17.757-19.474-4.418-8.673-6.628-19.473-6.628-32.565 0-13.091 2.21-24.301 6.628-33.383 4.419-9.082 10.311-15.955 17.839-20.7 7.528-4.746 15.874-7.037 25.039-7.037 7.037 0 12.846 1.145 17.347 3.518 4.582 2.373 8.182 5.236 10.883 8.51 2.7 3.272 4.746 6.382 6.137 9.327h1.554v-19.8h27.821v121.749c0 10.228-2.454 18.737-7.364 25.447-4.91 6.709-11.538 11.7-20.048 15.055-8.509 3.355-18.165 4.991-28.884 4.991Zm.245-71.266c5.974 0 11.047-1.473 15.302-4.337 4.173-2.945 7.446-7.118 9.573-12.519 2.21-5.482 3.274-12.027 3.274-19.637 0-7.609-1.064-14.155-3.274-19.8-2.127-5.646-5.318-10.064-9.491-13.255-4.174-3.11-9.329-4.746-15.384-4.746s-11.537 1.636-15.792 4.91c-4.173 3.272-7.365 7.772-9.492 13.418-2.128 5.727-3.191 12.191-3.191 19.392 0 7.2 1.063 13.745 3.273 19.228 2.127 5.482 5.318 9.736 9.573 12.764 4.174 3.027 9.41 4.582 15.629 4.582Zm141.56-26.51V71.839h28.23v119.786h-27.412v-21.273h-1.227c-2.7 6.709-7.119 12.191-13.338 16.446-6.137 4.255-13.747 6.382-22.748 6.382-7.855 0-14.81-1.718-20.783-5.237-5.974-3.518-10.72-8.591-14.075-15.382-3.355-6.709-5.073-14.891-5.073-24.464V71.839h28.312v71.921c0 7.609 2.046 13.664 6.219 18.083 4.173 4.5 9.655 6.709 16.365 6.709 4.173 0 8.183-.982 12.111-3.028 3.927-2.045 7.118-5.072 9.655-9.082 2.537-4.091 3.764-9.164 3.764-15.218Zm65.707-109.395v159.796h-28.23V31.828h28.23Zm44.841 162.169c-7.61 0-14.402-1.391-20.457-4.091-6.055-2.7-10.883-6.791-14.32-12.109-3.518-5.319-5.237-11.946-5.237-19.801 0-6.791 1.228-12.355 3.765-16.773 2.536-4.419 5.891-7.937 10.228-10.637 4.337-2.618 9.164-4.664 14.647-6.055 5.4-1.391 11.046-2.373 16.856-3.027 7.037-.737 12.683-1.391 17.102-1.964 4.337-.573 7.528-1.555 9.574-2.782 1.963-1.309 3.027-3.273 3.027-5.973v-.491c0-5.891-1.718-10.391-5.237-13.664-3.518-3.191-8.51-4.828-15.056-4.828-6.955 0-12.356 1.473-16.447 4.5-4.009 3.028-6.71 6.546-8.183 10.719l-26.348-3.764c2.046-7.282 5.483-13.336 10.31-18.328 4.746-4.909 10.638-8.59 17.511-11.045 6.955-2.455 14.565-3.682 22.912-3.682 5.809 0 11.537.654 17.265 2.045s10.965 3.6 15.711 6.71c4.746 3.109 8.51 7.282 11.455 12.6 2.864 5.318 4.337 11.946 4.337 19.883v80.184h-27.166v-16.446h-.9c-1.719 3.355-4.092 6.464-7.201 9.328-3.109 2.864-6.955 5.237-11.619 6.955-4.828 1.718-10.229 2.536-16.529 2.536Zm7.364-20.701c5.646 0 10.556-1.145 14.729-3.354 4.173-2.291 7.364-5.237 9.655-9.001 2.292-3.763 3.355-7.854 3.355-12.273v-14.155c-.9.737-2.373 1.391-4.5 2.046-2.128.654-4.419 1.145-7.037 1.636-2.619.491-5.155.9-7.692 1.227-2.537.328-4.746.655-6.628.901-4.173.572-8.019 1.472-11.292 2.781-3.355 1.31-5.973 3.11-7.855 5.401-1.964 2.291-2.864 5.318-2.864 8.918 0 5.237 1.882 9.164 5.728 11.782 3.682 2.782 8.51 4.091 14.401 4.091Zm64.643 18.328V71.839h27.412v19.965h1.227c2.21-6.955 5.974-12.274 11.292-16.038 5.319-3.763 11.456-5.645 18.329-5.645 1.555 0 3.355.082 5.237.163 1.964.164 3.601.328 4.91.573v25.938c-1.227-.41-3.109-.819-5.646-1.146a58.814 58.814 0 0 0-7.446-.49c-5.155 0-9.738 1.145-13.829 3.354-4.091 2.209-7.282 5.236-9.655 9.164-2.373 3.927-3.519 8.427-3.519 13.5v70.448h-28.312ZM222.077 39.192l-8.019 125.923L137.387 0l84.69 39.192Zm-53.105 162.825-57.933 33.056-57.934-33.056 11.783-28.556h92.301l11.783 28.556ZM111.039 62.675l30.357 73.803H80.681l30.358-73.803ZM7.937 165.115 0 39.192 84.69 0 7.937 165.115Z"
-          />
-          <path
-            fill="url(#c)"
-            d="M388.676 191.625h30.849L363.31 31.828h-35.758l-56.215 159.797h30.848l13.174-39.356h60.061l13.256 39.356Zm-65.461-62.675 21.602-64.311h1.227l21.602 64.311h-44.431Zm126.831-7.527v70.202h-28.23V71.839h27.002v20.374h1.392c2.782-6.71 7.2-12.028 13.255-15.956 6.056-3.927 13.584-5.89 22.503-5.89 8.264 0 15.465 1.8 21.684 5.318 6.137 3.518 10.964 8.673 14.319 15.382 3.437 6.71 5.074 14.81 4.992 24.383v76.175h-28.23v-71.92c0-8.019-2.046-14.237-6.219-18.819-4.173-4.5-9.819-6.791-17.102-6.791-4.91 0-9.328 1.063-13.174 3.272-3.846 2.128-6.792 5.237-9.001 9.328-2.046 4.009-3.191 8.918-3.191 14.728ZM589.233 239c-10.147 0-18.82-1.391-26.103-4.091-7.282-2.7-13.092-6.382-17.511-10.964-4.418-4.582-7.528-9.655-9.164-15.219l25.448-6.136c1.145 2.372 2.782 4.663 4.991 6.954 2.209 2.291 5.155 4.255 8.837 5.81 3.683 1.554 8.428 2.291 14.074 2.291 8.019 0 14.647-1.964 19.884-5.81 5.237-3.845 7.856-10.227 7.856-19.064v-22.665h-1.391c-1.473 2.946-3.601 5.892-6.383 9.001-2.782 3.109-6.464 5.645-10.965 7.691-4.582 2.046-10.228 3.109-17.101 3.109-9.165 0-17.511-2.209-25.039-6.545-7.446-4.337-13.42-10.883-17.757-19.474-4.418-8.673-6.628-19.473-6.628-32.565 0-13.091 2.21-24.301 6.628-33.383 4.419-9.082 10.311-15.955 17.839-20.7 7.528-4.746 15.874-7.037 25.039-7.037 7.037 0 12.846 1.145 17.347 3.518 4.582 2.373 8.182 5.236 10.883 8.51 2.7 3.272 4.746 6.382 6.137 9.327h1.554v-19.8h27.821v121.749c0 10.228-2.454 18.737-7.364 25.447-4.91 6.709-11.538 11.7-20.048 15.055-8.509 3.355-18.165 4.991-28.884 4.991Zm.245-71.266c5.974 0 11.047-1.473 15.302-4.337 4.173-2.945 7.446-7.118 9.573-12.519 2.21-5.482 3.274-12.027 3.274-19.637 0-7.609-1.064-14.155-3.274-19.8-2.127-5.646-5.318-10.064-9.491-13.255-4.174-3.11-9.329-4.746-15.384-4.746s-11.537 1.636-15.792 4.91c-4.173 3.272-7.365 7.772-9.492 13.418-2.128 5.727-3.191 12.191-3.191 19.392 0 7.2 1.063 13.745 3.273 19.228 2.127 5.482 5.318 9.736 9.573 12.764 4.174 3.027 9.41 4.582 15.629 4.582Zm141.56-26.51V71.839h28.23v119.786h-27.412v-21.273h-1.227c-2.7 6.709-7.119 12.191-13.338 16.446-6.137 4.255-13.747 6.382-22.748 6.382-7.855 0-14.81-1.718-20.783-5.237-5.974-3.518-10.72-8.591-14.075-15.382-3.355-6.709-5.073-14.891-5.073-24.464V71.839h28.312v71.921c0 7.609 2.046 13.664 6.219 18.083 4.173 4.5 9.655 6.709 16.365 6.709 4.173 0 8.183-.982 12.111-3.028 3.927-2.045 7.118-5.072 9.655-9.082 2.537-4.091 3.764-9.164 3.764-15.218Zm65.707-109.395v159.796h-28.23V31.828h28.23Zm44.841 162.169c-7.61 0-14.402-1.391-20.457-4.091-6.055-2.7-10.883-6.791-14.32-12.109-3.518-5.319-5.237-11.946-5.237-19.801 0-6.791 1.228-12.355 3.765-16.773 2.536-4.419 5.891-7.937 10.228-10.637 4.337-2.618 9.164-4.664 14.647-6.055 5.4-1.391 11.046-2.373 16.856-3.027 7.037-.737 12.683-1.391 17.102-1.964 4.337-.573 7.528-1.555 9.574-2.782 1.963-1.309 3.027-3.273 3.027-5.973v-.491c0-5.891-1.718-10.391-5.237-13.664-3.518-3.191-8.51-4.828-15.056-4.828-6.955 0-12.356 1.473-16.447 4.5-4.009 3.028-6.71 6.546-8.183 10.719l-26.348-3.764c2.046-7.282 5.483-13.336 10.31-18.328 4.746-4.909 10.638-8.59 17.511-11.045 6.955-2.455 14.565-3.682 22.912-3.682 5.809 0 11.537.654 17.265 2.045s10.965 3.6 15.711 6.71c4.746 3.109 8.51 7.282 11.455 12.6 2.864 5.318 4.337 11.946 4.337 19.883v80.184h-27.166v-16.446h-.9c-1.719 3.355-4.092 6.464-7.201 9.328-3.109 2.864-6.955 5.237-11.619 6.955-4.828 1.718-10.229 2.536-16.529 2.536Zm7.364-20.701c5.646 0 10.556-1.145 14.729-3.354 4.173-2.291 7.364-5.237 9.655-9.001 2.292-3.763 3.355-7.854 3.355-12.273v-14.155c-.9.737-2.373 1.391-4.5 2.046-2.128.654-4.419 1.145-7.037 1.636-2.619.491-5.155.9-7.692 1.227-2.537.328-4.746.655-6.628.901-4.173.572-8.019 1.472-11.292 2.781-3.355 1.31-5.973 3.11-7.855 5.401-1.964 2.291-2.864 5.318-2.864 8.918 0 5.237 1.882 9.164 5.728 11.782 3.682 2.782 8.51 4.091 14.401 4.091Zm64.643 18.328V71.839h27.412v19.965h1.227c2.21-6.955 5.974-12.274 11.292-16.038 5.319-3.763 11.456-5.645 18.329-5.645 1.555 0 3.355.082 5.237.163 1.964.164 3.601.328 4.91.573v25.938c-1.227-.41-3.109-.819-5.646-1.146a58.814 58.814 0 0 0-7.446-.49c-5.155 0-9.738 1.145-13.829 3.354-4.091 2.209-7.282 5.236-9.655 9.164-2.373 3.927-3.519 8.427-3.519 13.5v70.448h-28.312ZM222.077 39.192l-8.019 125.923L137.387 0l84.69 39.192Zm-53.105 162.825-57.933 33.056-57.934-33.056 11.783-28.556h92.301l11.783 28.556ZM111.039 62.675l30.357 73.803H80.681l30.358-73.803ZM7.937 165.115 0 39.192 84.69 0 7.937 165.115Z"
-          />
-        </g>
-        <defs>
-          <radialGradient
-            id="c"
-            cx="0"
-            cy="0"
-            r="1"
-            gradientTransform="rotate(118.122 171.182 60.81) scale(205.794)"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stop-color="#FF41F8" />
-            <stop offset=".707" stop-color="#FF41F8" stop-opacity=".5" />
-            <stop offset="1" stop-color="#FF41F8" stop-opacity="0" />
-          </radialGradient>
-          <linearGradient
-            id="b"
-            x1="0"
-            x2="982"
-            y1="192"
-            y2="192"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stop-color="#F0060B" />
-            <stop offset="0" stop-color="#F0070C" />
-            <stop offset=".526" stop-color="#CC26D5" />
-            <stop offset="1" stop-color="#7702FF" />
-          </linearGradient>
-          <clipPath id="a"><path fill="#fff" d="M0 0h982v239H0z" /></clipPath>
-        </defs>
-      </svg>
-      <h1>Hello, {{ title() }}</h1>
-      <p>Congratulations! Your app is running. 🎉</p>
+<div class="main-col">
+  <header class="topbar">
+    <eds-button class="menu-button" variant="tertiary" icon="menu" [iconOnly]="true" accessibleLabel="Open navigation" (clicked)="drawerOpen.set(true)" />
+    <eds-breadcrumb [items]="breadcrumbs()" />
+    <div class="topbar-actions">
+      <eds-search placeholder="Find a job, dataset, or person" size="sm" [value]="jobSearch()" [clearable]="true" (changed)="globalSearch($event)" (cleared)="globalSearch('')" />
+      <eds-status [label]="activeJobs().length + ' active'" [variant]="activeJobs().length ? 'info' : 'success'" [pulse]="live() && activeJobs().length > 0" />
+      <eds-popover [open]="helpOpen()" (openChange)="helpOpen.set($event)" heading="Quick guide" placement="bottom">
+        <eds-button trigger variant="tertiary" icon="info" [iconOnly]="true" accessibleLabel="Quick guide" />
+        <p class="help-line">Training loss falling while <strong>validation loss rises</strong> means too many epochs.</p>
+        <p class="help-line">Checkpoints are saved at the end of every epoch.</p>
+      </eds-popover>
+      <eds-dropdown-menu [open]="menuOpen()" (openChange)="menuOpen.set($event)" (itemSelect)="onProfile($event)">
+        <button trigger type="button" class="profile-trigger">
+          <eds-avatar name="Meera Poluru" size="sm" />
+          <span class="profile-name"><strong>Meera Poluru</strong><small>Workspace owner</small></span>
+        </button>
+        <eds-menu-item label="My jobs" value="mine" />
+        <eds-menu-item label="Team" value="team" />
+        <eds-menu-item label="Settings" value="settings" />
+      </eds-dropdown-menu>
     </div>
-    <div class="divider" role="separator" aria-label="Divider"></div>
-    <div class="right-side">
-      <div class="pill-group">
-        @for (item of [
-          { title: 'Explore the Docs', link: 'https://angular.dev' },
-          { title: 'Learn with Tutorials', link: 'https://angular.dev/tutorials' },
-          { title: 'Prompt and best practices for AI', link: 'https://angular.dev/ai/develop-with-ai'},
-          { title: 'CLI Docs', link: 'https://angular.dev/tools/cli' },
-          { title: 'Angular Language Service', link: 'https://angular.dev/tools/language-service' },
-          { title: 'Angular DevTools', link: 'https://angular.dev/tools/devtools' },
-        ]; track item.title) {
-          <a
-            class="pill"
-            [href]="item.link"
-            target="_blank"
-            rel="noopener"
-          >
-            <span>{{ item.title }}</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="14"
-              viewBox="0 -960 960 960"
-              width="14"
-              fill="currentColor"
-            >
-              <path
-                d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z"
-              />
-            </svg>
-          </a>
+  </header>
+
+  <main id="main" class="content">
+    <section class="page-heading">
+      <div>
+        <p class="eyebrow">{{ headings[page()].eyebrow }}</p>
+        <h1>{{ headings[page()].title }}</h1>
+        <eds-visually-hidden>Manage fine-tuning jobs, datasets, hyperparameters, and model checkpoints in one place.</eds-visually-hidden>
+        <p>{{ headings[page()].summary }}</p>
+      </div>
+      <div class="actions">
+        @if (page() <= 1) {
+          <eds-switch label="Live updates" [checked]="live()" (checkedChange)="live.set($event)" />
+          <eds-split-button label="Export CSV" (primaryClick)="exportJobs()" (itemSelect)="onJobMenu($event)">
+            <eds-menu-item label="Download selected job config" value="config" />
+            <eds-menu-item label="Add selected job to comparison" value="compare" />
+          </eds-split-button>
+        }
+        @if (page() === 4) {
+          <eds-button variant="secondary" icon="trash" (clicked)="cleanup()">Keep best only</eds-button>
         }
       </div>
-      <div class="social-links">
-        <a
-          href="https://github.com/angular/angular"
-          aria-label="Github"
-          target="_blank"
-          rel="noopener"
-        >
-          <svg
-            width="25"
-            height="24"
-            viewBox="0 0 25 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            alt="Github"
-          >
-            <path
-              d="M12.3047 0C5.50634 0 0 5.50942 0 12.3047C0 17.7423 3.52529 22.3535 8.41332 23.9787C9.02856 24.0946 9.25414 23.7142 9.25414 23.3871C9.25414 23.0949 9.24389 22.3207 9.23876 21.2953C5.81601 22.0377 5.09414 19.6444 5.09414 19.6444C4.53427 18.2243 3.72524 17.8449 3.72524 17.8449C2.61064 17.082 3.81137 17.0973 3.81137 17.0973C5.04697 17.1835 5.69604 18.3647 5.69604 18.3647C6.79321 20.2463 8.57636 19.7029 9.27978 19.3881C9.39052 18.5924 9.70736 18.0499 10.0591 17.7423C7.32641 17.4347 4.45429 16.3765 4.45429 11.6618C4.45429 10.3185 4.9311 9.22133 5.72065 8.36C5.58222 8.04931 5.16694 6.79833 5.82831 5.10337C5.82831 5.10337 6.85883 4.77319 9.2121 6.36459C10.1965 6.09082 11.2424 5.95546 12.2883 5.94931C13.3342 5.95546 14.3801 6.09082 15.3644 6.36459C17.7023 4.77319 18.7328 5.10337 18.7328 5.10337C19.3942 6.79833 18.9789 8.04931 18.8559 8.36C19.6403 9.22133 20.1171 10.3185 20.1171 11.6618C20.1171 16.3888 17.2409 17.4296 14.5031 17.7321C14.9338 18.1012 15.3337 18.8559 15.3337 20.0084C15.3337 21.6552 15.3183 22.978 15.3183 23.3779C15.3183 23.7009 15.5336 24.0854 16.1642 23.9623C21.0871 22.3484 24.6094 17.7341 24.6094 12.3047C24.6094 5.50942 19.0999 0 12.3047 0Z"
-            />
-          </svg>
-        </a>
-        <a
-          href="https://x.com/angular"
-          aria-label="X"
-          target="_blank"
-          rel="noopener"
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            alt="X"
-          >
-            <path
-              d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
-            />
-          </svg>
-        </a>
-        <a
-          href="https://www.youtube.com/channel/UCbn1OgGei-DV7aSRo_HaAiw"
-          aria-label="Youtube"
-          target="_blank"
-          rel="noopener"
-        >
-          <svg
-            width="29"
-            height="20"
-            viewBox="0 0 29 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            alt="Youtube"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M27.4896 1.52422C27.9301 1.96749 28.2463 2.51866 28.4068 3.12258C29.0004 5.35161 29.0004 10 29.0004 10C29.0004 10 29.0004 14.6484 28.4068 16.8774C28.2463 17.4813 27.9301 18.0325 27.4896 18.4758C27.0492 18.9191 26.5 19.2389 25.8972 19.4032C23.6778 20 14.8068 20 14.8068 20C14.8068 20 5.93586 20 3.71651 19.4032C3.11363 19.2389 2.56449 18.9191 2.12405 18.4758C1.68361 18.0325 1.36732 17.4813 1.20683 16.8774C0.613281 14.6484 0.613281 10 0.613281 10C0.613281 10 0.613281 5.35161 1.20683 3.12258C1.36732 2.51866 1.68361 1.96749 2.12405 1.52422C2.56449 1.08095 3.11363 0.76113 3.71651 0.596774C5.93586 0 14.8068 0 14.8068 0C14.8068 0 23.6778 0 25.8972 0.596774C26.5 0.76113 27.0492 1.08095 27.4896 1.52422ZM19.3229 10L11.9036 5.77905V14.221L19.3229 10Z"
-            />
-          </svg>
-        </a>
+    </section>
+
+    @if (showIntro() && page() === 0) {
+      <eds-alert variant="info" title="Welcome back, Meera" [message]="activeJobs().length + ' job(s) are active and ' + allCheckpoints().length + ' checkpoints are saved. ticket-routing-v3 still needs a fix before it can train.'" [dismissible]="true" (alertDismiss)="showIntro.set(false)" />
+    }
+    @if (notice()) {
+      <div class="notice" role="status">
+        <eds-alert variant="success" [message]="notice()" [dismissible]="true" (alertDismiss)="notice.set('')" />
       </div>
-    </div>
+    }
+    @if (error() && modal() === null) {
+      <eds-alert variant="danger" [message]="error()" [dismissible]="true" (alertDismiss)="error.set('')" />
+    }
+
+    @if (page() === 0) {
+      <section class="metrics" aria-label="Workspace summary">
+        <eds-card><eds-stat label="Active jobs" [value]="'' + activeJobs().length" [hint]="jobs().length + ' jobs this month'" trend="flat" [trendValue]="'Limit ' + maxConcurrent()" /></eds-card>
+        <eds-card>
+          <eds-stat label="GPU hours" [value]="'' + gpuUsed()" [hint]="'$' + monthCost().toLocaleString() + ' spent'" trend="up" [trendValue]="Math.round((gpuUsed() / quota()) * 100) + '% of quota'" />
+        </eds-card>
+        <eds-card><eds-stat label="Success rate" [value]="successRate() + '%'" hint="Finished jobs" [trend]="successRate() >= 70 ? 'up' : 'down'" [trendValue]="successRate() >= 70 ? 'Healthy' : 'Check failures'" /></eds-card>
+        <eds-card><eds-stat label="Best eval score" [value]="'' + bestScore()" [hint]="allCheckpoints().length + ' checkpoints saved'" trend="up" trendValue="Held-out set" /></eds-card>
+      </section>
+
+      <section class="two-grid wide-left">
+        <eds-card>
+          <div class="card-head">
+            <div>
+              <h2>{{ trainingJob().name }} <small>{{ trainingJob().id }}</small></h2>
+              <p>{{ trainingJob().status === 'Training' ? 'Training now · ' + progress(trainingJob()) + '% · about ' + eta(trainingJob()) + ' left' : 'Latest finished run' }}</p>
+            </div>
+            <eds-button variant="secondary" size="sm" (clicked)="openJob(trainingJob().id)">Open job</eds-button>
+          </div>
+          <svg class="chart" viewBox="-4 -4 568 194" preserveAspectRatio="none" role="img" [attr.aria-label]="'Loss curves for ' + trainingJob().name">
+            @for (x of epochMarks(trainingJob()); track x) { <line class="epoch-line" [attr.x1]="x" [attr.x2]="x" y1="0" y2="180" /> }
+            <line class="axis" x1="0" x2="560" y1="180" y2="180" />
+            <path class="line-train" [attr.d]="curvePath(trainingJob(), 'train')" />
+            <path class="line-val" [attr.d]="curvePath(trainingJob(), 'val')" />
+          </svg>
+          <p class="legend"><span class="key train"></span>Training loss <span class="key val"></span>Validation loss <span class="key epoch"></span>Epoch boundary</p>
+          <eds-progress-bar [value]="progress(trainingJob())" [label]="'Step ' + trainingJob().step.toLocaleString() + ' of ' + trainingJob().total.toLocaleString()" />
+        </eds-card>
+        <eds-card>
+          <h2>Recent events</h2>
+          <eds-timeline [items]="recentEvents()" />
+        </eds-card>
+      </section>
+
+      <eds-card class="table-card">
+        <div class="card-head padded">
+          <div><h2>Jobs</h2><p>Most recent first</p></div>
+          <eds-button variant="tertiary" size="sm" iconTrailing="chevron-right" (clicked)="navigate(1)">All jobs</eds-button>
+        </div>
+        <ng-container *ngTemplateOutlet="jobTable; context: { $implicit: jobs().slice(0, 5) }" />
+      </eds-card>
+
+      <section class="three-grid">
+        @for (ds of datasets().slice(0, 3); track ds.id) {
+          <eds-card>
+            <div class="card-head">
+              <div><h3>{{ ds.name }}</h3><p class="muted">{{ ds.rows.toLocaleString() }} rows · {{ ds.tokens.toFixed(1) }}M tokens</p></div>
+              <eds-badge [variant]="tone(ds.status)">{{ ds.status }}</eds-badge>
+            </div>
+            <eds-button variant="secondary" size="sm" (clicked)="selectedDatasetId.set(ds.id); navigate(3)">View dataset</eds-button>
+          </eds-card>
+        }
+      </section>
+    }
+
+    <ng-template #jobTable let-rows>
+      <table class="data">
+        <caption class="sr-only">Fine-tuning jobs</caption>
+        <thead><tr><th scope="col">Job</th><th scope="col">Status</th><th scope="col">Base model</th><th scope="col">Dataset</th><th scope="col">Progress</th><th scope="col">GPU h</th><th scope="col">Created</th></tr></thead>
+        <tbody>
+          @for (job of rows; track job.id) {
+            <tr [class.selected-row]="page() === 1 && job.id === selectedJobId()">
+              <td><button type="button" class="link-button" (click)="openJob(job.id)">{{ job.name }}</button><small>{{ job.id }} · {{ job.owner }}</small></td>
+              <td>
+                <span class="status-cell">
+                  @if (job.status === 'Training' || job.status === 'Validating' || job.status === 'Evaluating') { <eds-spinner size="sm" [label]="job.status" /> }
+                  <eds-badge [variant]="tone(job.status)">{{ job.status }}</eds-badge>
+                </span>
+              </td>
+              <td>{{ baseLabel(job.base) }}</td>
+              <td>{{ datasetName(job.dataset) }}</td>
+              <td class="bar-cell"><eds-progress-bar [value]="progress(job)" [label]="progress(job) + '%'" /></td>
+              <td>{{ job.gpuHours.toFixed(1) }}</td>
+              <td class="nowrap">{{ job.created }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </ng-template>
+
+    @if (page() === 1) {
+      <eds-toolbar [bordered]="true">
+        <div edsToolbarStart class="toolbar-group">
+          <eds-segmented-control [options]="statusOptions" [value]="jobFilter()" (valueChange)="jobFilter.set($event); jobPage.set(1)" size="sm" />
+        </div>
+        <div edsToolbarEnd class="toolbar-group">
+          <eds-search placeholder="Filter jobs" size="sm" [value]="jobSearch()" [clearable]="true" (valueChange)="jobSearch.set($event); jobPage.set(1)" (cleared)="jobSearch.set('')" />
+        </div>
+      </eds-toolbar>
+      <eds-card class="table-card">
+        @if (filteredJobs().length) {
+          <ng-container *ngTemplateOutlet="jobTable; context: { $implicit: pagedJobs() }" />
+        } @else {
+          <eds-empty-state heading="No jobs match" description="Try another status or clear the search.">
+            <div actions class="actions"><eds-button variant="secondary" (clicked)="jobFilter.set('all'); jobSearch.set('')">Clear filters</eds-button></div>
+          </eds-empty-state>
+        }
+      </eds-card>
+      @if (filteredJobs().length > 6) {
+        <eds-pagination [page]="jobPage()" [pageSize]="6" [total]="filteredJobs().length" (pageChange)="jobPage.set($event)" />
+      }
+
+      @let job = selectedJob();
+      <eds-card class="job-detail">
+        <div class="card-head">
+          <div>
+            <h2>{{ job.name }} <small>{{ job.id }}</small></h2>
+            <p>{{ baseLabel(job.base) }} on {{ datasetName(job.dataset) }} · started by {{ job.owner }}</p>
+          </div>
+          <div class="actions">
+            <eds-badge [variant]="tone(job.status)">{{ job.status }}</eds-badge>
+            <eds-button-group>
+              <eds-button variant="secondary" size="sm" icon="copy" (clicked)="cloneJob()">Clone</eds-button>
+              @if (isActive(job)) {
+                <eds-button variant="secondary" size="sm" icon="x" (clicked)="modal.set('cancel')">Cancel</eds-button>
+              }
+              @if (checkpoints(job).length) {
+                <eds-button variant="secondary" size="sm" icon="folder" (clicked)="selectedCheckpointId.set(checkpoints(job)[checkpoints(job).length - 1].id); navigate(4)">Checkpoints</eds-button>
+              }
+            </eds-button-group>
+          </div>
+        </div>
+        <eds-stepper [steps]="lifecycle" [current]="lifecycleStep(job)" />
+        @if (job.error) {
+          <eds-alert variant="danger" title="Job failed" [message]="job.error">
+          </eds-alert>
+          <div class="actions start"><eds-button variant="secondary" size="sm" (clicked)="selectedDatasetId.set(job.dataset); navigate(3)">Open dataset</eds-button></div>
+        }
+        <section class="metrics four-inline">
+          <div><span class="big">{{ progress(job) }}%</span><small>Step {{ job.step.toLocaleString() }} of {{ job.total.toLocaleString() }}</small></div>
+          <div><span class="big">{{ job.step ? loss(job, job.step).train.toFixed(3) : '—' }}</span><small>Training loss</small></div>
+          <div><span class="big">{{ job.step ? loss(job, job.step).val.toFixed(3) : '—' }}</span><small>Validation loss</small></div>
+          <div><span class="big">{{ eta(job) }}</span><small>Time left</small></div>
+        </section>
+
+        <div class="nav-scroll"><eds-tabs [tabs]="jobTabs" [selectedIndex]="jobTab()" (selectedIndexChange)="jobTab.set($event)" /></div>
+        @if (jobTab() === 0) {
+          @if (job.step) {
+            <div class="card-head tab-head">
+              <p class="muted">{{ job.overfit > 0.1 && progress(job) > 60 ? 'Validation loss is rising in later epochs — an earlier checkpoint may be better.' : 'Curves are tracking together.' }}</p>
+              <eds-segmented-control [options]="curveOptions" [value]="curveView()" (valueChange)="curveView.set($event)" size="sm" />
+            </div>
+            <svg class="chart tall" viewBox="-4 -4 568 194" preserveAspectRatio="none" role="img" [attr.aria-label]="'Loss curves for ' + job.name">
+              @for (x of epochMarks(job); track x) { <line class="epoch-line" [attr.x1]="x" [attr.x2]="x" y1="0" y2="180" /> }
+              <line class="axis" x1="0" x2="560" y1="180" y2="180" />
+              @if (curveView() === 'both') { <path class="line-train" [attr.d]="curvePath(job, 'train')" /> }
+              <path class="line-val" [attr.d]="curvePath(job, 'val')" />
+            </svg>
+            <p class="legend">@if (curveView() === 'both') { <span class="key train"></span>Training loss } <span class="key val"></span>Validation loss <span class="key epoch"></span>Epoch boundary</p>
+          } @else {
+            <div class="skeleton-chart">
+              <eds-skeleton variant="rectangular" height="160px" />
+              <p class="muted">Curves appear once training starts.</p>
+            </div>
+          }
+        }
+        @if (jobTab() === 1) {
+          <div class="two-grid flush">
+            <eds-description-list [items]="jobMeta()" [columns]="3" />
+            <eds-code-snippet [code]="configYaml()" language="yaml" [label]="job.id + '.yaml'" />
+          </div>
+        }
+        @if (jobTab() === 2) {
+          @if (jobEvents().length) {
+            <eds-timeline [items]="jobEvents()" />
+          } @else {
+            <p class="muted">No events recorded for this job.</p>
+          }
+        }
+      </eds-card>
+    }
+
+    @if (page() === 2) {
+      <section class="wizard">
+        <eds-card class="form-card">
+          <eds-stepper [steps]="wizardSteps" [current]="step()" (stepClick)="onWizardStep($event)" />
+          @if (error()) { <eds-alert variant="danger" [message]="error()" /> }
+
+          @if (step() === 0) {
+            <eds-input label="Job name" placeholder="support-replies-13b" hint="Lowercase letters, numbers, and dashes" [required]="true" [value]="draft().name" (valueChange)="patchDraft({ name: $event })" />
+            <eds-radio-group label="Base model" name="base" [value]="draft().base" (valueChange)="patchDraft({ base: $event })">
+              @for (base of bases; track base.id) {
+                <eds-radio [label]="base.label + ' — $' + base.price.toFixed(2) + ' per 1M training tokens'" [value]="base.id" />
+              }
+            </eds-radio-group>
+            <eds-combobox label="Owner" [options]="ownerOptions" [value]="defaultOwner()" (valueChange)="defaultOwner.set($event)" />
+          }
+          @if (step() === 1) {
+            <eds-select label="Training dataset" [options]="datasetOptions()" [value]="draft().dataset" (valueChange)="patchDraft({ dataset: $event })" />
+            @if (draftDataset(); as ds) {
+              @if (ds.status !== 'Validated') {
+                <eds-alert variant="warning" [message]="ds.name + ' has validation issues and cannot be used yet.'" />
+              }
+              <eds-slider label="Validation split (%)" [min]="5" [max]="30" [step]="5" [value]="draft().split" [showValue]="true" (valueChange)="patchDraft({ split: $event })" />
+              <p class="muted">{{ Math.round(ds.rows * (1 - draft().split / 100)).toLocaleString() }} rows for training, {{ Math.round(ds.rows * draft().split / 100).toLocaleString() }} held back for validation.</p>
+            }
+            <eds-date-picker label="Start on (optional)" min="2026-09-28" hint="Leave empty to start as soon as a GPU is free" [value]="draft().startDate" (valueChange)="patchDraft({ startDate: $event })" />
+          }
+          @if (step() === 2) {
+            <div class="two-col">
+              <eds-number-input label="Epochs" [value]="draft().epochs" [min]="1" [max]="10" (valueChange)="patchDraft({ epochs: $event })" />
+              <eds-select label="Batch size" [options]="batchOptions" [value]="draft().batch" (valueChange)="patchDraft({ batch: $event })" />
+            </div>
+            <eds-select label="Learning rate multiplier" [options]="lrOptions" [value]="draft().lr" (valueChange)="patchDraft({ lr: $event })" />
+            <eds-slider label="Warmup (% of steps)" [min]="0" [max]="20" [step]="1" [value]="draft().warmup" [showValue]="true" (valueChange)="patchDraft({ warmup: $event })" />
+            <div class="two-col">
+              <eds-number-input label="Seed" [value]="draft().seed" [min]="0" [max]="99999" (valueChange)="patchDraft({ seed: $event })" />
+              <eds-checkbox label="Stop early if validation loss rises two epochs in a row" [checked]="draft().earlyStop" (checkedChange)="patchDraft({ earlyStop: $event })" />
+            </div>
+          }
+          @if (step() === 3) {
+            <eds-description-list [items]="draftSummary()" [columns]="2" />
+            @if (draft().lr === '2' && draft().epochs >= 4) {
+              <eds-alert variant="warning" message="A high learning rate with many epochs often overfits. Consider fewer epochs or a lower rate." />
+            }
+          }
+
+          <div class="card-actions">
+            <eds-button variant="secondary" [disabled]="step() === 0" icon="chevron-left" (clicked)="prevStep()">Back</eds-button>
+            <eds-button [icon]="step() === 3 ? 'check' : 'chevron-right'" (clicked)="nextStep()">{{ step() === 3 ? 'Launch job' : 'Continue' }}</eds-button>
+          </div>
+        </eds-card>
+
+        <div class="stage">
+          <eds-card>
+            <h2>Estimate</h2>
+            <div class="estimate">
+              <div><span class="big">${{ estimate().cost.toFixed(2) }}</span><small>Training cost</small></div>
+              <div><span class="big">{{ estimate().hours }}h</span><small>GPU time</small></div>
+              <div><span class="big">{{ estimate().steps.toLocaleString() }}</span><small>Steps</small></div>
+              <div><span class="big">{{ estimate().tokens }}M</span><small>Billed tokens</small></div>
+            </div>
+            <eds-meter [value]="Math.min(gpuUsed() + estimate().hours, quota())" [max]="quota()" [low]="quota() * 0.7" [high]="quota() * 0.9" [optimum]="0" label="Quota after this job" [showValue]="true" />
+            <p class="muted tip">
+              <eds-tooltip content="Cost = training tokens × epochs × base-model price. Validation rows are not billed." placement="top"><eds-icon name="info" size="sm" /></eds-tooltip>
+              How this is calculated
+            </p>
+          </eds-card>
+          <eds-card>
+            <h2>Hyperparameter guide</h2>
+            <eds-accordion [items]="guide" [single]="true" />
+          </eds-card>
+        </div>
+      </section>
+    }
+
+    @if (page() === 3) {
+      <eds-card class="table-card">
+        <table class="data">
+          <caption class="sr-only">Datasets</caption>
+          <thead><tr><th scope="col">Dataset</th><th scope="col">Status</th><th scope="col">Rows</th><th scope="col">Tokens</th><th scope="col">Format</th><th scope="col">Updated</th></tr></thead>
+          <tbody>
+            @for (ds of datasets(); track ds.id) {
+              <tr [class.selected-row]="ds.id === selectedDatasetId()">
+                <td><button type="button" class="link-button" (click)="selectedDatasetId.set(ds.id)">{{ ds.name }}</button><small>{{ ds.owner }}</small></td>
+                <td><eds-badge [variant]="ds.status === 'Validating' ? 'info' : tone(ds.status)">{{ ds.status }}</eds-badge></td>
+                <td>{{ ds.rows.toLocaleString() }}</td>
+                <td>{{ ds.tokens.toFixed(1) }}M</td>
+                <td>{{ ds.format }}</td>
+                <td>{{ ds.updated }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </eds-card>
+
+      @let ds = selectedDataset();
+      <section class="two-grid">
+        <eds-card>
+          <div class="card-head">
+            <div><h2>{{ ds.name }}</h2><p>{{ ds.format }} · updated {{ ds.updated }}</p></div>
+            <div class="actions">
+              <eds-button variant="secondary" size="sm" icon="refresh" (clicked)="revalidate()">Revalidate</eds-button>
+              <eds-button size="sm" [disabled]="ds.status !== 'Validated'" (clicked)="trainOn(ds)">Train on this</eds-button>
+            </div>
+          </div>
+          <eds-description-list [items]="datasetMeta()" [columns]="3" />
+          <eds-slider label="Validation split (%)" [min]="5" [max]="30" [step]="5" [value]="ds.split" [showValue]="true" (valueChange)="setSplit($event)" />
+          <eds-divider />
+          <p class="side-title">Validation checks</p>
+          @if (revalidating()) {
+            <eds-skeleton variant="text" [lines]="4" />
+          } @else {
+            @for (check of ds.checks; track check.label) {
+              <div class="check-row">
+                <eds-badge [variant]="checkTone(check.state)">{{ check.state === 'pass' ? 'Pass' : check.state === 'warn' ? 'Warning' : 'Fail' }}</eds-badge>
+                <div><strong>{{ check.label }}</strong><small>{{ check.detail }}</small></div>
+              </div>
+            }
+            @if (ds.status === 'Issues') {
+              <eds-alert variant="warning" message="Revalidate to drop the incomplete records automatically, or upload a fixed file." />
+            }
+          }
+        </eds-card>
+        <div class="stage">
+          <eds-card>
+            <h2>Sample record</h2>
+            <eds-code-snippet [code]="ds.sample" language="json" label="row 1" />
+          </eds-card>
+          <eds-card>
+            <h2>Upload a dataset</h2>
+            <eds-file-upload label="Training file" accept=".jsonl,.csv" hint="Chat JSONL (one conversation per line) or CSV with prompt and completion columns" (filesChange)="onUpload($event)" />
+          </eds-card>
+        </div>
+      </section>
+    }
+
+    @if (page() === 4) {
+      <section class="tree-layout">
+        <eds-card>
+          <h2>By job</h2>
+          <p class="muted">★ lowest validation loss · live = deployed</p>
+          @if (checkpointTree().length) {
+            <eds-tree-view [items]="checkpointTree()" [selectedId]="selectedCheckpointId()" [expandedIds]="treeExpanded()" (nodeSelect)="selectCheckpoint($event)" />
+          } @else {
+            <p class="muted">No checkpoints yet.</p>
+          }
+        </eds-card>
+        @if (selectedCheckpoint(); as ckpt) {
+          <div class="stage">
+            <eds-card>
+              <div class="card-head">
+                <div>
+                  <h2>{{ ckpt.id }}</h2>
+                  <p>{{ checkpointJob()?.name }} · epoch {{ ckpt.epoch }} of {{ checkpointJob()?.epochs }} · step {{ ckpt.step.toLocaleString() }}</p>
+                </div>
+                <div class="actions">
+                  @if (isDeployed(ckpt.id)) { <eds-tag variant="success">Live · {{ family(ckpt.jobId) }}</eds-tag> }
+                  @if (checkpointJob() && best(checkpoints(checkpointJob()!))?.id === ckpt.id) { <eds-tag variant="brand">Best of job</eds-tag> }
+                </div>
+              </div>
+              <div class="quality">
+                <eds-circular-progress [value]="ckpt.score" [size]="96" [strokeWidth]="9" [showValue]="true" />
+                <div class="estimate compact">
+                  <div><span class="big">{{ ckpt.train.toFixed(3) }}</span><small>Training loss</small></div>
+                  <div><span class="big">{{ ckpt.val.toFixed(3) }}</span><small>Validation loss</small></div>
+                  <div><span class="big">{{ (ckpt.val - ckpt.train).toFixed(3) }}</span><small>Gap</small></div>
+                </div>
+              </div>
+              <div class="card-actions">
+                <span class="muted">Eval score on the held-out set, out of 100</span>
+                <div class="actions">
+                  <eds-button variant="tertiary" icon="trash" (clicked)="deleteCheckpoint()">Delete</eds-button>
+                  <eds-button variant="secondary" icon="download" (clicked)="downloadCheckpoint(ckpt)">Metadata</eds-button>
+                  <eds-button icon="upload" [disabled]="isDeployed(ckpt.id)" (clicked)="openDeploy()">Deploy</eds-button>
+                </div>
+              </div>
+            </eds-card>
+            <eds-card class="form-card">
+              <h2>Manual review</h2>
+              <div class="rating-row">
+                <span>Output quality</span>
+                <eds-rating [value]="ratings()[ckpt.id] || 0" [max]="5" (valueChange)="setRating($event)" />
+              </div>
+              <eds-textarea label="Reviewer notes" [rows]="3" [maxlength]="300" placeholder="What did you check, and what did you see?" [value]="checkpointNotes()[ckpt.id] || ''" (valueChange)="setCheckpointNote($event)" />
+            </eds-card>
+            <eds-card class="table-card">
+              <h2 class="padded-title">Deployments</h2>
+              <table class="data">
+                <caption class="sr-only">Live checkpoints</caption>
+                <thead><tr><th scope="col">Model</th><th scope="col">Checkpoint</th></tr></thead>
+                <tbody>
+                  @for (entry of deployments(); track entry.model) {
+                    <tr><td><strong>{{ entry.model }}</strong></td><td>{{ entry.checkpoint }}</td></tr>
+                  }
+                </tbody>
+              </table>
+            </eds-card>
+          </div>
+        }
+      </section>
+    }
+
+    @if (page() === 5) {
+      <section class="compare-layout">
+        <eds-card>
+          <h2>Runs</h2>
+          <p class="muted">Pick up to three · {{ compareJobs().length }} selected</p>
+          @for (job of jobs(); track job.id) {
+            @if (checkpoints(job).length) {
+              <div class="compare-pick">
+                <eds-checkbox [label]="job.name" [checked]="!!compareIds()[job.id]" [disabled]="!compareIds()[job.id] && compareJobs().length >= 3" (checkedChange)="toggleCompare(job.id, $event)" />
+                <small>{{ job.id }} · {{ job.status }}</small>
+              </div>
+            }
+          }
+        </eds-card>
+        <div class="stage">
+          <eds-card>
+            <h2>Validation loss</h2>
+            <p class="muted">{{ compareNames() || 'Pick runs to compare' }}</p>
+            <svg class="chart" viewBox="-4 -4 568 194" preserveAspectRatio="none" role="img" aria-label="Validation loss for the compared runs">
+              <line class="axis" x1="0" x2="560" y1="180" y2="180" />
+              @for (job of compareJobs(); track job.id; let i = $index) {
+                <path [class]="'line-c' + i" [attr.d]="comparePath(job)" />
+              }
+            </svg>
+            <p class="legend">
+              @for (job of compareJobs(); track job.id; let i = $index) { <span [class]="'key c' + i"></span>{{ job.name }} }
+            </p>
+          </eds-card>
+          <eds-card class="table-card">
+            <table class="data">
+              <caption class="sr-only">Run comparison</caption>
+              <thead><tr><th scope="col">Run</th><th scope="col">Base</th><th scope="col">Epochs</th><th scope="col">LR</th><th scope="col">Batch</th><th scope="col">Final train</th><th scope="col">Best val</th><th scope="col">Score</th></tr></thead>
+              <tbody>
+                @for (row of compareRows(); track row.job.id) {
+                  <tr>
+                    <td><button type="button" class="link-button" (click)="openJob(row.job.id)">{{ row.job.name }}</button><small>{{ row.job.id }}</small></td>
+                    <td>{{ baseLabel(row.job.base) }}</td>
+                    <td>{{ row.job.epochs }}</td>
+                    <td>{{ row.job.lr }}×</td>
+                    <td>{{ row.job.batch }}</td>
+                    <td>{{ row.finalTrain?.toFixed(3) ?? '—' }}</td>
+                    <td>{{ row.best ? row.best.val.toFixed(3) + ' (e' + row.best.epoch + ')' : '—' }}</td>
+                    <td>@if (row.job.id === compareWinner()) { <eds-tag variant="success">{{ row.best?.score }} · best</eds-tag> } @else { {{ row.best?.score ?? '—' }} }</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </eds-card>
+        </div>
+      </section>
+    }
+
+    @if (page() === 6) {
+      <eds-toolbar [bordered]="true">
+        <div edsToolbarStart class="toolbar-group">
+          <eds-date-range-picker label="Period" [startValue]="rangeStart()" [endValue]="rangeEnd()" (rangeChange)="onRange($event)" />
+        </div>
+        <div edsToolbarEnd class="toolbar-group">
+          <eds-number-input label="Monthly budget ($)" [value]="budget()" [min]="100" [max]="100000" (valueChange)="budget.set($event)" />
+        </div>
+      </eds-toolbar>
+      @if (monthCost() > budget() * 0.8) {
+        <eds-alert variant="warning" [message]="'Spend is at ' + Math.round((monthCost() / budget()) * 100) + '% of the monthly budget.'" />
+      }
+      <section class="metrics three">
+        <eds-card>
+          <eds-stat label="GPU hours" [value]="'' + gpuUsed()" [hint]="'Quota ' + quota()" trend="flat" [trendValue]="Math.round((gpuUsed() / quota()) * 100) + '%'" />
+          <eds-meter [value]="gpuUsed()" [max]="quota()" [low]="quota() * 0.7" [high]="quota() * 0.9" [optimum]="0" label="Quota used" />
+        </eds-card>
+        <eds-card>
+          <eds-stat label="Spend" [value]="'$' + monthCost().toLocaleString()" [hint]="'Budget $' + budget().toLocaleString()" [trend]="monthCost() > budget() ? 'down' : 'flat'" [trendValue]="Math.round((monthCost() / budget()) * 100) + '% of budget'" />
+          <eds-meter [value]="Math.min(monthCost(), budget())" [max]="budget()" [low]="budget() * 0.7" [high]="budget() * 0.9" [optimum]="0" label="Budget used" />
+        </eds-card>
+        <eds-card>
+          <eds-stat label="Cost per successful job" [value]="'$' + Math.round(monthCost() / Math.max(1, succeededCount()))" hint="Includes failed and cancelled runs" trend="flat" trendValue="This period" />
+        </eds-card>
+      </section>
+      <section class="two-grid">
+        <eds-card>
+          <h2>By person</h2>
+          @for (row of ownerUsage(); track row.name) {
+            <div class="usage-row">
+              <span class="member-inline"><eds-avatar [name]="row.name" size="sm" />{{ row.name }}</span>
+              <eds-progress-bar [value]="Math.round((row.hours / maxOwnerHours()) * 100)" [label]="row.hours + ' h · $' + row.cost" />
+            </div>
+          }
+        </eds-card>
+        <eds-card class="table-card">
+          <h2 class="padded-title">By base model</h2>
+          <table class="data">
+            <caption class="sr-only">Usage by base model</caption>
+            <thead><tr><th scope="col">Base model</th><th scope="col">Jobs</th><th scope="col">GPU hours</th><th scope="col">Cost</th></tr></thead>
+            <tbody>
+              @for (row of baseUsage(); track row.label) {
+                <tr><td><strong>{{ row.label }}</strong></td><td>{{ row.jobs }}</td><td>{{ row.hours }}</td><td>${{ row.cost.toLocaleString() }}</td></tr>
+              }
+            </tbody>
+          </table>
+        </eds-card>
+      </section>
+    }
+
+    @if (page() === 7) {
+      <section class="team-grid">
+        @for (member of team; track member.name) {
+          <eds-card>
+            <div class="member">
+              <eds-avatar [name]="member.name" size="md" />
+              <div><strong>{{ member.name }}</strong><small>{{ member.role }}</small></div>
+            </div>
+            <p class="muted">{{ member.focus }}</p>
+          </eds-card>
+        }
+      </section>
+      <eds-card class="table-card">
+        <eds-data-table [columns]="teamColumns" [rows]="teamRows()" [sortable]="true" [striped]="true" (sortChange)="teamSort.set($event)" />
+      </eds-card>
+    }
+
+    @if (page() === 8) {
+      <section class="two-grid">
+        <eds-card class="form-card">
+          <h2>Training defaults</h2>
+          <eds-select label="Default base model" [options]="baseShort" [value]="defaultBase()" (valueChange)="defaultBase.set($event)" />
+          <eds-number-input label="Jobs allowed at once" [value]="maxConcurrent()" [min]="1" [max]="8" hint="Extra jobs wait in the queue" (valueChange)="maxConcurrent.set($event)" />
+          <eds-number-input label="Monthly GPU quota (hours)" [value]="quota()" [min]="10" [max]="5000" (valueChange)="quota.set($event)" />
+          <eds-checkbox label="Keep only the best checkpoint of finished jobs" [checked]="keepBest()" (checkedChange)="keepBest.set($event)" />
+          <eds-select label="Delete old checkpoints after" [options]="cleanupOptions" [value]="cleanupDays()" (valueChange)="cleanupDays.set($event)" />
+        </eds-card>
+        <eds-card class="form-card">
+          <h2>Notifications</h2>
+          <eds-switch label="Email me when a job finishes or fails" [checked]="notifyDone()" (checkedChange)="notifyDone.set($event)" />
+          <eds-input label="Send to" type="email" icon="mail" [required]="true" [value]="notifyEmail()" (valueChange)="notifyEmail.set($event); error.set('')" />
+          <eds-time-picker label="Weekly usage report at (Mondays)" [value]="reportTime()" (valueChange)="reportTime.set($event)" />
+          <div class="card-actions">
+            <span class="muted"><eds-kbd keys="Demo" /> No emails are sent</span>
+            <eds-button icon="save" (clicked)="saveSettings()">Save settings</eds-button>
+          </div>
+        </eds-card>
+      </section>
+    }
+
+    <p class="demo-note"><eds-kbd keys="Demo" /> Simulated jobs and fictional names. Changes stay in this browser session.</p>
+  </main>
+
+  <footer class="site-footer">
+    <span>Created by <eds-link href="https://polurus.com" [external]="true">Subrahmanyam Poluru</eds-link></span>
+    <span>Built with <eds-link href="https://www.npmjs.com/package/@poluru-labs/enterprise-design-system-angular" [external]="true">&#64;poluru-labs/enterprise-design-system-angular</eds-link></span>
+  </footer>
+</div>
+
+@if (toastOpen()) {
+  <div class="toast-anchor">
+    <eds-toast [open]="true" [title]="toastTitle()" [description]="toastBody()" variant="success" [duration]="4000" (openChange)="toastOpen.set($event)" />
   </div>
-</main>
+}
 
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<eds-drawer [open]="drawerOpen()" side="left" heading="Navigation" (openChange)="drawerOpen.set($event)">
+  <div class="sidebar drawer-nav">
+    <ng-container *ngTemplateOutlet="navigation" />
+  </div>
+</eds-drawer>
 
+<eds-modal [open]="modal() === 'deploy'" heading="Deploy checkpoint" (openChange)="!$event && closeModal()">
+  @if (selectedCheckpoint(); as ckpt) {
+    <div class="modal-body">
+      @if (error()) { <eds-alert variant="danger" [message]="error()" /> }
+      <p>{{ ckpt.id }} will replace {{ deployed()[family(ckpt.jobId)] || 'nothing' }} as the live <strong>{{ family(ckpt.jobId) }}</strong> model.</p>
+      <eds-pin-input label="Type the last four digits of the job ID to confirm" [length]="4" type="text" [value]="pin()" (valueChange)="pin.set($event); error.set('')" />
+    </div>
+  }
+  <div footer class="modal-actions">
+    <eds-button variant="secondary" (clicked)="closeModal()">Cancel</eds-button>
+    <eds-button icon="upload" (clicked)="confirmDeploy()">Deploy</eds-button>
+  </div>
+</eds-modal>
 
-<router-outlet />
+<eds-modal [open]="modal() === 'cancel'" heading="Cancel this job?" (openChange)="!$event && closeModal()">
+  <div class="modal-body">
+    <p>{{ selectedJob().name }} stops at step {{ selectedJob().step.toLocaleString() }}. Checkpoints already saved are kept, and GPU time so far is still billed.</p>
+  </div>
+  <div footer class="modal-actions">
+    <eds-button variant="secondary" (clicked)="closeModal()">Keep running</eds-button>
+    <eds-button variant="danger" (clicked)="cancelJob()">Cancel job</eds-button>
+  </div>
+</eds-modal>
