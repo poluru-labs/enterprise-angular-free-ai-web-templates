@@ -1,1 +1,67 @@
-/* You can add global styles to this file, and also import other style files */
+@import '@poluru-labs/enterprise-design-system-angular/tokens.css';
+@import '@poluru-labs/enterprise-design-system-angular/styles.css';
+
+:root {
+  color-scheme: light;
+  --eds-font-sans: 'Roboto', sans-serif;
+  --eds-font-display: 'Lato', sans-serif;
+  --eds-color-brand-900: #4a1f00;
+  --eds-color-brand-800: #662900;
+  --eds-color-brand-700: #993d00;
+  --eds-color-brand-600: #cc5200;
+  --eds-color-brand-500: #ff6500;
+  --eds-color-brand-400: #ff8533;
+  --eds-color-brand-300: #ffa366;
+  --eds-color-brand-200: #ffcdb3;
+  --eds-color-brand-100: #ffe4d1;
+  --eds-color-brand-50: #fff0e6;
+  --eds-color-primary: #ff6500;
+  --eds-color-primary-hover: #cc5200;
+  --eds-color-primary-active: #993d00;
+  --eds-color-text: #1f2233;
+  --eds-color-text-muted: #5e6275;
+  --eds-color-text-subtle: #80849a;
+  --eds-color-text-inverse: #ffffff;
+  --eds-color-border: #e4e6f0;
+  --eds-color-border-strong: #d3d6e6;
+  --eds-color-bg: #f7f8fc;
+  --eds-color-surface: #ffffff;
+  --eds-color-focus: #ff8533;
+  --eds-shadow-focus: 0 0 0 3px #ff650040;
+  --eds-radius-md: 8px;
+  --eds-radius-lg: 12px;
+}
+
+* { box-sizing: border-box; }
+
+html, body { min-height: 100%; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(900px 420px at 100% -10%, #ffe4d1 0%, transparent 55%),
+    #f7f8fc;
+  color: #1f2233;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+}
+
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+h1, h2, h3, h4 { font-family: 'Lato', sans-serif; }
+a { color: #cc5200; }
+a:focus-visible, button:focus-visible { outline: 2px solid #ff8533; outline-offset: 3px; }
+
+eds-card { display: block; min-width: 0; }
+eds-card > .card { height: 100%; background: #fff; border-color: #e4e6f0; box-shadow: 0 8px 24px #4a1f000a; }
+eds-card > .card > .body { padding: 22px; }
+eds-card > .card > .header:empty,
+eds-card > .card > .footer:empty,
+eds-card > .card > .media:empty { display: none; }
+eds-tabs .eds-tabs__panel { display: none !important; }
+.eds-tabs__tab--selected { color: #4a1f00 !important; border-bottom-color: #ff6500 !important; }
+eds-modal .dialog { width: min(600px, calc(100vw - 32px)); }
+eds-drawer .panel { width: min(480px, 100vw); }
+eds-link a { color: #cc5200; }
+.table-card > .card > .body { padding: 0; }
+.metrics eds-stat .eds-stat { border: 0 !important; padding: 0 !important; background: transparent !important; box-shadow: none !important; }

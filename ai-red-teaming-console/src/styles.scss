@@ -1,1 +1,74 @@
-/* You can add global styles to this file, and also import other style files */
+@import '@poluru-labs/enterprise-design-system-angular/tokens.css';
+@import '@poluru-labs/enterprise-design-system-angular/styles.css';
+
+:root {
+  color-scheme: light;
+  --eds-font-sans: 'Roboto', sans-serif;
+  --eds-font-display: 'Lato', sans-serif;
+  --eds-color-brand-900: #3b0a08;
+  --eds-color-brand-800: #5c0a08;
+  --eds-color-brand-700: #912018;
+  --eds-color-brand-600: #d92d20;
+  --eds-color-brand-500: #ff3838;
+  --eds-color-brand-400: #f97066;
+  --eds-color-brand-300: #fda29b;
+  --eds-color-brand-200: #fecdca;
+  --eds-color-brand-100: #fee4e2;
+  --eds-color-brand-50: #fef3f2;
+  --eds-color-primary: #ff3838;
+  --eds-color-primary-hover: #d92d20;
+  --eds-color-primary-active: #b42318;
+  --eds-color-text: #1f2233;
+  --eds-color-text-muted: #5e6275;
+  --eds-color-text-subtle: #80849a;
+  --eds-color-text-inverse: #ffffff;
+  --eds-color-border: #e4e6f0;
+  --eds-color-border-strong: #d3d6e6;
+  --eds-color-bg: #f7f8fc;
+  --eds-color-surface: #ffffff;
+  --eds-color-focus: #d92d20;
+  --eds-shadow-focus: 0 0 0 3px #ff383840;
+  --eds-radius-md: 8px;
+  --eds-radius-lg: 12px;
+}
+
+* { box-sizing: border-box; }
+
+html, body { min-height: 100%; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(900px 420px at 100% -10%, #fee4e2 0%, transparent 55%),
+    #f7f8fc;
+  color: #1f2233;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+}
+
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+h1, h2, h3, h4 { font-family: 'Lato', sans-serif; }
+a { color: #d92d20; }
+a:focus-visible, button:focus-visible { outline: 2px solid #d92d20; outline-offset: 3px; }
+
+eds-card { display: block; min-width: 0; }
+eds-card > .card { height: 100%; background: #fff; border-color: #e4e6f0; box-shadow: 0 8px 24px #3b0a080a; }
+eds-card > .card > .body { padding: 22px; }
+eds-card > .card > .header:empty,
+eds-card > .card > .footer:empty,
+eds-card > .card > .media:empty { display: none; }
+eds-tabs .eds-tabs__panel { display: none !important; }
+.eds-tabs__tab--selected { color: #3b0a08 !important; border-bottom-color: #ff3838 !important; }
+.sidebar .eds-side-nav { width: 100% !important; border: 0 !important; padding: 0 !important; background: transparent !important; min-height: 0 !important; }
+.sidebar .eds-side-nav__link { border-radius: 8px; font-weight: 500; }
+.sidebar .eds-side-nav__link--active { background: #fff !important; color: #d92d20 !important; box-shadow: 0 1px 3px #3b0a0814; }
+.sidebar .eds-list__item { border-radius: 8px; }
+eds-modal .dialog { width: min(600px, calc(100vw - 32px)); }
+eds-drawer .panel { width: min(480px, 100vw); }
+eds-link a { color: #d92d20; }
+.table-card > .card > .body { padding: 0; }
+.metrics eds-stat .eds-stat { border: 0 !important; padding: 0 !important; background: transparent !important; box-shadow: none !important; }
+.metrics eds-meter .eds-meter__label { font-size: 12px; }
+.vuln-critical > .card { border-color: #fecdca; box-shadow: 0 0 0 1px #fecdca, 0 8px 24px #ff383814; }
+.check-cell .eds-checkbox__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0) !important; }

@@ -127,18 +127,10 @@
         <div class="chart" aria-label="Document activity bar chart">
           <div class="chart__grid"><span></span><span></span><span></span><span></span></div>
           <div class="chart__bars">
-            @for (item of [
-              { day: 'Mon', value: 58, count: 146 },
-              { day: 'Tue', value: 76, count: 193 },
-              { day: 'Wed', value: 66, count: 168 },
-              { day: 'Thu', value: 88, count: 224 },
-              { day: 'Fri', value: 78, count: 198 },
-              { day: 'Sat', value: 54, count: 137 },
-              { day: 'Sun', value: 86, count: 218 }
-            ]; track item.day) {
+            @for (item of chartData; track item.day) {
               <div class="chart__column">
                 <span class="chart__value">{{ item.count }}</span>
-                <div class="chart__bar" [style.height.%]="item.value"></div>
+                <div class="chart__bar" [style.height]="barHeight(item.value)"></div>
                 <small>{{ item.day }}</small>
               </div>
             }
@@ -177,14 +169,14 @@
             <p>Track processing and validation status</p>
           </div>
           <div class="documents-header__actions">
-            <eds-input type="search" placeholder="Search documents" icon="search" size="sm" />
+            <eds-input type="search" placeholder="Search documents" icon="search" size="sm" [value]="docSearch()" (valueChange)="docSearch.set($event)" />
             <eds-button variant="secondary" size="sm" icon="filter">Filter</eds-button>
             <eds-button variant="tertiary" size="sm" iconTrailing="chevron-right">View all</eds-button>
           </div>
         </div>
 
         <div class="filter-tabs" role="tablist" aria-label="Document filters">
-          @for (filter of ['All documents', 'Invoices', 'Contracts', 'Forms']; track filter) {
+          @for (filter of filterTabs; track filter) {
             <button
               role="tab"
               [class.active]="selectedFilter() === filter"
@@ -207,7 +199,12 @@
               </tr>
             </thead>
             <tbody>
-              @for (document of documents; track document.name) {
+              @if (filteredDocuments().length === 0) {
+                <tr>
+                  <td colspan="6" class="muted empty-table">No documents match this filter.</td>
+                </tr>
+              }
+              @for (document of filteredDocuments(); track document.name) {
                 <tr>
                   <td>
                     <div class="document-name">

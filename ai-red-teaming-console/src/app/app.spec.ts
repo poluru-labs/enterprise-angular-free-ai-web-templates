@@ -10,14 +10,22 @@ describe('App', () => {
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(App);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(fixture.componentInstance).toBeTruthy();
   });
 
   it('should render title', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, ng-boilerplate');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Red Teaming Console');
+  });
+
+  it('should render footer links', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const compiled = fixture.nativeElement as HTMLElement;
+    const footer = compiled.querySelector('.site-footer');
+    expect(footer?.textContent).toContain('Subrahmanyam Poluru');
+    expect(footer?.textContent).toContain('@poluru-labs/enterprise-design-system-angular');
   });
 });

@@ -1,1 +1,74 @@
-/* You can add global styles to this file, and also import other style files */
+@import '@poluru-labs/enterprise-design-system-angular/tokens.css';
+@import '@poluru-labs/enterprise-design-system-angular/styles.css';
+
+:root {
+  color-scheme: light;
+  --eds-font-sans: 'Roboto', sans-serif;
+  --eds-font-display: 'Lato', sans-serif;
+  --eds-color-brand-900: #6b2800;
+  --eds-color-brand-800: #8c3400;
+  --eds-color-brand-700: #b84400;
+  --eds-color-brand-600: #eb5b00;
+  --eds-color-brand-500: #f07833;
+  --eds-color-brand-400: #f59a66;
+  --eds-color-brand-300: #f8bc94;
+  --eds-color-brand-200: #fbd6be;
+  --eds-color-brand-100: #fde8d8;
+  --eds-color-brand-50: #fff6ef;
+  --eds-color-primary: #eb5b00;
+  --eds-color-primary-hover: #d15200;
+  --eds-color-primary-active: #b84400;
+  --eds-color-text: #2c241f;
+  --eds-color-text-muted: #6f655e;
+  --eds-color-text-subtle: #8d827a;
+  --eds-color-text-inverse: #ffffff;
+  --eds-color-border: #efe4db;
+  --eds-color-border-strong: #e2d3c6;
+  --eds-color-bg: #fbf7f4;
+  --eds-color-surface: #ffffff;
+  --eds-color-focus: #eb5b00;
+  --eds-shadow-focus: 0 0 0 3px #eb5b0033;
+  --eds-radius-md: 8px;
+  --eds-radius-lg: 12px;
+}
+
+* { box-sizing: border-box; }
+
+html, body { min-height: 100%; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(900px 420px at 100% -10%, #ffe8d6 0%, transparent 55%),
+    #fbf7f4;
+  color: #2c241f;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+}
+
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+h1, h2, h3, h4 { font-family: 'Lato', sans-serif; }
+a { color: #b84400; }
+a:focus-visible, button:focus-visible { outline: 2px solid #eb5b00; outline-offset: 3px; }
+
+eds-card { display: block; min-width: 0; }
+eds-card > .card { height: 100%; background: #fff; border-color: #efe4db; box-shadow: 0 8px 24px #6b280008; }
+eds-card > .card > .body { padding: 22px; }
+eds-card > .card > .header:empty,
+eds-card > .card > .footer:empty,
+eds-card > .card > .media:empty { display: none; }
+eds-tabs .eds-tabs__panel { display: none !important; }
+.top-navigation .eds-tabs__list { border: 0; gap: 4px; }
+.top-navigation .eds-tabs__tab { padding: 16px 12px; margin: 0; white-space: nowrap; border-radius: 8px 8px 0 0; }
+.top-navigation .eds-tabs__tab--selected { color: #9a3a00; border-bottom-color: #eb5b00; }
+.queue-panel .eds-side-nav { width: 100%; border: 0; padding: 0; background: transparent; }
+.queue-panel .eds-side-nav__link { border-radius: 8px; }
+.queue-panel .eds-side-nav__link--active { background: #fff1e6; color: #b84400; }
+eds-modal .dialog { width: min(640px, calc(100vw - 32px)); }
+eds-drawer .panel { width: min(440px, 100vw); }
+eds-progress-bar, eds-meter, eds-circular-progress { --eds-color-primary: #eb5b00; }
+eds-avatar { --eds-color-brand-700: #b84400; }
+.table-card > .card > .body,
+.queue-panel > .card > .body { padding: 0; }
+.settings-card eds-switch .eds-switch__label { font-size: 14px; }
