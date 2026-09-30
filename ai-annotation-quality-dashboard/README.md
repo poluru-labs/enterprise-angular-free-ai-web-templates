@@ -4,6 +4,11 @@ Measure inter-annotator agreement, label accuracy, and dataset health for traini
 
 A light Angular dashboard using the `#72BAA9` theme, Google Fonts Roboto and Lato, and 17 components from `@poluru-labs/enterprise-design-system-angular`.
 
+## Screenshot
+
+<img width="3360" height="4402" alt="ai-annotation-quality-dashboard" src="https://github.com/user-attachments/assets/44909863-824b-40bd-baa8-c55a53d24c17" />
+
+
 ## Features
 
 - Dataset-scoped agreement, accuracy, reviewed annotation counts, and health indicators.
