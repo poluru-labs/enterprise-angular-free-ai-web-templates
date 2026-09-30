@@ -4,6 +4,11 @@ Publish, version, and govern internal AI agents with approval workflows and usag
 
 An Angular dashboard with a `#450C3F` plum theme, Google Fonts Roboto and Lato, and components from `@poluru-labs/enterprise-design-system-angular`.
 
+## Screenshot
+
+<img width="3360" height="4516" alt="ai-agent-marketplace-admin" src="https://github.com/user-attachments/assets/8bf16255-7f59-4af6-a122-fb3c4c2f392f" />
+
+
 ## Features
 
 - Overview with invocation trends, publication metrics, and an approval queue.
