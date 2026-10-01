@@ -2,6 +2,11 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.23.
 
+## Screenshot
+
+<img width="3360" height="2792" alt="ai-chat-analytics-dashboard" src="https://github.com/user-attachments/assets/ea0ef1fc-8136-494e-89a5-3693c888fff6" />
+
+
 ## Development server
 
 To start a local development server, run:
