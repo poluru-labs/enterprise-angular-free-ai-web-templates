@@ -4,6 +4,11 @@ Review AI-generated code suggestions, acceptance rates, and per-repo productivit
 
 A light Angular dashboard with top navigation, a `#C3110C` theme, Google Fonts Roboto and Lato, and 15 components from `@poluru-labs/enterprise-design-system-angular`.
 
+## Screenshot
+
+<img width="3360" height="4088" alt="ai-code-review-assistant-ui" src="https://github.com/user-attachments/assets/d723dc76-bf7d-4c4b-a28d-3fd053607277" />
+
+
 ## Features
 
 - Overview with suggestion totals, acceptance rates, estimated time saved, and pending reviews.
