@@ -1,0 +1,23 @@
+@import '@poluru-labs/enterprise-design-system-angular/tokens.css';
+@import '@poluru-labs/enterprise-design-system-angular/styles.css';
+:root {
+  --eds-font-sans: 'Roboto', sans-serif;
+  --eds-font-display: 'Lato', sans-serif;
+  --eds-color-brand-500: #084177;
+  --eds-color-brand-700: #052c51;
+  --eds-color-primary: #084177;
+  --eds-color-primary-hover: #073866;
+  --eds-color-text: #1a1733;
+  --eds-color-text-muted: #8a6b78;
+  --eds-color-border: #d3dde7;
+  --eds-color-bg: #ebf0f4;
+  --eds-color-focus: #052c51;
+  --eds-shadow-focus: 0 0 0 3px #08417745;
+}
+html, body { margin: 0; min-height: 100%; background: linear-gradient(180deg, #e1e8ef 0%, #f0f4f7 45%, #ebf0f4 100%); }
+body { font-family: 'Roboto', sans-serif; -webkit-font-smoothing: antialiased; }
+button, input, select, textarea { font: inherit; }
+eds-card .card > .header, eds-card .card > .body, eds-card .card > .footer { padding: 0; }
+eds-card .card > .media:empty, eds-card .card > .header:empty, eds-card .card > .footer:empty { display: none; }
+.metric-grid eds-card .card { border: 0; background: transparent; box-shadow: none; }
+eds-progress-bar { --eds-color-primary: #084177; }
