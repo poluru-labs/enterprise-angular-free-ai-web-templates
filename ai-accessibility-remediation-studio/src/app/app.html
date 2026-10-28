@@ -1,0 +1,150 @@
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark"><eds-icon name="check-circle" size="sm" [decorative]="true" /></div>
+      <div><strong>Clearpath</strong><small>Remediation</small></div>
+    </div>
+    <nav class="sidebar-nav" aria-label="Main navigation">
+      @for (item of navItems; track item.label) {
+        <button class="nav-item" [class.active]="activeNav() === item.label" (click)="activeNav.set(item.label)">
+          <eds-icon [name]="item.icon" size="sm" [decorative]="true" />
+          <span>{{ item.label }}</span>
+        </button>
+      }
+    </nav>
+    <div class="sidebar-foot">
+      <div class="profile">
+        <eds-avatar name="Kavita Poluru" size="sm" />
+        <div><strong>Kavita Poluru</strong><span>Studio lead</span></div>
+      </div>
+    </div>
+  </aside>
+  <main>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Inclusive product quality</p>
+        <h1>{{ activeNav() }}</h1>
+      </div>
+      <div class="header-actions">
+        <eds-tooltip content="Snapshot refreshed 8 minutes ago" placement="bottom">
+          <button class="icon-button" aria-label="Refresh workspace"><eds-icon name="refresh" size="sm" /></button>
+        </eds-tooltip>
+        <eds-button variant="secondary" size="sm" icon="download" (clicked)="exportReport()">{{ exportLabel() }}</eds-button>
+        <eds-avatar name="Kavita Poluru" size="md" />
+      </div>
+    </header>
+    <section class="content">
+      <div class="intro-row">
+        <div>
+          <h2>Remediation progress</h2>
+          <p>Track WCAG findings, owner assignments, and verification status across your product.</p>
+        </div>
+        <eds-segmented-control [options]="periodOptions" [value]="period()" size="sm" (valueChange)="setPeriod($event)" />
+      </div>
+      <section class="metric-grid" aria-label="Key metrics">
+        @for (m of metrics; track m.label) {
+          <eds-card [padded]="true">
+            <div class="metric-icon accent"><eds-icon name="star" size="md" [decorative]="true" /></div>
+            <eds-stat [value]="m.value" [label]="m.label" [trend]="m.trend" [trendValue]="m.trendValue" [hint]="m.hint" />
+          </eds-card>
+        }
+      </section>
+      <section class="main-grid">
+        <eds-card class="volume-card">
+          <div header class="card-header">
+            <div><h3>Issues closed over time</h3><p>Weekly remediations verified in the studio</p></div>
+            <div class="legend"><span></span> Trend</div>
+          </div>
+          <div class="chart-wrap">
+            <div class="y-labels"><span>100</span><span>75</span><span>50</span><span>25</span><span>0</span></div>
+            <svg class="line-chart" viewBox="0 0 760 260" role="img" aria-label="Closed accessibility issues trend upward through the month">
+              <defs>
+                <linearGradient id="chartFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#FFA1C5" stop-opacity=".32" />
+                  <stop offset="100%" stop-color="#FFA1C5" stop-opacity="0" />
+                </linearGradient>
+              </defs>
+              <g class="grid-lines"><path d="M0 20H760M0 75H760M0 130H760M0 185H760M0 240H760" /></g>
+              <path class="area" d="M0 220 C55 215 90 198 140 190 S220 165 280 150 S360 120 420 108 S510 72 580 58 S680 38 760 28 L760 240 L0 240Z" />
+              <path class="line" d="M0 220 C55 215 90 198 140 190 S220 165 280 150 S360 120 420 108 S510 72 580 58 S680 38 760 28" />
+            </svg>
+          </div>
+          <div class="x-labels"><span>Sep 1</span><span>Sep 8</span><span>Sep 15</span><span>Sep 22</span><span>Sep 30</span></div>
+        </eds-card>
+        <eds-card class="intent-card">
+          <div header class="card-header">
+            <div><h3>Finding categories</h3><p>By open issue count</p></div>
+            <eds-badge [label]="'4 categories'" variant="brand" [soft]="true" />
+          </div>
+          <div class="donut-row">
+            <div class="donut"><div><strong>122</strong><span>open</span></div></div>
+            <div class="donut-legend">
+              @for (issue of issueTypes; track issue.name) {
+                <div><span [style.background]="issue.color"></span><p>{{ issue.name }}<small>{{ issue.count }}</small></p></div>
+              }
+            </div>
+          </div>
+          <eds-divider spacing="sm" />
+          <div class="intent-list">
+            @for (issue of issueTypes; track issue.name) {
+              <div class="intent-item">
+                <div><span>{{ issue.name }}</span><strong>{{ issue.count }}</strong></div>
+                <eds-progress-bar [value]="issue.value" [max]="100" />
+              </div>
+            }
+          </div>
+        </eds-card>
+      </section>
+      <section class="bottom-grid">
+        <eds-card>
+          <div header class="card-header">
+            <div><h3>Priority pages</h3><p>Routes with the most open findings</p></div>
+            <eds-button variant="tertiary" size="sm" iconTrailing="chevron-right">View all</eds-button>
+          </div>
+          <div class="agent-table">
+            <div class="table-head"><span>Route</span><span>Issues</span><span>Owner</span><span>Status</span></div>
+            @for (page of pages; track page.col1) {
+              <div class="agent-row">
+                <strong class="route">{{ page.col1 }}</strong>
+                <strong>{{ page.col2 }}</strong>
+                <span class="owner">{{ page.col3 }}</span>
+                <eds-status [label]="page.status" [variant]="statusVariant(page.status)" />
+              </div>
+            }
+          </div>
+        </eds-card>
+        <eds-card>
+          <div header class="card-header">
+            <div><h3>Recent activity</h3><p>Latest workspace updates</p></div>
+            <button class="plain-more" aria-label="More options"><eds-icon name="more-horizontal" size="sm" /></button>
+          </div>
+          <div class="activity-list">
+            @for (item of activity; track item.time) {
+              <div class="activity-item">
+                <span class="activity-dot" [class.warning]="item.tone === 'warning'"></span>
+                <div><strong>{{ item.title }}</strong><p>{{ item.detail }}</p></div>
+                <time>{{ item.time }}</time>
+              </div>
+            }
+          </div>
+          <eds-divider spacing="sm" />
+          <div class="reviewer-block">
+            <p class="reviewer-label">Contributors</p>
+            @for (member of reviewers; track member.name) {
+              <div class="reviewer-row">
+                <eds-avatar [name]="member.name" size="sm" />
+                <div><strong>{{ member.name }}</strong><span>{{ member.role }}</span></div>
+                <div class="reviewer-meta"><strong>{{ member.fixed }}</strong><small>completed</small></div>
+              </div>
+            }
+          </div>
+        </eds-card>
+      </section>
+      <p class="demo-note">Sample workspace data · Illustrative metrics for demonstration</p>
+    </section>
+    <footer class="site-footer">
+      <span>Created by <a href="https://polurus.com" target="_blank" rel="noopener noreferrer">Subrahmanyam Poluru <eds-icon name="external-link" size="sm" /></a></span>
+      <span>Built with <a href="https://www.npmjs.com/package/@poluru-labs/enterprise-design-system-angular" target="_blank" rel="noopener noreferrer">&#64;poluru-labs/enterprise-design-system-angular <eds-icon name="external-link" size="sm" /></a></span>
+    </footer>
+  </main>
+</div>
