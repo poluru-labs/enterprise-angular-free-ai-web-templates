@@ -2,6 +2,11 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.23.
 
+## Screenshot
+
+<img width="3360" height="3360" alt="ai-compliance-audit-trail" src="https://github.com/user-attachments/assets/99f55412-2b01-468b-bfd9-d643cc3948e1" />
+
+
 ## Development server
 
 To start a local development server, run:
